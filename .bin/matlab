@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sed -i 's/iris/i965/' "$HOME/.drirc"
+"$HOME/coding/matlab/bin/matlab" -desktop "${@}" &

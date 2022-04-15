@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e
+
+format=$1
+screensize=$2
+
+if [ ! "$format" ] || [ ! "$screensize" ]; then
+  echo -e "Missing arguments...\nUsage:\tvideomerge <format> <screensize>"
+  exit 1
+else
+  mkdir -p tomergeDir
+  i=1
+  for tofilter in ./*."$format"; do
+    ffmpeg -y -i "$tofilter" -vf "color=c=gray:s=$screensize:d=2 [post] ; [in] [post] concat=n=2" "$PWD/tomergeDir/filtered$i.$format" && rm "$tofilter"
+    ((i += 1))
+  done
+  pushd tomergeDir || exit 1
+  ffmpeg -y -f concat -safe 0 -i <(for filtered in ./*."$format"; do echo "file '$PWD/$filtered'"; done) -c copy ../final."$format"
+  rm ./*."$format"
+  popd || exit 1
+  rmdir tomergeDir
+fi

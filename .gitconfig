@@ -1,0 +1,51 @@
+[user]
+username = honeypot25
+email = 40872160+honeypot25@users.noreply.github.com
+
+[core]
+editor = nano
+
+[color "branch"]
+current = yellow bold
+local = green bold
+remote = cyan bold
+
+[color "diff"]
+meta = yellow bold
+frag = magenta bold
+old = red bold
+new = green bold
+whitespace = red reverse
+
+[color "status"]
+added = green bold
+changed = yellow bold
+untracked = red bold
+prompt = false
+
+[alias]
+a = add
+aa = add --all
+b = branch
+c = commit
+ca = commit -a
+cm = commit -m
+cam = commit -am
+co = checkout
+f = fetch
+l = log --oneline --graph --decorate
+ls = ls-files
+lsf = !git ls-files | grep -i
+m = merge
+pl = pull
+plom = pull origin main
+ps = push
+psom = push origin main
+rb = rebase
+ro = restore
+rs = reset
+s = status
+t = tag
+
+[init]
+	defaultBranch = main

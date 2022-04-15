@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+val=$(cat /sys/class/backlight/intel_backlight/brightness)
+if [ "$1" = "+" ]; then
+  val=$(("$val" + 150))
+else
+  val=$(("$val" - 150))
+fi
+echo "$val" | sudo tee /sys/class/backlight/intel_backlight/brightness

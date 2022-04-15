@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+name="$1"
+[ "$name" ] || exit 1
+
+app=$(find "$HOME/apps" -iwholename "*$name*.AppImage")
+count=$(echo "$app" | wc -l)
+if ((count > 1)); then
+  echo -e "Found multiple .AppImage for \"$name\"\nTry to be more specific..."
+  exit 1
+elif ((count == 0)); then
+  echo "No .AppImage found for \"$name\""
+  exit 1
+# found
+else
+  if [ -x "$app" ]; then
+    "$app"
+  else
+    echo "Run \"chmod u+x $app\" first"
+  fi
+fi

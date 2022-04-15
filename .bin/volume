@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+how=$1
+value=$2
+script=$(basename "$0")
+
+if [[ "$how" == "down" ]]; then
+  # pactl set-sink-volume @DEFAULT_SINK@ -"$value"%
+  amixer sset Master $value%-
+  new=$(awk '/%/ {gsub(/[\[\]]/,""); print $4}' <(amixer sget Master))
+  notify-send --urgency=low --expire-time=50 --app-name="$script" "Down to $new"
+elif [[ "$how" == "up" ]]; then
+  # pactl set-sink-volume @DEFAULT_SINK@ +"$value"%
+  amixer sset Master $value%+
+  new=$(awk '/%/ {gsub(/[\[\]]/,""); print $4}' <(amixer sget Master))
+  notify-send --urgency=low --expire-time=50 --app-name="$script" "Up to $new"
+fi

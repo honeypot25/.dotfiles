@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Incorrect usage (missing or wrong arg)
+mon=$1
+if [[ ! "$mon" =~ main|ext|both ]]; then
+   echo -e "Usage:\tmonitor <main|ext|both>"
+   exit 1
+fi
+
+# Check for another connected monitor
+connected=$(xrandr --query | grep '\bconnected\b')
+count=$(echo "$connected" | wc -l)
+if [ ! "$count" -gt 1 ]; then
+   echo "Can't find an external monitor"
+   exit 1
+fi
+
+case "$mon" in
+main)
+   xrandr --output DP-1 --off \
+      --output eDP-1 --primary --mode 1366x768 --pos 0x0 --rotate normal \
+      --output HDMI-1 --off
+   ex
+   ;;
+ext)
+   xrandr --output eDP-1 --off \
+      --output DP-1 --primary --mode 1680x1050 --pos 0x0 --rotate normal \
+      --output HDMI-1 --off
+   ;;
+both)
+   xrandr --output DP-1 --primary --mode 1680x1050 --pos 1366x0 --rotate normal \
+      --output eDP-1 --mode 1366x768 --pos 0x283 --rotate normal \
+      --output HDMI-1 --off
+   ;;
+esac
+
+exit 0

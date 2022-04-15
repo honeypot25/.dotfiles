@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+low=$1
+high=$2
+
+current_level=$(acpi -b | grep -P -o '[0-9]+(?=%)')
+is_charging=$(cat "/sys/class/power_supply/ACAD/online")
+
+ if (( $is_charging -eq 0 )) && (( $current_level -le $low )); then
+     icon="/usr/share/icons/breeze-dark/status/24/battery-0$low.svg"
+     /usr/bin/notify-send \
+				--urgency=critical \
+				--expire-time=30000 \
+				--app-name="$(basename "$0")" \
+				--icon="$icon"
+				"ATTACCAH ATTACCAH: $current_level%"
+elif (( $is_charging == 1 )) && (( $current_level -ge $high )); then
+    icon="/usr/share/icons/breeze-dark/status/24/battery-0$high-charging.svg"
+    /usr/bin/notify-send \
+        --urgency=critical \
+        --expire-time=30000 \
+        --app-name="$(basename "$0")" \
+        --icon="$icon" \
+        "STACCAH STACCAH: $current_level%"
+fi

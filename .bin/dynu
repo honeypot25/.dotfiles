@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+data=$(date)
+apires=$(curl -k "https://api.dynu.com/nic/update?username=$1&password=$2" 2>/dev/null)
+sleep 5
+newIP=$(echo "$apires" | grep -oP "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")
+
+if [ -n "$newIP" ]; then
+  config="/etc/ssh/ssh_config"
+  dynulog="$HOME/.logs/dynu.log"
+  sed "0,/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/{s/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/$newIP/}" "$config" >"$config.tmp"
+  mv "$config.tmp" "$config"
+  entry="$newIP"
+else
+  entry="$apires"
+fi
+
+echo "$data ---> $entry" >>"$dynulog"

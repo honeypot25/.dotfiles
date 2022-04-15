@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+HDD="/media/$USER/HDD"
+src=$1
+dst=$2
+
+if [ ! -d "$HDD" ]; then
+	echo "Can't find external HDD, try again"
+	exit 1
+else
+	rsync -ahPuvz --delete-after "$HOME/$src/" "$HDD/$dst/" && echo "Done"
+fi

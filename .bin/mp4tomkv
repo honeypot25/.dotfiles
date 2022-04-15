@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+for video in ./*.mp4; do
+	ffmpeg -i "$video" -c:v libx264 -crf 40 -filter:v fps=fps=10 -c:a libopus -application voip -ab 16k -ac 1 -cutoff 12000 \
+		"$(echo "$video" | sed 's/mp4/mkv/')"
+done

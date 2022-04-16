@@ -49,7 +49,7 @@ restore_dotfiles() {
 
 download_packages() {
   # pacman
-  source ~/.dotfiles/.packages
+  source ~/.packages
   echo -e "\nSynchronizing packages repos\n"
   reflector -c Italy -a24 -n5 -f5 -l5 --sort rate --save /etc/pacman.d/mirrorlist
   sudo pacman -Sy

@@ -150,8 +150,8 @@ alias rr="rickroll"
 alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
 
 # git
-alias gitfast="git aa && git cam 'autocommit' && git psom"
-alias hlocal="cd ~/coding/telegram/honeybot && heroku local"
+alias gpush="git aa && git cam 'autocommit' && git psom"
+alias htest="cd ~/coding/telegram/honeybot && heroku local"
 
 # RSA SSH keychain
 eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)"

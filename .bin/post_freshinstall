@@ -4,12 +4,12 @@
 # restore_dotfiles
 # download_packages
 
+set -e
+
 if [ -d "/dev/mapper/cryptroot/@/root/archimate" ]; then
   echo -e "\nFresh install detected, deleting archimate git repo\n"
-  rm -rf /dev/mapper/cryptroot/@/root/archimate
+  sudo rm -rf /dev/mapper/cryptroot/@/root/archimate
 fi
-
-set -e
 
 read -rp "Enter your username: " USERNAME
 
@@ -51,10 +51,7 @@ download_packages() {
   # pacman
   source ~/.dotfiles/.packages
   echo -e "\nSynchronizing packages repos\n"
-  sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-  sed -i 's/^#Color/Color/' /etc/pacman.conf
-  sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-  reflector -c Italy -a 6 -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+  reflector -c Italy -a24 -n5 -f5 -l5 --sort rate --save /etc/pacman.d/mirrorlist
   sudo pacman -Sy
   echo -e "\nGetting pacman packages:\n" "${pacman_packages[@]}"
   sudo --needed --noconfirm "${pacman_packages[@]}"
@@ -67,32 +64,36 @@ download_packages() {
   popd || return
   popd || return
 
-  sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
+  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   sudo paru -Sy
   echo -e "\nGetting AUR (paru) packages:\n" "${aur_packages[@]}"
-  sudo paru -S --needed --noconfirm "${aur_packages[@]}"
+  paru -S --needed --noconfirm "${aur_packages[@]}"
+}
+
+virtualization() {
+  sudo usermod -a -G libvirt,kvm $USERNAME
+  sudo systemctl enable libvirtd
+  sudo systemctl start libvirtd
+  sudo virsh net-define ~/.config/.br10.xml
+  sudo virsh net-start .br10
+  sudo virsh net-autostart .br10
+}
+
+set_zramd() {
+  read -rp "Enter the max zramd size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAMD
+  sed -i 's/^# ALGORITHM=.*/ALGORITHM=lzo/' /etc/default/zramd      # lzo, faster but worse compr ratio than zstd
+  sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAMD/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
+  sudo systemctl enable --now zramd
 }
 
 create_dirs
 restore_dotfiles
 download_packages
+virtualization
+set_zramd
 
 # Display manager
 sudo systemctl enable ly
-
-# Virtualization
-sudo usermod -a -G libvirt,kvm $USERNAME
-sudo systemctl enable libvirtd
-sudo systemctl start libvirtd
-sudo virsh net-define ~/.config/.br10.xml
-sudo virsh net-start .br10
-sudo virsh net-autostart .br10
-
-# zramd
-read -rp "Enter the max zramd size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAMD
-sed -i 's/^# ALGORITHM=.*/ALGORITHM=lzo/' /etc/default/zramd      # lzo, faster but worse compr ratio than zstd
-sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAMD/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
-sudo systemctl enable --now zramd
 
 ### END ###
 echo -e "\nDONE. REMEMBER TO OPEN AND SETUP Timeshift (with 5, 7, 0, 0, 0)\n"

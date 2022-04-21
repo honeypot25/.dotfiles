@@ -34,16 +34,16 @@ pacman_packages() {
   packages+=("telegram-desktop-bin firefox rclone bitwarden zoom realvnc-vnc-viewer discord_arch_electron")
   # system
   packages+=("exa" "catfish" "htop" "fastfetch" "tlpui" "stacer" "gparted" "grub-customizer")
-  pacman -S --needed --noconfirm "${packages[@]}"
+  sudo pacman -S --needed --noconfirm "${packages[@]}"
 }
 
 get_dotfiles() {
-  echo -e "\nSetting dotfiles git repo\n"
+  echo -e "\nSetting ~/.dotfiles git bare repo\n"
   pushd ~ || return
   (
-    echo -e "\n# Injected by $HOME/.bin/post_freshinstall"
-    echo ".dotfiles"
-    echo ".dotfiles.bak"
+    echo "# Added by ~/.dotfiles/install.sh"
+    echo ".dotfiles/"
+    echo ".dotfiles.bak/"
   ) >>.gitignore
   git clone --bare https://github.com/honeypot25/dotfiles.git .dotfiles
   # set temp git alias (as function, so use () )
@@ -116,7 +116,7 @@ adjust_dotfiles
 set_virtualization
 set_zram
 
-# delete ~/gui and reboot
+## END:delete ~/gui and reboot
 cd ~ && rm -rf ~/gui
 printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
 for sec in {10..1}; do

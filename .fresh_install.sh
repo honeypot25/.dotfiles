@@ -21,7 +21,7 @@ create_dirs() {
   pushd ~ || return
   mkdir -p Apps ganes projects vms
   mkdir -p Pictures && git clone https://github.com/dwt1/wallpapers.git Pictures/
-  popd || return
+  popd || return # $PWD
 }
 
 pacman_packages() {
@@ -58,7 +58,7 @@ get_dotfiles() {
     dots checkout 2>&1 | grep -E "\s+\." | awk '{ print $1 }' | xargs -I{} mv {} .dotfiles.bak/{}
   fi
   dots config --local status.showUntrackedFiles no
-  popd || return
+  popd || return # $PWD
   echo -e "dotfiles ready!\n"
 }
 
@@ -68,8 +68,8 @@ aur_packages() {
   git clone https://aur.archlinux.org/paru-bin
   pushd paru-bin || return
   makepkg -si --noconfirm
-  popd || return
-  popd || return
+  popd || return # ~/.src
+  popd || return # $PWD
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   sudo paru -Sy
 
@@ -106,6 +106,17 @@ set_zram() {
   sudo systemctl enable --now zramd
 }
 
+end() {
+  ## END:delete ~/gui and reboot
+  cd ~ && rm -rf ~/gui
+  printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
+  for sec in {10..1}; do
+    printf "%s...\n" "$sec"
+    sleep 1
+  done
+  reboot
+}
+
 install_GUI
 create_dirs
 pacman_packages
@@ -114,15 +125,7 @@ aur_packages
 adjust_dotfiles
 set_virtualization
 set_zram
-
-## END:delete ~/gui and reboot
-cd ~ && rm -rf ~/gui
-printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
-for sec in {10..1}; do
-  printf "%s...\n" "$sec"
-  sleep 1
-done
-reboot
+end
 
 #########################################################################################################################
 

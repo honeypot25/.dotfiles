@@ -42,8 +42,7 @@ get_dotfiles() {
   pushd ~ || return
   (
     echo "# Added by ~/.dotfiles/install.sh"
-    echo ".dotfiles/"
-    echo ".dotfiles.bak/"
+    echo ".dotfiles*/"
   ) >>.gitignore
   git clone --bare https://github.com/honeypot25/dotfiles.git .dotfiles
   # set temp git alias (as function, so use () )

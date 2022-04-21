@@ -1,29 +1,30 @@
 #!/usr/bin/env bash
 
-# EXPORT
+## EXPORT
 export TERM=xterm-256color
 export EDITOR=nvim
-export VISUAL=
+# export VISUAL=
 export MANPAGER="nvim -c 'set ft=man' -"
-export QT_QPA_PLATFORMTHEME=qt5ct
+# export QT_QPA_PLATFORMTHEME=qt5ct
 #export PATH="$PATH:$HOME/.bin:$HOME/apps"
 PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/games"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# PROMPT
+## PROMPT
 green=$(tput setaf 2)
 red=$(tput setaf 1)
-reset_color=$(tput sgr0)
-PS1="[\[$green\]\u\[$reset_color\] ➜ \[$red\]\w\[$reset_color\]] » "
+r=$(tput sgr0)
+PS1="[\[$green\]\u\[$r\] ➜ \[$red\]\w\[$r\]] » "
+unset green red r
 
-# HISTORY
+## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth
 HISTSIZE=1000
 HISTFILE=~/.bash_history
 
-# SHOPT
+## SHOPT
 shopt -s autocd  # change to named directory
 shopt -s cmdhist # save multi-line commands in history as single line
 shopt -s dotglob
@@ -32,7 +33,7 @@ shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize   # checks term size when bash regains control
 shopt -s cdspell        # autocorrects cd misspellings
 
-# COMPLETION
+## COMPLETION
 # ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
@@ -44,7 +45,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# ARCHIVE EXTRACTION
+## ARCHIVE EXTRACTION
 extract() {
   if [ -f "$1" ]; then
     arch="$1"
@@ -66,11 +67,11 @@ extract() {
     *) echo "$arch cannot be extracted via ex()" ;;
     esac
   else
-    echo "$arch is not a valid file"
+    echo "$arch is not a valid archive file"
   fi
 }
 
-# ALIASES
+## ALIASES
 
 alias vim="nvim"
 
@@ -81,8 +82,10 @@ alias shellcheck="shellcheck -e 1090,1091,2139"
 # utility
 # Clean Trash
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"
-# Replace spaces with _ for every file
-alias rshrink="rename 's/ /_/g' *"
+# Recursive replace spaces with _
+shopt -s globstar
+alias rshrink="rename -v 's/ /_/g' ./**"
+shopt -u globstar
 
 # Changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
@@ -101,10 +104,10 @@ alias unlock="sudo rm /var/lib/pacman/db.lck"   # remove pacman lock
 alias cleanup="sudo pacman -Rns (pacman -Qtdq)" # remove orphaned packages
 
 # get fastest mirrors
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
+alias mirrora="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort age --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort score --save /etc/pacman.d/mirrorlist"
 
 # Colorize grep output (good for log files)
 alias grep="grep --color=auto"
@@ -144,14 +147,16 @@ alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
 # bare git repo alias for dotfiles
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-
-# the terminal rickroll
-alias rr="rickroll"
-alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
+alias dotspush="dots s && dots cam 'autocommit' && dots psom"
 
 # git
-alias gpush="git aa && git cam 'autocommit' && git psom"
-alias htest="cd ~/coding/telegram/honeybot && heroku local"
+alias ghpush="git s && git a . && git cam 'autocommit' && git psom"
+alias hktest="cd ~/coding/telegram/honeybot && heroku local"
+
+# rr
+alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
+
+## SCRIPTS
 
 # RSA SSH keychain
 eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)"

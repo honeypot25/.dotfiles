@@ -2,39 +2,12 @@
 
 set -e
 
-install_GUI() {
-  # get Desktop Environment / Window Manager
-  shopt -s nocasematch
-  while [[ ! "$GUI" =~ kde|xfce|gnome|cinnamon|i3|sway ]]; do
-    read -rp "Enter a DE/WM: " GUI
-  done
-  shopt -u nocasematch
-  # for manual builds of repos and packages
-  mkdir -p ~/.src
-  # get and install GUI (lowercase)
-  wget https://raw.githubusercontent.com/honeypot25/archimate/main/gui/${GUI,,}.sh -O ${GUI,,}.sh
-  source ${GUI,,}.sh && rm ${GUI,,}.sh
-}
-
 create_dirs() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
   mkdir -p Apps ganes projects vms
   mkdir -p Pictures && git clone https://github.com/dwt1/wallpapers.git Pictures/
   popd || return # $PWD
-}
-
-pacman_packages() {
-  local packages=()
-  # documents and coding
-  packages+=("thunar" "okular" "code" "mysql-workbench" "pgadmin4" "postgresql")
-  # documents, img, sound and video
-  packages+=("flameshot" "obs-studio" "vlc" "simplescreenrecorder")
-  # Internet, network & security
-  packages+=("telegram-desktop-bin firefox rclone bitwarden zoom realvnc-vnc-viewer discord_arch_electron")
-  # system
-  packages+=("exa" "catfish" "htop" "fastfetch" "tlpui" "stacer" "gparted" "grub-customizer")
-  sudo pacman -S --needed --noconfirm "${packages[@]}"
 }
 
 get_dotfiles() {
@@ -60,31 +33,6 @@ get_dotfiles() {
   dots config --local status.showUntrackedFiles no
   popd || return # $PWD
   echo -e "dotfiles ready!\n"
-}
-
-aur_packages() {
-  # install paru
-  pushd ~/.src || return
-  git clone https://aur.archlinux.org/paru-bin
-  pushd paru-bin || return
-  makepkg -si --noconfirm
-  popd || return # ~/.src
-  popd || return # $PWD
-  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
-  sudo paru -Sy
-
-  local packages=()
-  # img, sound and video
-  packages+=("tenacity-git")
-  # coding
-  packages+=("github-desktop-bin")
-  # social
-  packages+=("spotify")
-  # devices
-  packages+=("realvnc-vnc-viewer")
-  # system
-  packages+=("fastfetch" "zramd" "timeshift" "timeshift-autosnap")
-  sudo paru -S --needed --noconfirm "${packages[@]}"
 }
 
 adjust_dotfiles() {
@@ -119,9 +67,7 @@ end() {
 
 install_GUI
 create_dirs
-pacman_packages
 get_dotfiles
-aur_packages
 adjust_dotfiles
 set_virtualization
 set_zram

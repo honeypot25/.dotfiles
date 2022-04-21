@@ -153,9 +153,6 @@ alias dotspush="dots s && dots cam 'autocommit' && dots psom"
 alias ghpush="git s && git a . && git cam 'autocommit' && git psom"
 alias hktest="cd ~/coding/telegram/honeybot && heroku local"
 
-# rr
-alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
-
 ## SCRIPTS
 
 # RSA SSH keychain

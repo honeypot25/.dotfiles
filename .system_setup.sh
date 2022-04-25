@@ -39,19 +39,24 @@ adjust_dotfiles() {
   chmod u+x ~/.bin/*
 }
 
+set_zram() {
+  sudo paru -S --noconfirm --needed zramd
+  read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
+  sudo sed -i 's/^# ALGORITHM=.*/ALGORITHM=zstd/' /etc/default/zramd
+  sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAM/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
+  sudo systemctl enable --now zramd
+}
+
+set_timeshift() {
+  sudo paru -S --noconfirm --needed timeshift timeshift-autosnap
+}
+
 set_virtualization() {
   sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra ovmf vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm $USERNAME
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
   wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
   sudo virsh net-define ~/.config/.br10.xml && sudo virsh net-start .br10 && sudo virsh net-autostart .br10
-}
-
-set_zram() {
-  read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
-  sudo sed -i 's/^# ALGORITHM=.*/ALGORITHM=zstd/' /etc/default/zramd
-  sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAM/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
-  sudo systemctl enable --now zramd
 }
 
 end() {
@@ -69,8 +74,9 @@ install_GUI
 create_dirs
 get_dotfiles
 adjust_dotfiles
-set_virtualization
 set_zram
+set_timeshift
+set_virtualization
 end
 
 #########################################################################################################################

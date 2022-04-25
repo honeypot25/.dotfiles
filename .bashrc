@@ -73,11 +73,12 @@ extract() {
 
 ## ALIASES
 
+alias vi="nvim"
 alias vim="nvim"
 
 # coding
 alias py="python3"
-alias shellcheck="shellcheck -e 1090,1091,2139"
+alias shellcheck="shellcheck -e 1090,1091,2139,2154"
 
 # utility
 # Clean Trash

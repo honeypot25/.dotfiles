@@ -13,19 +13,19 @@ set $mod Mod4
 exec --no-startup-id dunst -config ~/.config/dunst/config
 
 # Enabling Touchpad on-tap click
-exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput Tapping Enabled" 1
+# exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput Tapping Enabled" 1
 
 # Setting Background image
-exec --no-startup-id feh --no-fehbg --randomize --bg-fill ~/Pictures/wallpapers/*
+# exec --no-startup-id feh --no-fehbg --randomize --bg-fill ~/Pictures/wallpapers/*
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
 ### TRAY
 
 # LXQt power management
-exec --no-startup-id lxqt-powermanagement
+# exec --no-startup-id lxqt-powermanagement
 
 # Sound
-exec --no-startup-id volumeicon
+# exec --no-startup-id volumeicon
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -41,14 +41,14 @@ font pango:Source Code Pro 9
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
+# set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id ~/.bin/volume down 5 && $refresh_i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.bin/volume up 5 && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -62,19 +62,15 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+set $term alacritty
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start Rofi, a program launcher (in "run" mode)
-bindsym $mod+d exec rofi -show run
-# start dmenu (a program launcher)
+# start ulauncher, a program launcher
+bindsym $mod+d exec ulauncher
 # bindsym $mod+d exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -168,7 +164,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -206,14 +202,13 @@ bar {
 
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
 # thunderbird or return to the default mode, respectively.
-set $mode_launcher Shortcuts: [S]alacritty, [W]firefox, [T]telegram, [E]thunar
+set $mode_launcher Shortcuts: [S]Alacritty, [W]Firefox, [T]Telegram
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym s exec alacritty
     bindsym w exec firefox
-    bindsym t exec /opt/Telegram/Telegram
-    bindsym e exec thunar
+    bindsym t exec telegram-desktop
 
     bindsym Escape mode "default"
     bindsym Return mode "default"

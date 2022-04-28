@@ -84,9 +84,7 @@ alias shellcheck="shellcheck -e 1090,1091,2139,2154"
 # Clean Trash
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"
 # Recursive replace spaces with _
-shopt -s globstar
-alias rshrink="rename -v 's/ /_/g' ./**"
-shopt -u globstar
+alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar"
 
 # Changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"

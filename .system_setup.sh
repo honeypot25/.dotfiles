@@ -10,7 +10,13 @@ create_dirs() {
   popd || return # $PWD
 }
 
-get_dotfiles() {
+get_some_packages() {
+  # xdg-ninja
+  sudo pacman -S --noconfirm jq
+  sudo git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
+}
+
+install_dotfiles() {
   echo -e "\nSetting ~/.dotfiles git bare repo\n"
   pushd ~ || return
   (
@@ -31,16 +37,14 @@ get_dotfiles() {
     dots checkout 2>&1 | grep -E "\s+\." | awk '{ print $1 }' | xargs -I{} mv {} .dotfiles.bak/{}
   fi
   dots config --local status.showUntrackedFiles no
+  # adjust permissions
+  chmod u+x ./*
   popd || return # $PWD
   echo -e "dotfiles ready!\n"
 }
 
-adjust_dotfiles() {
-  chmod u+x ~/.bin/*
-}
-
 set_zram() {
-  sudo paru -S --noconfirm --needed zramd
+  paru -S --noconfirm --needed zramd
   read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
   sudo sed -i 's/^# ALGORITHM=.*/ALGORITHM=zstd/' /etc/default/zramd
   sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAM/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
@@ -48,7 +52,7 @@ set_zram() {
 }
 
 set_timeshift() {
-  sudo paru -S --noconfirm --needed timeshift timeshift-autosnap
+  paru -S --noconfirm --needed timeshift timeshift-autosnap
 }
 
 set_virtualization() {
@@ -70,10 +74,9 @@ end() {
   reboot
 }
 
-install_GUI
 create_dirs
-get_dotfiles
-adjust_dotfiles
+get_some_packages
+install_dotfiles
 set_zram
 set_timeshift
 set_virtualization

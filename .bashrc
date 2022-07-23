@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-## EXPORT
+## EXPORTS
 export TERM=xterm-256color
-export EDITOR=nvim
+# export EDITOR=nvim
 # export VISUAL=
-export MANPAGER="nvim -c 'set ft=man' -"
+# export MANPAGER="nvim -c 'set ft=man' -"
+# export MANPAGER=less
 # export QT_QPA_PLATFORMTHEME=qt5ct
 #export PATH="$PATH:$HOME/.bin:$HOME/apps"
-PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/games"
+export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin/:usr/games"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -15,9 +16,9 @@ PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/sbin:/usr/sbin:/usr/local/bi
 ## PROMPT
 green=$(tput setaf 2)
 red=$(tput setaf 1)
-r=$(tput sgr0)
-PS1="[\[$green\]\u\[$r\] ➜ \[$red\]\w\[$r\]] » "
-unset green red r
+rst=$(tput sgr0)
+PS1="[\[$green\]\u\[$rst\] ➜ \[$red\]\w\[$rst\]] » "
+unset green red rst
 
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth
@@ -34,8 +35,7 @@ shopt -s checkwinsize   # checks term size when bash regains control
 shopt -s cdspell        # autocorrects cd misspellings
 
 ## COMPLETION
-# ignore upper and lowercase when TAB completion
-bind "set completion-ignore-case on"
+bind "set completion-ignore-case on" # ignore upper and lowercase when TAB completion
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -72,21 +72,17 @@ extract() {
 }
 
 ## ALIASES
-
+# coding
 alias vi="nvim"
 alias vim="nvim"
-
-# coding
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2139,2154"
 
 # utility
-# Clean Trash
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"
-# Recursive replace spaces with _
-alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar"
+alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
 
-# Changing "ls" to "exa"
+# changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
 alias la="exa -a --color=always --group-directories-first"
 alias ll="exa -l --color=always --group-directories-first"
@@ -108,17 +104,17 @@ alias mirrora="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort age --save /etc/p
 alias mirrord="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort delay --save /etc/pacman.d/mirrorlist"
 alias mirrors="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort score --save /etc/pacman.d/mirrorlist"
 
-# Colorize grep output (good for log files)
+# colorize grep output
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
-# confirm before overwriting something
+# confirm before overwriting
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 
-# adding flags
+# misc flags
 alias echo="echo -e" # enable \ escapes
 alias du="du -h"
 alias df="df -h"
@@ -144,15 +140,13 @@ alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis"
 alias yta-wav="youtube-dl --extract-audio --audio-format wav"
 alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
-# bare git repo alias for dotfiles
-alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-alias dotspush="dots s && dots cam 'autocommit' && dots psom"
-
 # git
 alias ghpush="git s && git a . && git cam 'autocommit' && git psom"
 alias hktest="cd ~/coding/telegram/honeybot && heroku local"
 
-## SCRIPTS
+# bare git repo aliasing for dotfiles
+alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias dotspush="dots s && dots cam 'autocommit' && dots psom"
 
-# RSA SSH keychain
-eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)"
+## SCRIPTS
+eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)" # RSA SSH keychain

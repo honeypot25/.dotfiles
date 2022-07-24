@@ -7,7 +7,7 @@ pacman_pkgs+=("mysql-workbench" "pgadmin4" "postgresql")
 # documents, img, sound & video
 pacman_pkgs+=("ranger" "okular" "flameshot" "obs-studio" "mpv" "inkscape")
 # Internet, network & security
-pacman_pkgs+=("chromium" "telegram-desktop" "rclone" "bitwarden")
+pacman_pkgs+=("telegram-desktop" "bitwarden")
 # system
 pacman_pkgs+=("catfish" "htop" "gparted" "grub-customizer")
 # style

@@ -9,7 +9,7 @@ pacman_pkgs+=("ranger" "okular" "flameshot" "obs-studio" "mpv" "inkscape")
 # Internet, network & security
 pacman_pkgs+=("chromium" "telegram-desktop" "rclone" "bitwarden")
 # system
-pacman_pkgs+=("alacritty" "exa" "catfish" "htop" "gparted" "grub-customizer")
+pacman_pkgs+=("catfish" "htop" "gparted" "grub-customizer")
 # style
 pacman_pkgs+=("papirus-icon-theme")
 
@@ -22,7 +22,7 @@ aur_pkgs+=("tenacity-git")
 # Internet, network & security
 aur_pkgs+=("ddgr" "discord_arch_electron" "zoom" "spotify" "realvnc-vnc-viewer")
 # system
-aur_pkgs+=("stacer" "tlpui" "fastfetch")
+aur_pkgs+=("timeshift" "timeshift-autosnap" "stacer" "tlpui" "fastfetch")
 
 ### GUI-specific
 ## KDE

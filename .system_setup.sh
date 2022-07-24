@@ -5,7 +5,8 @@ set -e
 create_dirs() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p Apps ganes projects vms
+  mkdir -p .src/paru-bin
+  mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && git clone https://github.com/dwt1/wallpapers.git Pictures/
   popd || return # $PWD
 }
@@ -16,35 +17,87 @@ get_some_packages() {
   sudo git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
 }
 
-install_dotfiles() {
-  echo -e "\nSetting ~/.dotfiles git bare repo\n"
-  pushd ~ || return
-  (
-    echo "# Added by ~/.dotfiles/install.sh"
-    echo ".dotfiles*/"
-  ) >>.gitignore
-  git clone --bare https://github.com/honeypot25/dotfiles.git .dotfiles
-  # set temp git alias (as function, so use () )
-  dots() (
-    /usr/bin/git --git-dir=~/.dotfiles --work-tree=~ "$@"
-  )
-  # try to checkout
-  if dots checkout; then
-    echo -e "Checked out config\n"
-  else
-    echo -e "Backing up pre-existing dotfiles...\n"
-    mkdir -p .dotfiles.bak
-    dots checkout 2>&1 | grep -E "\s+\." | awk '{ print $1 }' | xargs -I{} mv {} .dotfiles.bak/{}
-  fi
-  dots config --local status.showUntrackedFiles no
-  # adjust permissions
-  chmod u+x ./*
+# install_dotfiles() {
+#   echo -e "\nSetting ~/.dotfiles git bare repo\n"
+#   pushd ~ || return
+#   (
+#     echo "# Added by ~/.dotfiles/install.sh"
+#     echo ".dotfiles*/"
+#   ) >>.gitignore
+#   git clone --bare https://github.com/honeypot25/dotfiles.git .dotfiles
+#   # set temp git alias (as function, so use () )
+#   dots() (
+#     /usr/bin/git --git-dir=~/.dotfiles --work-tree=~ "$@"
+#   )
+#   # try to checkout
+#   if dots checkout; then
+#     echo -e "Checked out config\n"
+#   else
+#     echo -e "Backing up pre-existing dotfiles...\n"
+#     mkdir -p .dotfiles.bak
+#     dots checkout 2>&1 | grep -E "\s+\." | awk '{ print $1 }' | xargs -I{} mv {} .dotfiles.bak/{}
+#   fi
+#   dots config --local status.showUntrackedFiles no
+#   # adjust permissions
+#   chmod u+x ./*
+#   popd || return # $PWD
+#   echo -e "dotfiles ready!\n"
+# }
+
+install_aur() {
+  # install paru
+  echo -e "\nInstalling AUR helper (paru)\n"
+  pushd ~/.src/paru-bin || return
+  git clone https://aur.archlinux.org/paru-bin
+  makepkg -si --noconfirm
+  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   popd || return # $PWD
-  echo -e "dotfiles ready!\n"
+
+  read -rp "Install AUR packages now? (y/n): " now_aur
+  if [ "$now_aur" = "y" ]; then
+    source ~/.packages
+    sudo paru -S --needed --noconfirm "${aur_pkgs[@]}"
+  fi
 }
 
+install_GUI() (
+  # choose GUI
+  shopt -s nocasematch
+  while [[ ! "$GUI" =~ kde|xfce|gnome|cinnamon|i3|sway ]]; do
+    read -rp "Enter a DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
+  done
+  echo
+  shopt -u nocasematch
+  GUI=${GUI,,} # $GUI to lowercase
+
+  # install_kde() {}
+  # install_xfce() {}
+  # install_gnome() {}
+  # install_cinnamon() {}
+  install_i3() {
+    # pacman
+    sudo pacman -S --needed --noconfirm "${i3_pkgs[@]}"
+    sudo paru -S --noconfirm --needed "${i3_aur_pkgs[@]}"
+    # configs
+    sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+    # services
+    sudo systemctl enable lightdm
+  }
+  # install_sway() {
+  #   # pacman
+  #   sudo pacman -S --needed --noconfirm "${sway_pkgs[@]}"
+  #   sudo paru -S --noconfirm --needed "${sway_aur_pkgs[@]}"
+  #   # configs
+  #   sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+  #   # services
+  #   sudo systemctl enable lightdm
+  # }
+
+  install_"$GUI"
+)
+
 set_zram() {
-  paru -S --noconfirm --needed zramd
+  sudo paru -S --noconfirm --needed zramd
   read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
   sudo sed -i 's/^# ALGORITHM=.*/ALGORITHM=zstd/' /etc/default/zramd
   sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAM/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
@@ -52,20 +105,19 @@ set_zram() {
 }
 
 set_timeshift() {
-  paru -S --noconfirm --needed timeshift timeshift-autosnap
+  sudo paru -S --noconfirm --needed timeshift timeshift-autosnap
 }
 
 set_virtualization() {
   sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra ovmf vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm $USERNAME
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
-  wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
+  # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
   sudo virsh net-define ~/.config/.br10.xml && sudo virsh net-start .br10 && sudo virsh net-autostart .br10
 }
 
 end() {
-  ## END:delete ~/gui and reboot
-  cd ~ && rm -rf ~/gui
+  #cd ~ && rm -rf ~/gui
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
   for sec in {10..1}; do
     printf "%s...\n" "$sec"
@@ -76,7 +128,9 @@ end() {
 
 create_dirs
 get_some_packages
-install_dotfiles
+# install_dotfiles
+install_aur
+install_GUI
 set_zram
 set_timeshift
 set_virtualization

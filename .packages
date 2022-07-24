@@ -1,0 +1,53 @@
+#!/bin/bash
+
+## pacman
+pacman_pkgs=()
+# coding
+pacman_pkgs+=("mysql-workbench" "pgadmin4" "postgresql")
+# documents, img, sound & video
+pacman_pkgs+=("ranger" "okular" "flameshot" "obs-studio" "mpv" "inkscape")
+# Internet, network & security
+pacman_pkgs+=("firefox" "telegram-desktop" "rclone" "bitwarden")
+# system
+pacman_pkgs+=("alacritty" "exa" "catfish" "htop" "gparted" "grub-customizer")
+# style
+pacman_pkgs+=("papirus-icon-theme")
+
+## AUR
+aur_pkgs=()
+# coding
+aur_pkgs+=("vscodium-bin" "vscodium-bin-features" "vscodium-bin-marketplace" "github-desktop")
+# documents, img, sound & video
+aur_pkgs+=("tenacity-git")
+# Internet, network & security
+aur_pkgs+=("ddgr" "discord_arch_electron" "zoom" "spotify" "realvnc-vnc-viewer")
+# system
+aur_pkgs+=("stacer" "tlpui" "fastfetch")
+
+### GUI-specific
+## KDE
+kde_pkgs=()
+kde_pkgs+=("xorg" "plasma" "plasma-wayland-session" "sddm" "sddm-kcm" "xdg-desktop-portal-kde"
+  "picom" "qt5ct"
+)
+
+## i3
+i3_pkgs=()
+# system
+i3_pkgs+=("xorg" "i3-gaps" "picom" "lightdm" "lightdm-slick-greeter" "light-locker" "dmenu" "rofi" "polybar" "dunst")
+
+i3_aur_pkgs=()
+# system
+i3_aur_pkgs+=("lightdm-settings")
+
+## Sway
+sway_pkgs=()
+# system
+sway_pkgs+=("wayland" "xorg-xwayland" "sway" "swaylock" "swayidle" "lightdm" "lightdm-slick-greeter" "light-locker"
+  "xdg-desktop-portal-wlr" "dunst")
+
+sway_aur_pkgs=()
+# system
+sway_aur_pkgs+=("lightdm-settings" "waybar" "ulauncher" "wlogout" "wlr-randr" "upower")
+# style
+sway_aur_pkgs+=("swaybg")

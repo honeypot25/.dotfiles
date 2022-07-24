@@ -17,33 +17,6 @@ get_some_packages() {
   sudo git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
 }
 
-# install_dotfiles() {
-#   echo -e "\nSetting ~/.dotfiles git bare repo\n"
-#   pushd ~ || return
-#   (
-#     echo "# Added by ~/.dotfiles/install.sh"
-#     echo ".dotfiles*/"
-#   ) >>.gitignore
-#   git clone --bare https://github.com/honeypot25/dotfiles.git .dotfiles
-#   # set temp git alias (as function, so use () )
-#   dots() (
-#     /usr/bin/git --git-dir=~/.dotfiles --work-tree=~ "$@"
-#   )
-#   # try to checkout
-#   if dots checkout; then
-#     echo -e "Checked out config\n"
-#   else
-#     echo -e "Backing up pre-existing dotfiles...\n"
-#     mkdir -p .dotfiles.bak
-#     dots checkout 2>&1 | grep -E "\s+\." | awk '{ print $1 }' | xargs -I{} mv {} .dotfiles.bak/{}
-#   fi
-#   dots config --local status.showUntrackedFiles no
-#   # adjust permissions
-#   chmod u+x ./*
-#   popd || return # $PWD
-#   echo -e "dotfiles ready!\n"
-# }
-
 install_aur() {
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
@@ -53,7 +26,12 @@ install_aur() {
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   popd || return # $PWD
 
-  read -rp "Install AUR packages now? (y/n): " now_aur
+  shopt -s nocasematch
+  while [[ ! "$now_aur" =~ y|n ]]; do
+    read -rp "Do you want to install AUR packages now? (y|n): " now_aur
+  done
+  echo
+  shopt -u nocasematch
   if [ "$now_aur" = "y" ]; then
     source ~/.packages
     sudo paru -S --needed --noconfirm "${aur_pkgs[@]}"
@@ -70,10 +48,54 @@ install_GUI() (
   shopt -u nocasematch
   GUI=${GUI,,} # $GUI to lowercase
 
-  # install_kde() {}
+  ## General
+  # set_dunst() {
+  #   pushd "$home/.src" || return
+  #   git clone https://github.com/dunst-project/dunst.git
+  #   pushd dunst || return
+  #   make
+  #   sudo make install
+  #   popd || return # $home/.src
+  #   popd || return # $PWD
+  # }
+
+  # install_kde() (
+  #   # packages
+  #   sudo pacman -S --needed --noconfirm "${kde_pkgs[@]}"
+  #   # services
+  #   sudo systemctl enable sddm
+  #   set_themes() {
+  #     # Lightly, for KDE Catppuccin material design: System Settings > Appearance > Application Style > Lightly
+  #     pushd "$home/.src" || return
+  #     sudo pacman -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
+  #     git clone --single-branch --depth=1 https://github.com/Luwx/Lightly.git
+  #     pushd Lightly || return
+  #     mkdir build
+  #     pushd build || return
+  #     cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_TESTING=OFF ..
+  #     make
+  #     sudo make install
+  #     popd || return # Lightly
+  #     popd || return # $home/.src
+  #     # KDE Catppuccin
+  #     git clone https://github.com/catppuccin/kde.git catppuccin-kde
+  #     pushd catppuccin-kde/kde-store-archives/global-theme || return
+  #     kpackagetool5 -i catppuccin.tar.gz
+  #     popd || return # $home/.src
+  #     popd || return # $PWD
+  #     # VSCode Catppuccin
+  #     git clone https://github.com/catppuccin/vscode.git "$home/.vscode/catppuccin-vscode" # then CTRL+K CTRL+T
+  #   }
+  #   set_themes
+  #   set_dunst
+  # )
+
   # install_xfce() {}
+
   # install_gnome() {}
+
   # install_cinnamon() {}
+
   install_i3() {
     # pacman
     sudo pacman -S --needed --noconfirm "${i3_pkgs[@]}"
@@ -83,6 +105,7 @@ install_GUI() (
     # services
     sudo systemctl enable lightdm
   }
+
   # install_sway() {
   #   # pacman
   #   sudo pacman -S --needed --noconfirm "${sway_pkgs[@]}"
@@ -128,7 +151,6 @@ end() {
 
 create_dirs
 get_some_packages
-# install_dotfiles
 install_aur
 install_GUI
 set_zram

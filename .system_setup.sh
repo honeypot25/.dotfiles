@@ -85,7 +85,7 @@ install_GUI() (
 
 install_packages() {
   ## pacman
-  # system update
+  # full system update
   sudo pacman -Syu
   # packages
   sudo pacman -S --needed --noconfirm "${pacman_pkgs[@]}"

@@ -16,7 +16,7 @@ create_dirs() {
 install_GUI() (
   # choose GUI
   shopt -s nocasematch
-  while [[ ! "$GUI" =~ kde|xfce|gnome|cinnamon|i3|sway ]]; do
+  while [[ ! "${GUI,,}" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
     read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
   done
   echo
@@ -106,12 +106,13 @@ install_aur() {
   popd || return # $PWD
 
   shopt -s nocasematch
-  while [[ ! "$now_aur" =~ y|n ]]; do
-    read -rp "Do you want to install AUR packages now? (y|n): " now_aur
+  # now_aur to lowercase
+  while [[ ! "${now_aur,,}" =~ ^(y|n)$ ]]; do
+    read -rp "Do you want to install your AUR packages now? (y|n): " now_aur
   done
   echo
   shopt -u nocasematch
-  if [ "$now_aur" = "y" ]; then
+  if [ "${now_aur,,}" = "y" ]; then
     sudo paru -S --needed --noconfirm "${aur_pkgs[@]}"
   fi
 }
@@ -126,7 +127,7 @@ set_zram() {
 
 set_virtualization() {
   sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra ovmf vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
-  sudo usermod -a -G libvirt,kvm $USERNAME
+  sudo usermod -a -G libvirt,kvm "$USERNAME"
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
   # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
   sudo virsh net-define ~/.config/.br10.xml && sudo virsh net-start .br10 && sudo virsh net-autostart .br10
@@ -146,12 +147,12 @@ create_dirs
 install_GUI
 
 shopt -s nocasematch
-while [[ ! "$now_all_packages" =~ y|n ]]; do
+while [[ ! "${now_all_packages,,}" =~ ^(y|n)$ ]]; do
   read -rp "Do you want to install ALL your ~/.packages now? (y|n): " now_all_packages
 done
 echo
 shopt -u nocasematch
-if [ "$now_all_packages" = "y" ]; then
+if [ "${now_all_packages,,}" = "y" ]; then
   install_packages
   install_aur
 fi

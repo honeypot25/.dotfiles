@@ -49,6 +49,4 @@ sway_pkgs+=("wayland" "xorg-server-xwayland" "sway" "swaylock" "swayidle" "light
 
 sway_aur_pkgs=()
 # system
-sway_aur_pkgs+=("lightdm-settings" "waybar" "ulauncher" "wlogout" "wlr-randr" "upower")
-# style
-sway_aur_pkgs+=("swaybg")
+sway_aur_pkgs+=("lightdm-settings" "waybar" "ulauncher" "wlogout" "wlr-randr" "upower" "swaybg")

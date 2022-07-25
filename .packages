@@ -3,11 +3,11 @@
 ## pacman
 pacman_pkgs=()
 # coding
-pacman_pkgs+=("mysql-workbench" "pgadmin4" "postgresql")
+# pacman_pkgs+=("mysql-workbench" "pgadmin4" "postgresql")
 # documents, img, sound & video
-pacman_pkgs+=("ranger" "okular" "flameshot" "obs-studio" "mpv" "inkscape")
+pacman_pkgs+=("okular" "flameshot" "obs-studio" "mpv") # "inkscape"
 # Internet, network & security
-pacman_pkgs+=("telegram-desktop" "bitwarden")
+pacman_pkgs+=("speedtest-cli" "telegram-desktop" "bitwarden")
 # system
 pacman_pkgs+=("catfish" "htop" "gparted" "grub-customizer")
 # style
@@ -27,14 +27,15 @@ aur_pkgs+=("timeshift" "timeshift-autosnap" "stacer" "tlpui" "fastfetch")
 ### GUI-specific
 ## KDE
 kde_pkgs=()
-kde_pkgs+=("xorg" "plasma" "plasma-wayland-session" "sddm" "sddm-kcm" "xdg-desktop-portal-kde"
+kde_pkgs+=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "plasma" "sddm" "sddm-kcm" "xdg-desktop-portal-kde"
   "picom" "qt5ct"
 )
 
 ## i3
 i3_pkgs=()
 # system
-i3_pkgs+=("xorg" "i3-gaps" "picom" "lightdm" "lightdm-slick-greeter" "light-locker" "dmenu" "rofi" "polybar" "dunst")
+i3_pkgs+=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "i3-gaps" "picom" "lightdm" "lightdm-slick-greeter"
+  "light-locker" "arandr" "feh" "dmenu" "rofi" "polybar" "dunst" "ranger")
 
 i3_aur_pkgs=()
 # system
@@ -43,7 +44,7 @@ i3_aur_pkgs+=("lightdm-settings")
 ## Sway
 sway_pkgs=()
 # system
-sway_pkgs+=("wayland" "xorg-xwayland" "sway" "swaylock" "swayidle" "lightdm" "lightdm-slick-greeter" "light-locker"
+sway_pkgs+=("wayland" "xorg-server-xwayland" "sway" "swaylock" "swayidle" "lightdm" "lightdm-slick-greeter" "light-locker"
   "xdg-desktop-portal-wlr" "dunst")
 
 sway_aur_pkgs=()

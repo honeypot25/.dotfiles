@@ -9,7 +9,7 @@ create_dirs() {
   pushd ~ || return
   mkdir -p .src/paru-bin
   mkdir -p apps coding games media projects uni varie
-  mkdir -p Pictures && git clone https://github.com/dwt1/wallpapers.git Pictures/
+  mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git Pictures/
   popd || return # $PWD
 }
 

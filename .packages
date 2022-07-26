@@ -1,5 +1,12 @@
 #!/bin/bash
 
+### Display manager ###
+# lightdm
+lightdm_pkgs=("lightdm" "lightdm-slick-greeter" "lightdm-settings" "light-locker")
+
+# sddm
+sddm_pkgs=("sddm" "sddm-kcm" "qt5-graphicaleffects" "qt5-quickcontrols2" "qt5-svg")
+
 ### X11 ###
 x11_pkgs=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "xdotool" "xorg-xrandr" "arandr")
 
@@ -7,14 +14,11 @@ x11_pkgs=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "xdotool" "xorg
 wayland_pkgs=("wayland" "xorg-server-xwayland" "xdg-desktop-portal-wlr" "wlogout" "wl-randr")
 
 ### Packages ###
-pkgs=(
-  "lightdm" "lightdm-slick-greeter" "lightdm-settings" "light-locker" "timeshift" "timeshift-autosnap"
-  "upower" "dunst" "catfish" "btop" "gparted" "grub-customizer" "stacer" "tlpui" "fastfetch" "cava"
-  "vscodium-bin" "vscodium-bin-features" "vscodium-bin-marketplace" "github-desktop"
-  "ranger" "thunar" "okular" "flameshot" "obs-studio" "mpv" "inkscape" "tenacity-git"
+pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "btop" "gparted" "grub-customizer" "stacer" "tlpui"
+  "ttf-hack" "papirus-icon-theme" "qt5ct" "lxappearence" "noto-fonts" "noto-fonts-cjk" "noto-fonts-emoji" "noto-fonts-extra"
+  "fastfetch" "cava" "ranger" "thunar" "okular" "flameshot" "obs-studio" "mpv" "inkscape" "tenacity-git"
   "speedtest-cli" "telegram-desktop" "bitwarden" "ddgr" "discord_arch_electron" "zoom" "spotify" "realvnc-vnc-viewer"
-  "papirus-icon-theme" "qt5ct" "lxappearence"
-  # "mysql-workbench" "pgadmin4" "postgresql"
+  "vscodium-bin" "vscodium-bin-features" "vscodium-bin-marketplace" "github-desktop" # "mysql-workbench" "pgadmin4" "postgresql"
 )
 
 ### GUI-specific ###

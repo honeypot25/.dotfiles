@@ -23,16 +23,39 @@ preparing() {
   popd || return # $PWD
 }
 
+install_displaymanager() (
+  echo
+  while [[ ! "${disp_man,,}" =~ ^(lightdm|sddm)$ ]]; do
+    read -rp "Install your Display Manager (lightdm|sddm): " disp_man
+  done
+  echo
+
+  install_lightdm() {
+    paru -S --needed --noconfirm "${lightdm_pkgs[@]}"
+    sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+    sudo systemctl enable lightdm
+    # sddm
+  }
+
+  install_sddm() {
+    paru -S --needed --noconfirm "${sddm_pkgs[@]}"
+    sudo git clone https://github.com/keyitdev/sddm-flower-theme.git /usr/share/sddm/themes/sddm-flower-theme
+    sudo cp /usr/share/sddm/themes/sddm-flower-theme/Fonts/* /usr/share/fonts/
+    echo "[Theme]
+    Current=sddm-flower-theme" | sudo tee /etc/sddm.conf
+    sudo systemctl enable sddm
+  }
+
+  install_"$disp_man"
+)
+
 install_GUI() (
   # choose GUI
   echo
-  shopt -s nocasematch
   while [[ ! "${GUI,,}" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
     read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
   done
   echo
-  shopt -u nocasematch
-  GUI=${GUI,,} # $GUI to lowercase
 
   # install_kde() {
   #   # packages
@@ -77,10 +100,6 @@ install_GUI() (
     paru -S --needed --noconfirm "${wayland_pkgs[@]}" "${sway_pkgs[@]}"
   }
 
-  # Display Manager: lightdm
-  sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
-  sudo systemctl enable lightdm
-
   install_"$GUI"
 )
 
@@ -116,7 +135,7 @@ set_virtualization() {
 }
 
 end() {
-  #cd ~ && rm -rf ~/gui
+  sudo chmod +s /usr/bin/light
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
   for sec in {10..1}; do
     printf "%s...\n" "$sec"
@@ -126,6 +145,7 @@ end() {
 }
 
 preparing
+install_displaymanager
 install_GUI
 install_packages
 set_zram

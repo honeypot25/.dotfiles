@@ -4,12 +4,20 @@ set -e
 
 source ~/.packages
 
-create_dirs() {
+preparing() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
   mkdir -p .src/paru-bin
   mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git Pictures/
+  popd || return # $PWD
+
+  # install paru
+  echo -e "\nInstalling AUR helper (paru)\n"
+  pushd ~/.src/paru-bin || return
+  git clone https://aur.archlinux.org/paru-bin
+  makepkg -si --noconfirm
+  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   popd || return # $PWD
 }
 
@@ -96,15 +104,7 @@ install_packages() {
   sudo git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
 }
 
-install_aur() {
-  # install paru
-  echo -e "\nInstalling AUR helper (paru)\n"
-  pushd ~/.src/paru-bin || return
-  git clone https://aur.archlinux.org/paru-bin
-  makepkg -si --noconfirm
-  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
-  popd || return # $PWD
-
+install_AUR_packages() {
   shopt -s nocasematch
   # now_aur to lowercase
   while [[ ! "${now_aur,,}" =~ ^(y|n)$ ]]; do
@@ -112,6 +112,7 @@ install_aur() {
   done
   echo
   shopt -u nocasematch
+
   if [ "${now_aur,,}" = "y" ]; then
     sudo paru -S --needed --noconfirm "${aur_pkgs[@]}"
   fi
@@ -145,20 +146,10 @@ end() {
   reboot
 }
 
-create_dirs
+preparing
 install_GUI
-
-shopt -s nocasematch
-while [[ ! "${now_all_packages,,}" =~ ^(y|n)$ ]]; do
-  read -rp "Do you want to install ALL your ~/.packages now? (y|n): " now_all_packages
-done
-echo
-shopt -u nocasematch
-if [ "${now_all_packages,,}" = "y" ]; then
-  install_packages
-  install_aur
-fi
-
+install_packages
+install_AUR_packages
 set_zram
 set_timeshift
 set_virtualization

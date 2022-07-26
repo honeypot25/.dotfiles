@@ -2,7 +2,7 @@
 
 # Incorrect usage (missing or wrong arg)
 mon=$1
-if [[ ! "$mon" =~ main|ext|both ]]; then
+if [[ ! "$mon" =~ ^(main|ext|both)$ ]]; then
    echo -e "Usage:\tmonitor <main|ext|both>"
    exit 1
 fi
@@ -11,7 +11,7 @@ fi
 connected=$(xrandr --query | grep '\bconnected\b')
 count=$(echo "$connected" | wc -l)
 if [ ! "$count" -gt 1 ]; then
-   echo "Can't find an external monitor"
+   echo "Can't find a second monitor"
    exit 1
 fi
 

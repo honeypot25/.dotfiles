@@ -76,7 +76,7 @@ extract() {
 alias vi="nvim"
 alias vim="nvim"
 alias py="python3"
-alias shellcheck="shellcheck -e 1090,1091,2139,2154"
+alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 
 # utility
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"

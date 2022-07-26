@@ -34,15 +34,13 @@ install_GUI() (
   shopt -u nocasematch
   GUI=${GUI,,} # $GUI to lowercase
 
-  # install_kde() (
+  # install_kde() {
   #   # packages
-  #   sudo pacman -S --needed --noconfirm "${kde_pkgs[@]}"
-  #   # services
-  #   sudo systemctl enable sddm
+  #   paru -S --needed --noconfirm "${wayland_pkgs[@]}" "${kde_pkgs[@]}"
   #   set_themes() {
   #     # Lightly, for KDE Catppuccin material design: System Settings > Appearance > Application Style > Lightly
   #     pushd "$home/.src" || return
-  #     sudo pacman -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
+  #     paru -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
   #     git clone --single-branch --depth=1 https://github.com/Luwx/Lightly.git
   #     pushd Lightly || return
   #     mkdir build
@@ -61,9 +59,9 @@ install_GUI() (
   #     # VSCode Catppuccin
   #     git clone https://github.com/catppuccin/vscode.git "$home/.vscode/catppuccin-vscode" # then CTRL+K CTRL+T
   #   }
+
   #   set_themes
-  #   set_dunst
-  # )
+  # }
 
   # install_xfce() {}
 
@@ -72,54 +70,29 @@ install_GUI() (
   # install_cinnamon() {}
 
   install_i3() {
-    # pacman
-    sudo pacman -S --needed --noconfirm "${i3_pkgs[@]}"
-    paru -S --noconfirm --needed "${i3_aur_pkgs[@]}"
-    # configs
-    sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
-    # services
-    sudo systemctl enable lightdm
+    paru -S --needed --noconfirm "${x11_pkgs[@]}" "${i3_pkgs[@]}"
   }
 
-  # install_sway() {
-  #   # pacman
-  #   sudo pacman -S --needed --noconfirm "${sway_pkgs[@]}"
-  #   paru -S --noconfirm --needed "${sway_aur_pkgs[@]}"
-  #   # configs
-  #   sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
-  #   # services
-  #   sudo systemctl enable lightdm
-  # }
+  install_sway() {
+    paru -S --needed --noconfirm "${wayland_pkgs[@]}" "${sway_pkgs[@]}"
+  }
+
+  # Display Manager: lightdm
+  sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+  sudo systemctl enable lightdm
 
   install_"$GUI"
 )
 
 install_packages() {
-  ## pacman
   # full system update
-  sudo pacman -Syu
-  # packages
-  sudo pacman -S --needed --noconfirm "${pacman_pkgs[@]}"
+  paru -Syu
+  paru -S --needed --noconfirm "${pkgs[@]}"
 
   ## MISC
   # xdg-ninja
-  sudo pacman -S --noconfirm jq
-  sudo git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
-}
-
-install_AUR_packages() {
-  shopt -s nocasematch
-  echo
-  # now_aur to lowercase
-  while [[ ! "${now_aur,,}" =~ ^(y|n)$ ]]; do
-    read -rp "Do you want to install your AUR packages now? (y|n): " now_aur
-  done
-  echo
-  shopt -u nocasematch
-
-  if [ "${now_aur,,}" = "y" ]; then
-    paru -S --needed --noconfirm "${aur_pkgs[@]}"
-  fi
+  paru -S --noconfirm jq
+  git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
 }
 
 set_zram() {
@@ -134,8 +107,8 @@ set_zram() {
 
 set_virtualization() {
   # manually resolve iptables conflict
-  sudo pacman -S --needed iptables-nft
-  sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
+  paru -S --needed iptables-nft
+  paru -S --noconfirm --needed virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$USERNAME"
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
   # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
@@ -155,8 +128,7 @@ end() {
 preparing
 install_GUI
 install_packages
-install_AUR_packages
 set_zram
-# set_timeshift
 set_virtualization
+# set_timeshift
 end

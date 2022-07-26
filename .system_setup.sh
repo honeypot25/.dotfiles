@@ -7,22 +7,25 @@ source ~/.packages
 preparing() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src/paru-bin
+  mkdir -p .src
   mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git Pictures/
   popd || return # $PWD
 
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
-  pushd ~/.src/paru-bin || return
+  pushd ~/.src || return
   git clone https://aur.archlinux.org/paru-bin
+  pushd paru-bin || return
   makepkg -si --noconfirm
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
+  popd || return # ~
   popd || return # $PWD
 }
 
 install_GUI() (
   # choose GUI
+  echo
   shopt -s nocasematch
   while [[ ! "${GUI,,}" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
     read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
@@ -71,7 +74,7 @@ install_GUI() (
   install_i3() {
     # pacman
     sudo pacman -S --needed --noconfirm "${i3_pkgs[@]}"
-    sudo paru -S --noconfirm --needed "${i3_aur_pkgs[@]}"
+    paru -S --noconfirm --needed "${i3_aur_pkgs[@]}"
     # configs
     sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
     # services
@@ -81,7 +84,7 @@ install_GUI() (
   # install_sway() {
   #   # pacman
   #   sudo pacman -S --needed --noconfirm "${sway_pkgs[@]}"
-  #   sudo paru -S --noconfirm --needed "${sway_aur_pkgs[@]}"
+  #   paru -S --noconfirm --needed "${sway_aur_pkgs[@]}"
   #   # configs
   #   sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
   #   # services
@@ -106,6 +109,7 @@ install_packages() {
 
 install_AUR_packages() {
   shopt -s nocasematch
+  echo
   # now_aur to lowercase
   while [[ ! "${now_aur,,}" =~ ^(y|n)$ ]]; do
     read -rp "Do you want to install your AUR packages now? (y|n): " now_aur
@@ -114,12 +118,12 @@ install_AUR_packages() {
   shopt -u nocasematch
 
   if [ "${now_aur,,}" = "y" ]; then
-    sudo paru -S --needed --noconfirm "${aur_pkgs[@]}"
+    paru -S --needed --noconfirm "${aur_pkgs[@]}"
   fi
 }
 
 set_zram() {
-  sudo paru -S --noconfirm --needed zramswap
+  paru -S --noconfirm --needed zramswap
   sudo systemctl enable --now zramswap
   # # zramd
   # read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
@@ -129,6 +133,8 @@ set_zram() {
 }
 
 set_virtualization() {
+  # manually resolve iptables conflict
+  sudo pacman -S --needed iptables-nft
   sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$USERNAME"
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
@@ -151,6 +157,6 @@ install_GUI
 install_packages
 install_AUR_packages
 set_zram
-set_timeshift
+# set_timeshift
 set_virtualization
 end

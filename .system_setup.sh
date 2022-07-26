@@ -9,7 +9,7 @@ preparing() {
   pushd ~ || return
   mkdir -p .src
   mkdir -p apps coding games media projects uni varie
-  mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git Pictures/
+  mkdir -p Pictures && pushd Pictures && git clone https://gitlab.com/dwt1/wallpapers.git && popd
   popd || return # $PWD
 
   # install paru
@@ -135,6 +135,7 @@ set_virtualization() {
 }
 
 end() {
+  sudo cp -r ~/.fonts/* /usr/share/fonts/
   sudo chmod +s /usr/bin/light
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
   for sec in {10..1}; do

@@ -9,7 +9,7 @@ preparing() {
   pushd ~ || return
   mkdir -p .src
   mkdir -p apps coding games media projects uni varie
-  mkdir -p Pictures && pushd Pictures && git clone https://gitlab.com/dwt1/wallpapers.git && popd
+  mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
   sudo mkdir -p /usr/share/fonts/ /usr/share/themes
   popd || return # $PWD
 
@@ -46,6 +46,9 @@ install_displaymanager() (
     Current=sddm-flower-theme" | sudo tee /etc/sddm.conf
     sudo systemctl enable sddm
   }
+
+  # get lockscreen for i3lock-colors
+  wget https://github.com/Keyitdev/dotfiles/blob/v3/wallpapers/lockscreen.png -P ~/Pictures/
 
   install_"$disp_man"
 )

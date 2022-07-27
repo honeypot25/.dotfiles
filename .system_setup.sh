@@ -10,9 +10,9 @@ preparing() {
   mkdir -p .src
   mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  mkdir -p Videos/screenrecs
-  sudo mkdir -p /usr/share/{fonts,themes,icons}
-  popd || return # $PWD
+  mkdir -p Videos/screenrec
+  mkdir -p .{fonts,themes,icons} # /usr/share/{fonts,themes,icons}
+  popd || return                 # $PWD
 
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
@@ -36,7 +36,6 @@ install_displaymanager() (
     paru -S --needed --noconfirm "${lightdm_pkgs[@]}"
     sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
     sudo systemctl enable lightdm
-    # sddm
   }
 
   install_sddm() {
@@ -140,11 +139,13 @@ set_virtualization() {
 }
 
 end() {
-  # adjust permissions and destinations
-  chmod +x ~/.config/polybar/launch.sh
+  # adjust permissions
   sudo chmod +s /usr/bin/light
-  sudo cp -r ~/.fonts/* /usr/share/fonts/
-  sudo cp -r ~/.themes/* /usr/share/themes
+  chmod +x ~/.config/polybar/launch.sh
+  # and destination dirs
+  # sudo cp -r ~/.fonts/* /usr/share/fonts/
+  # sudo cp -r ~/.themes/* /usr/share/themes/
+  # sudo cp -r ~/.icons/* /usr/share/icons/
 
   # reboot
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "

@@ -45,6 +45,9 @@ exec --no-startup-id volumeicon
 # Battery level monitor
 exec_always --no-startup-id ~/.bin/checkbattery 20 99 60
 
+# mpd
+exec_always --no-startup-id mpd &
+
 ### FONT ###
 
 font pango:Hack 10

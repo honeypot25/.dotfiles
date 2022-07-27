@@ -2,22 +2,58 @@
 
 set -e
 
-format=$1
-screensize=$2
+# Check options
 
-if [ ! "$format" ] || [ ! "$screensize" ]; then
-  echo -e "Missing arguments...\nUsage:\tvideomerge <format> <screensize>"
-  exit 1
-else
-  mkdir -p tomergeDir
-  i=1
-  for tofilter in ./*."$format"; do
-    ffmpeg -y -i "$tofilter" -vf "color=c=gray:s=$screensize:d=2 [post] ; [in] [post] concat=n=2" "$PWD/tomergeDir/filtered$i.$format" && rm "$tofilter"
-    ((i += 1))
-  done
-  pushd tomergeDir || exit 1
-  ffmpeg -y -f concat -safe 0 -i <(for filtered in ./*."$format"; do echo "file '$PWD/$filtered'"; done) -c copy ../final."$format"
-  rm ./*."$format"
-  popd || exit 1
-  rmdir tomergeDir
+optstr="d:f:r:"
+dir=""
+format=""
+resolution=""
+
+while getopts $optstr opt; do
+  case $opt in
+  d) dir=$OPTARG ;;
+  f) format=$OPTARG ;;
+  r) resolution=$OPTARG ;;
+  *) echo -e "Usage:\t$0 -d <directory> -f <format> -r <resolution>" && exit 1 ;;
+  esac
+done
+
+if [ ! -d "$dir" ]; then
+  echo "$dir is not a valid directory" && exit 1
 fi
+
+# Ask if vids have been manually sorted by name
+while [[ ! "$sorted" =~ ^(YES|n)$ ]]; do
+  read -rp "Are all the vids already sorted by name? (YES|n): " sorted
+done
+if [ "$sorted" != "YES" ]; then
+  echo "Manually sort your videos first by renaming them" && exit 1
+fi
+
+# Add filter to all vids
+pushd "$dir" || exit 1
+mkdir -p merging_dir
+i=1
+for filtering_vid in ./*."$format"; do
+  ffmpeg -y -i "$filtering_vid" \
+    -vf "color=c=gray:s=$resolution:d=2 [post] ; [in] [post] concat=n=2" \
+    "$PWD/merging_dir/filtered_vid$i.$format" && rm -v "$filtering_vid"
+  ((i += 1))
+done
+
+# Merge filtered vids into output "%H:%M:%S.format" vid
+pushd merging_dir || exit 1
+ffmpeg -y -f concat -safe 0 \
+  -i <(for filtered_vid in ./*."$format"; do echo "file '$PWD/$filtered_vid'"; done) \
+  -c copy ../"$(date +%X).$format"
+popd || exit 1 # $dir
+rmdir merging_dir
+
+# End
+while [[ ! "$delete_vids" =~ ^(y|n)$ ]]; do
+  read -rp "Do you want to delete the original videos? (YES|n): " delete_vids
+done
+if [ "$delete_vids" = "YES" ]; then
+  rm -v ./*."$format"
+fi
+popd || exit 1

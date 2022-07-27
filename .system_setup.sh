@@ -10,7 +10,8 @@ preparing() {
   mkdir -p .src
   mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  sudo mkdir -p /usr/share/fonts/ /usr/share/themes
+  mkdir -p Videos/screenrecs
+  sudo mkdir -p /usr/share/{fonts,themes,icons}
   popd || return # $PWD
 
   # install paru
@@ -26,7 +27,7 @@ preparing() {
 
 install_displaymanager() (
   echo
-  while [[ ! "${disp_man,,}" =~ ^(lightdm|sddm)$ ]]; do
+  while [[ ! "$disp_man" =~ ^(lightdm|sddm)$ ]]; do
     read -rp "Install your Display Manager (lightdm|sddm): " disp_man
   done
   echo
@@ -56,7 +57,7 @@ install_displaymanager() (
 install_GUI() (
   # choose GUI
   echo
-  while [[ ! "${GUI,,}" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
+  while [[ ! "$GUI" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
     read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
   done
   echo

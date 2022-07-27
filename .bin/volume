@@ -1,31 +1,38 @@
 #!/usr/bin/env bash
 
-vol_icons="/usr/share/icons/Papirus-Dark/22x22/actions/"
-cur_vol=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master) | sed 's/%//g')
+# cur_vol=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master) | sed 's/%//g')
+cur_vol=$(pamixer --get-volume)
 low_vol=33
 high_vol=66
 
-if [ "$cur_vol" -eq 0 ]; then
+if [[ "$cur_vol" =~ ^(0|muted)$ ]]; then
   dunstify -a "Speakers" \
     -r 100 \
-    -i "$vol_icons/audio-volume-muted.svg" \
+    -i ~/.icons/volume-x.svg \
+    "Speakers" \
     "Speakers muted"
 elif [ "$cur_vol" -lt "$low_vol" ]; then
   dunstify -a "Speakers" \
     -r 100 \
-    -i "$vol_icons/audio-volume-low.svg" \
+    -i ~/.icons/volume-1.svg \
+    "Speakers" \
     "Speakers volume: $cur_vol%"
 elif [ "$cur_vol" -ge "$low_vol" ] && [ "$cur_vol" -le "$high_vol" ]; then
   dunstify -a "Speakers" \
     -r 100 \
-    -i "$vol_icons/audio-volume-medium.svg" \
+    -i ~/.icons/volume-2.svg \
+    "Speakers" \
     "Speakers volume: $cur_vol%"
 elif [ "$cur_vol" -gt "$high_vol" ]; then
   dunstify -a "Speakers" \
     -r 100 \
-    -i "$vol_icons/audio-volume-high.svg" \
+    -i ~/.icons/volume-3.svg \
+    "Speakers" \
     "Speakers volume: $cur_vol%"
 fi
+
+# refresh i3status
+killall -SIGUSR1 i3status
 
 # how=$1
 # value=$2

@@ -1,9 +1,26 @@
 #!/usr/bin/env bash
 
-val=$(cat /sys/class/backlight/intel_backlight/brightness)
-if [ "$1" = "+" ]; then
-  val=$(("$val" + 150))
+cur_bri=$(cat /sys/class/backlight/*/actual_brightness)
+max_bri=$(cat /sys/class/backlight/*/max_brightness)
+cur_perc=$((cur_bri * 100 / max_bri))
+
+if [ "$cur_perc" -lt 50 ]; then
+  dunstify -a "Screen" \
+    -r 100 \
+    -i ~/.icons/moon.svg \
+    "Brightness" \
+    "Brightness: $cur_perc%"
 else
-  val=$(("$val" - 150))
+  dunstify -a "Screen" \
+    -r 100 \
+    -i ~/.icons/sun.svg \
+    "Brightness" \
+    "Brightness: $cur_perc%"
 fi
-echo "$val" | sudo tee /sys/class/backlight/intel_backlight/brightness
+
+# if [ "$1" = "+" ]; then
+#   cur_perc=$(("$cur_perc" + 150))
+# else
+#   cur_perc=$(("$cur_perc" - 150))
+# fi
+# echo "$cur_perc" | sudo tee /sys/class/backlight/intel_backlight/brightness

@@ -1,40 +1,38 @@
 #!/usr/bin/env bash
 
+set -e
+
 optstr="d:f:"
 dir=""
 format=""
 
-while getopts $optstr opt
-do
+while getopts $optstr opt; do
   case $opt in
-    d) dir=$OPTARG ;;
-    f) format=$OPTARG ;;
-    *) echo "Exiting..." && exit 1 ;;
+  d) dir=$OPTARG ;;
+  f) format=$OPTARG ;;
+  *) echo "Exiting..." && exit 1 ;;
   esac
 done
 
 durations=()
 i=0
-for video in $( find "$dir" -type f -iname "*.$format" )
-do
-  fullpath=$( realpath "$video" )
-  duration=$( ffmpeg -i "$fullpath" 2>&1 | grep -Eo -m1 "[0-9]{1,}:[0-9]{1,}:[0-9]{1,}" )
+for video in $(find "$dir" -type f -iname "*.$format"); do
+  fullpath=$(realpath "$video")
+  duration=$(ffmpeg -i "$fullpath" 2>&1 | grep -Eo -m1 "[0-9]{1,}:[0-9]{1,}:[0-9]{1,}")
   durations+=("$duration")
-  echo "$(( i+=1 )). $video"
+  echo "$((i += 1)). $video"
 done
 
-if (( "${#durations[@]}" ))
-then
+if (("${#durations[@]}")); then
   seconds=0
-  for d in "${durations[@]}"
-  do
+  for d in "${durations[@]}"; do
     secs=$(echo "$d" | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
-    seconds=$(( seconds + secs ))
+    seconds=$((seconds + secs))
   done
 
-  tot_hours=$(( seconds / 3600 ))
-  tot_mins=$(( $((seconds - tot_hours * 3600 )) / 60 ))
-  tot_secs=$(( seconds - tot_hours * 3600 - tot_mins * 60 ))
+  tot_hours=$((seconds / 3600))
+  tot_mins=$(($((seconds - tot_hours * 3600)) / 60))
+  tot_secs=$((seconds - tot_hours * 3600 - tot_mins * 60))
 
   printf "\nTotal duration is %dh, %dm e %ds\n" $tot_hours $tot_mins $tot_secs
 else

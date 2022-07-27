@@ -92,29 +92,20 @@ bindsym $mod+Return exec --no-startup-id alacritty
 bindsym ctrl+alt+l exec --no-startup-id xset dpms force off && ~/.bin/lock &
 
 # Adjust monitors
-bindsym $mod+n exec --no-startup-id ~/.bin/monitor ext && i3-msg restart &
-bindsym $mod+m exec --no-startup-id ~/.bin/monitor both && i3-msg restart &
+bindsym $mod+ctrl+n exec --no-startup-id ~/.bin/monitor ext && i3-msg restart &
+bindsym $mod+ctrl+m exec --no-startup-id ~/.bin/monitor both && i3-msg restart &
 
 # move workspaces between monitors
-bindsym $mod+v move workspace to output left
-bindsym $mod+b move workspace to output right
+bindsym $mod+n move workspace to output left
+bindsym $mod+m move workspace to output right
 
 # kill focused window
 bindsym $mod+Shift+q kill
 bindsym $alt+F4 kill
 
-# start Rofi, a program launcher (in "run" mode)
-# $mod+menu
-# ~/.bin/rofi.sh &
-bindsym $mod+d exec --no-startup-id rofi -show run # -modi drun,run -show drun
-# bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun -show combi -modi combi -show-icons
-# run rofi programs
-# bindsym $mod+a exec "rofi -show window -no-default-config -config ~/.config/rofi/main.rasi"
-# bindsym $mod+d exec "rofi -show drun -no-default-config -config ~/.config/rofi/main.rasi"
-# bindsym $mod+s exec "rofi -show drun -no-default-config -config ~/.config/rofi/full_screen.rasi"
-# bindsym $mod+z exec "rofi -show  -modi ':rofi-bookmarks' -no-default-config -config ~/.config/rofi/main.rasi"
-# bindsym $mod+x exec "rofi-powermenu"
-# bindsym $mod+c exec "rofi-screenshot"
+# start Rofi launcher
+bindsym $mod+Menu exec --no-startup-id rofi -show drun
+bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu
 
 # Flameshot screenshots
 # manual region

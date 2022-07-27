@@ -16,7 +16,7 @@ wayland_pkgs=("wayland" "xorg-server-xwayland" "xdg-desktop-portal-wlr" "wlogout
 ### Packages ###
 pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "btop" "gparted" "grub-customizer" "stacer" "tlpui"
   "ttf-hack" "ttf-iosevka-nerd" "ttf-roboto" "ttf-roboto-mono" "papirus-icon-theme" "qt5ct" "lxappearence" "noto-fonts" "noto-fonts-cjk" "noto-fonts-emoji" "noto-fonts-extra"
-  "fastfetch" "cava" "ranger" "thunar" "okular" "flameshot" "obs-studio" "mpv" "inkscape" "tenacity-git" "mpd" "ncmpcpp"
+  "fastfetch" "cava" "ranger" "thunar" "zathura" "flameshot" "obs-studio" "mpv" "mpd" "ncmpcpp" # "inkscape" "tenacity-git"
   "speedtest-cli" "telegram-desktop" "bitwarden" "ddgr" "discord_arch_electron" "zoom" "spotify" "realvnc-vnc-viewer"
   "vscodium-bin" "vscodium-bin-features" "vscodium-bin-marketplace" "github-desktop" # "mysql-workbench" "pgadmin4" "postgresql"
 )

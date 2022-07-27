@@ -20,7 +20,7 @@ rofi.color-enabled: true
 !rofi.color-window: #f2a2f0, #f2a2f0, #f2a2f0
 !rofi.color-normal: #f2a2f0, #f2a2f0, #f2a2f0
 
-!!! Theme colors !!!
+!!! Theme colors (first rice saved) !!!
 
 ! special
 *.foreground:   #ccd3ce

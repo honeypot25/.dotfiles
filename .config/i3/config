@@ -43,7 +43,7 @@ bar {
 }
 
 # Tray icons
-exec --no-startup-id volumeicon
+# exec --no-startup-id volumeicon
 
 # Battery level monitor
 exec_always --no-startup-id ~/.bin/battery 20 99 60 &

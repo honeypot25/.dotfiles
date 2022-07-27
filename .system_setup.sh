@@ -10,6 +10,7 @@ preparing() {
   mkdir -p .src
   mkdir -p apps coding games media projects uni varie
   mkdir -p Pictures && pushd Pictures && git clone https://gitlab.com/dwt1/wallpapers.git && popd
+  sudo mkdir -p /usr/share/fonts/ /usr/share/themes
   popd || return # $PWD
 
   # install paru
@@ -139,6 +140,9 @@ end() {
   chmod +x ~/.config/polybar/launch.sh
   sudo chmod +s /usr/bin/light
   sudo cp -r ~/.fonts/* /usr/share/fonts/
+  sudo cp -r ~/.themes/* /usr/share/themes
+
+  # reboot
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
   for sec in {10..1}; do
     printf "%s...\n" "$sec"

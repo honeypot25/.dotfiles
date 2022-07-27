@@ -41,3 +41,6 @@ vms/
 .wget-hsts
 .Xauthority
 .xsession-errors
+.uuid
+# files
+.config/gtk-3.0/bookmarks

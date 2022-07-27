@@ -30,10 +30,14 @@ exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wall
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
 # Screen locking
-exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock.sh
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock
 
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+bar {   
+        mode invisible
+        tray_output none
+}
 
 # Tray icons
 exec --no-startup-id volumeicon
@@ -239,16 +243,6 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-
-### STATUS BAR ###
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-bar {   
-        mode invisible
-        tray_output none
-        # status_command i3status
-        # position top
-}
-
 
 ### GAPS ###
 

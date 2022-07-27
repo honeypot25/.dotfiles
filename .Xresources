@@ -1,4 +1,4 @@
-!!! ROFI CONFIG !!! 
+/* !!! ROFI CONFIG !!! 
 
 ! state			background	border		separator 
 !rofi.color-window:	#ffffff,	#191919,	#191919	
@@ -23,7 +23,7 @@ rofi.color-enabled: true
 !!! Theme colors !!!
 
 ! special
-*.foreground:  a #ccd3ce
+*.foreground:   #ccd3ce
 *.background:   #2d2d2d
 *.cursorColor:  #ccd3ce
 
@@ -57,4 +57,4 @@ rofi.color-enabled: true
 
 ! white
 *.color7:       #dee4df
-*.color15:      #a7c0fc
+*.color15:      #a7c0fc */

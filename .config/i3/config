@@ -245,7 +245,6 @@ bindsym $mod+r mode "resize"
 bar {   
         mode invisible
         tray_output none
-        i3bar_command $HOME/.config/polybar/launch.sh
         # status_command i3status
         # position top
 }

@@ -135,8 +135,10 @@ set_virtualization() {
 }
 
 end() {
-  sudo cp -r ~/.fonts/* /usr/share/fonts/
+  # adjust permissions and destinations
+  chmod +x ~/.config/polybar/launch.sh
   sudo chmod +s /usr/bin/light
+  sudo cp -r ~/.fonts/* /usr/share/fonts/
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
   for sec in {10..1}; do
     printf "%s...\n" "$sec"

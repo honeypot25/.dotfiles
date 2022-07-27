@@ -7,40 +7,25 @@
 .gnupg/
 .java/
 .keychain/
-.local/
 .logs/
 .mysql/
 .pki/
 .pub-cache/
-.src/
 .ssh/
 .thumbnails/
 .vnc/
 .yarn/
 .zoom/
 
-# dirs
-coding/
-Desktop/
-Documents/
-Downloads/
-Pictures/
-projects/
-uni/
-vms/
-
 # .files
 .bash_history
-.gtkrc-2.0
 .ICEauthority
 .netrc
 .pciids-cache
 .python_history
 .sudo_as_admin_successful
+.uuid
 .viminfo
 .wget-hsts
 .Xauthority
 .xsession-errors
-.uuid
-# files
-.config/gtk-3.0/bookmarks

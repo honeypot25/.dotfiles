@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+cur_state=$(pamixer --default-source --get-mute)
+
+if [[ "$cur_state" = "true" ]]; then
+  dunstify -a "Microphone" \
+    -r 100 \
+    -i ~/.icons/mic-off.svg \
+    "Microphone" \
+    "Mic muted"
+else
+  dunstify -a "Microphone" \
+    -r 100 \
+    -i ~/.icons/mic.svg \
+    "Microphone" \
+    "Mic activated"
+fi
+
+# refresh i3status
+killall -SIGUSR1 i3status

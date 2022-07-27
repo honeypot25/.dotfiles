@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+for pid in $(pidof -x "$(basename "$0")"); do
+    if [ "$pid" != $$ ]; then
+        kill -9 "$pid"
+    fi
+done
+
+low_level=$1
+high_level=$2
+check_interval=$3
+
+while true; do
+    battery_path=$(upower -e | grep BAT)
+    battery_level=$(upower -i "$battery_path" | grep -E "percentage" | sed 's/[^0-9]//g')
+    discharging=$(upower -i "$path_to_battery" | grep -E "state" | grep -c discharging)
+    time_left=$(upower -i "$path_to_battery" | grep -E "time to empty" | sed 's/[^0-9,.]//g')
+
+    # low and discharging
+    if [ "$battery_level" -le "$low_level" ] && [ "$discharging" -eq 1 ]; then
+        dunstify -a "Battery" \
+            -u URGENT \
+            -r 100 \
+            -i ~/.icons/battery.svg \
+            "Low battery: $battery_level%" \
+            "Time left: $time_left. Charge it!"
+    # high and charging
+    elif [ "$battery_level" -ge "$high_level" ] && [ "$discharging" -eq 0 ]; then
+        dunstify -a "Battery" \
+            -u NORMAL \
+            -r 100 \
+            -i ~/.icons/battery.svg \
+            "Battery charged: $battery_level%" \
+            "Unplug the AC adapter."
+    fi
+
+    sleep "$check_interval"
+done

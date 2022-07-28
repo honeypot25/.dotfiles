@@ -3,8 +3,7 @@
 # Incorrect usage (missing or wrong arg)
 mon=$1
 if [[ ! "$mon" =~ ^(main|ext|both)$ ]]; then
-   echo -e "Usage:\tmonitor <main|ext|both>"
-   exit 1
+   echo -e "Usage:\t$(basename "$0") <main|ext|both>" && exit 1
 fi
 
 # Check for another connected monitor

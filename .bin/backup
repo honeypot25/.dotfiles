@@ -5,8 +5,13 @@ src=$1
 dst=$2
 
 if [ ! -d "$HDD" ]; then
-	echo "Can't find external HDD, try again"
-	exit 1
-else
+	echo "Can't find external drive \"HDD\", try again" && exit 1
+fi
+
+rsync --dry-run -ahPuvz --delete-after "$HOME/$src/" "$HDD/$dst/"
+read -rp "Do you want to proceed with that? (y|n): " proceed
+if [ "$proceed" = "y" ]; then
 	rsync -ahPuvz --delete-after "$HOME/$src/" "$HDD/$dst/" && echo "Done"
+else
+	echo "Backup aborted"
 fi

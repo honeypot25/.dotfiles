@@ -2,7 +2,7 @@
 
 cur_state=$(pamixer --default-source --get-mute)
 
-if [[ "$cur_state" = "true" ]]; then
+if [ "$cur_state" = "true" ]; then
   dunstify -a "Microphone" \
     -r 100 \
     -i ~/.icons/mic-off.svg \

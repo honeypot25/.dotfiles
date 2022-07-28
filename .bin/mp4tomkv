@@ -4,13 +4,14 @@ set -e
 
 dir=$1
 
-if [ -z "$dir" ] || [ ! -d "$dir" ]; then
-	echo -e "Usage:\t$0 <directory>" && exit 1
+if [ ! -d "$dir" ]; then
+	echo -e "Usage:\t$(basename "$0") <directory>" && exit 1
 fi
 
 pushd "$dir" || exit 1
 for video in ./*.mp4; do
-	ffmpeg -i "$video" -c:v libx264 -crf 40 -filter:v fps=fps=10 -c:a libopus -application voip -ab 16k -ac 1 -cutoff 12000 \
+	ffmpeg -i "$video" \
+		-c:v libx264 -crf 40 -filter:v fps=fps=10 -c:a libopus -application voip -ab 16k -ac 1 -cutoff 12000 \
 		"$(echo "$video" | sed 's/mp4/mkv/')"
 done
 popd || exit 1

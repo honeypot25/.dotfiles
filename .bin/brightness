@@ -4,7 +4,7 @@ cur_bri=$(cat /sys/class/backlight/*/actual_brightness)
 max_bri=$(cat /sys/class/backlight/*/max_brightness)
 cur_perc=$((cur_bri * 100 / max_bri))
 
-if [ "$cur_perc" -lt "50" ]; then
+if [ "$cur_perc" -lt 50 ]; then
   dunstify -a "Screen" \
     -r 100 \
     -i ~/.icons/moon.svg \

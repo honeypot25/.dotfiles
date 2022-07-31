@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-[ "$#" ] || exit 1
-
-MESA_LOADER_DRIVER_OVERRIDE=i965
-/home/andrea/coding/matlab/bin/matlab -nodisplay -nosplash -nodesktop -r "addpath('/home/andrea/coding/matlab/Projects/task');run('$1');"

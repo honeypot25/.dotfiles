@@ -2,41 +2,38 @@
 
 set -e
 
-optstr="d:f:"
+optstr=":d:f:"
 dir=""
-format=""
+fmt=""
 
 while getopts $optstr opt; do
   case $opt in
   d) dir=$OPTARG ;;
-  f) format=$OPTARG ;;
-  *) echo -e "Usage:\t$(basename "$0") -d <directory> -f <format>" && exit 1 ;;
+  f) fmt=$OPTARG ;;
+  ? | : | *) echo -e "Usage:\t$(basename "$0") -d <directory> -f <format>" && exit 1 ;;
   esac
 done
-if [ $# -ne 4 ]; then
-  echo -e "Usage:\t$(basename "$0") -d <directory> -f <format>" && exit 1
-fi
 
 if [ ! -d "$dir" ]; then
-  echo "$dir is not a valid directory" && exit 1
+  echo "\"$dir\" is not a valid directory" && exit 1
 fi
 
 tot_seconds=0
 
 i=1
-for vid in $(find "$dir" -name "*.$format" -exec realpath {} \;); do
+for vid in $(find "$dir" -name "*.$fmt" -exec realpath {} \;); do
   raw_time=$(ffmpeg -i "$vid" 2>&1 | rg "Duration: ([0-9]{2,}:[0-9]{2}:[0-9]{2})" -or '$1')
   seconds=$(echo "$raw_time" | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
   ((tot_seconds += seconds))
   echo "$((i++))) $raw_time - $vid"
 done
 
-tot_days=$((tot_seconds / 86400))
-tot_hours=$(($((tot_seconds - tot_days * 86400)) / 3600))
-tot_mins=$(($((tot_seconds - tot_days * 86400 - tot_hours * 3600)) / 60))
-tot_secs=$((tot_seconds - tot_days * 86400 - tot_hours * 3600 - tot_mins * 60))
+days=$((tot_seconds / 86400))
+hours=$(($((tot_seconds - days * 86400)) / 3600))
+mins=$(($((tot_seconds - days * 86400 - hours * 3600)) / 60))
+secs=$((tot_seconds - days * 86400 - hours * 3600 - mins * 60))
 
-printf "\nTotal time is %dd %dh %dm %ds\n" $tot_days $tot_hours $tot_mins $tot_secs
+printf "\nTotal time is %dd %dh %dm %ds\n" $days $hours $mins $secs
 
 # get_vid_seconds() {
 #   vid=$1
@@ -46,4 +43,4 @@ printf "\nTotal time is %dd %dh %dm %ds\n" $tot_days $tot_hours $tot_mins $tot_s
 # }
 # export -f get_vid_seconds
 
-# find "$dir" -name "*.$format" -exec bash -c 'vid="$(realpath "$1")"; get_vid_seconds "$vid"; echo $?' _ {} \;
+# find "$dir" -name "*.$fmt" -exec bash -c 'vid="$(realpath "$1")"; get_vid_seconds "$vid"; echo $?' _ {} \;

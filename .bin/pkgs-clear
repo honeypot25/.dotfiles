@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# uninstalled pkgs cache, unused sync database:
-sudo pacman -Sc # c
-# uninstalled pkgs cache
-paccache -r -u0
-
-# no backup .pacsave, nonrequired or not explicitly user-installed (directly nonrequired orphaned dependencies)
-sudo pacman -Qtdq | sudo pacman -Rns -

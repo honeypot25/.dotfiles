@@ -4,7 +4,7 @@ set -e
 
 # Check options
 
-optstr="d:f:r:"
+optstr=":d:f:r:"
 dir=""
 format=""
 resolution=""
@@ -14,15 +14,12 @@ while getopts $optstr opt; do
   d) dir=$OPTARG ;;
   f) format=$OPTARG ;;
   r) resolution=$OPTARG ;;
-  *) echo -e "Usage:\t$0 -d <directory> -f <format> -r <resolution>" && exit 1 ;;
+  ? | : | *) echo -e "Usage:\t$(basename "$0") -d <directory> -f <format> -r <resolution>" && exit 1 ;;
   esac
 done
-if [ $# -ne 6 ]; then
-  echo -e "Usage:\t$(basename "$0") -d <directory> -f <format> -r <resolution>" && exit 1
-fi
 
 if [ ! -d "$dir" ]; then
-  echo "$dir is not a valid directory" && exit 1
+  echo "\"$dir\" is not a valid directory" && exit 1
 fi
 
 # Ask if vids have been manually sorted by name

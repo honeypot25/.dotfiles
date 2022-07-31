@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-sed -i 's/i965/iris/' "$HOME/.drirc"

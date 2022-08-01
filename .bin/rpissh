@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") -l <local-dir> -r <remote-dir>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+while getopts ":hl:r:" opt; do
+	case $opt in
+	l) locdir=$OPTARG ;;
+	r) remdir=$OPTARG ;;
+	h | *) usage ;;
+	esac
+done
+
+rsync "$locdir/" "rpi:$remdir/" --dry-run -ahPuvzn --delete-after --exclude-from=~/.rsyncignore
+read -rp "Do you want to proceed with that? (y|n): " proceed
+if [ "$proceed" = "y" ]; then
+	rsync "$locdir/" "rpi:$remdir/" -ahPuvzn --delete-after --exclude-from=~/.rsyncignore && echo -e "\nDone"
+else
+	echo -e "\nTransfer aborted"
+fi

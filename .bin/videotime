@@ -1,27 +1,32 @@
 #!/usr/bin/env bash
 
-set -e
+usage() { echo -e "Usage:\t$(basename "$0") -d <dir1> [... <dirN>] -f <format>" && exit 1; }
+[ $# -eq 0 ] && usage
 
-optstr=":d:f:"
-dir=""
-fmt=""
-
-while getopts $optstr opt; do
+while getopts ":hd:f:" opt; do
   case $opt in
-  d) dir=$OPTARG ;;
+  d)
+    dirs=("$OPTARG")
+    # collect until another -opt is found, or no more -opt are left
+    until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z "$(eval "echo \${$OPTIND}")" ]; do
+      dirs+=("$(eval "echo \${$OPTIND}")")
+      OPTIND=$((OPTIND + 1))
+    done
+    for dir in "${dirs[@]}"; do
+      [ -d "$dir" ] || echo "Skipping invalid directory \"$dir\""
+    done
+    ;;
   f) fmt=$OPTARG ;;
-  ? | : | *) echo -e "Usage:\t$(basename "$0") -d <directory> -f <format>" && exit 1 ;;
+  h | *) usage ;;
   esac
 done
-
-if [ ! -d "$dir" ]; then
-  echo "\"$dir\" is not a valid directory" && exit 1
-fi
 
 tot_seconds=0
 
 i=1
-for vid in $(find "$dir" -name "*.$fmt" -exec realpath {} \;); do
+IFS=$'\n'
+# for vid in $(find "${dirs[@]}" -exec file -N -i -- {} + | sed -n 's!: video/[^:]*$!!p'); do
+for vid in $(find "${dirs[@]}" -name "*.$fmt" -exec realpath {} \;); do
   raw_time=$(ffmpeg -i "$vid" 2>&1 | rg "Duration: ([0-9]{2,}:[0-9]{2}:[0-9]{2})" -or '$1')
   seconds=$(echo "$raw_time" | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
   ((tot_seconds += seconds))

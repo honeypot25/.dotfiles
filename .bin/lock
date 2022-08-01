@@ -4,9 +4,9 @@ font="dedede"
 green="9ece6a"
 red="db4b4b"
 
-# --force-clock
+# --image ~/Pictures/lockscreen.png
 i3lock --nofork --force-clock --ignore-empty-password -F \
-	--image ~/Pictures/lockscreen.png \
+	--image "$(find ~/Pictures/wallpapers/ -name "*.jpg" | sort -R | tail -1)" \
 	--refresh-rate=1 --line-uses-inside --pointer=default --pass-media-keys --pass-volume-keys --pass-screen-keys \
 	--inside-color="$green" --ring-color="$green" --insidever-color="$green" --ringver-color="$green" --insidewrong-color="$red" --ringwrong-color="$red" \
 	--keyhl-color="$green" --separator-color="$green" --bshl-color="$green" --color=000000 \

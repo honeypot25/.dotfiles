@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") <file1.c> [... <fileN.c>]" && exit 1; }
+[ $# -eq 0 ] && usage
+
+files=("$@")
+outs=()
+
+for file in "${files[@]}"; do
+  if [ -f "$file" ] && [[ $file =~ .*\.c$ ]]; then
+    out=${file%.*}
+    gcc "$file" -o "$out" && outs+=("$out")
+  else
+    echo "Skipped \"$file\", not a .c file"
+  fi
+done
+
+for out in "${outs[@]}"; do
+  ./"$out"
+done

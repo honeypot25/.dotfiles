@@ -32,7 +32,7 @@ exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wall
 # exec --no-startup-id feh --no-fehbg --bg-scale --no-xinerama $(ls ~/Pictures/wallpapers/*.jpg | sort -R | head -n1)
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
-# Screen locking
+# Screen locking (random wallpaper)
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock &
 
 # Polybar
@@ -88,7 +88,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O && ~/.bi
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
-# Turn and Lock screen
+# Turn off and Lock screen (random wallpaper)
 bindsym ctrl+alt+l exec --no-startup-id xset dpms force off && ~/.bin/lock &
 
 # Adjust monitors

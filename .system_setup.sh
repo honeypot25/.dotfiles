@@ -27,7 +27,7 @@ preparing() {
 
 install_displaymanager() (
   echo
-  while [[ ! "$disp_man" =~ ^(lightdm|sddm)$ ]]; do
+  while [[ ! "$disp_man" =~ ^lightdm|sddm$ ]]; do
     read -rp "Install your Display Manager (lightdm|sddm): " disp_man
   done
   echo
@@ -56,7 +56,7 @@ install_displaymanager() (
 install_GUI() (
   # choose GUI
   echo
-  while [[ ! "$GUI" =~ ^(kde|xfce|gnome|cinnamon|i3|sway)$ ]]; do
+  while [[ ! "$GUI" =~ ^kde|xfce|gnome|cinnamon|i3|sway$ ]]; do
     read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
   done
   echo

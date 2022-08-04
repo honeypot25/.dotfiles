@@ -144,6 +144,7 @@ end() {
   # sudo cp -r ~/.fonts/* /usr/share/fonts/
   # sudo cp -r ~/.themes/* /usr/share/themes/
   # sudo cp -r ~/.icons/* /usr/share/icons/
+  rmdir ~/{Public,Templates}
 
   # reboot
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in:\n"

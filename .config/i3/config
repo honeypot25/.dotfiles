@@ -239,10 +239,10 @@ bindsym $mod+r mode "resize"
 
 ### GAPS ###
 
-# gaps inner 10
-# gaps outer 0
-smart_gaps on
-smart_borders on
+gaps inner 10
+gaps outer 10
+# smart_gaps on
+# smart_borders on
 
 set $mode_gaps Gaps: [i]nner, [o]uter
 set $mode_inner_gaps Inner gaps: +|-|0 (local; global with Shift)

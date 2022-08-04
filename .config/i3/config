@@ -37,10 +37,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock &
 
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
-bar {   
-        mode invisible
-        tray_output none
-}
+# bar {   
+#         mode invisible
+#         tray_output none
+# }
 
 # Tray icons
 # exec --no-startup-id volumeicon

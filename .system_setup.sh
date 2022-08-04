@@ -128,9 +128,12 @@ set_virtualization() {
   paru -S --needed iptables-nft
   paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$(whoami)"
-  sudo systemctl enable libvirtd && sudo systemctl start libvirtd
+  sudo systemctl enable libvirtd
+  sudo systemctl start libvirtd
   # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
-  sudo virsh net-define ~/.config/.br10.xml && sudo virsh net-start .br10 && sudo virsh net-autostart .br10
+  # sudo virsh net-define ~/.config/.br10.xml
+  # sudo virsh net-start .br10
+  # sudo virsh net-autostart .br10
 }
 
 end() {
@@ -143,7 +146,7 @@ end() {
   # sudo cp -r ~/.icons/* /usr/share/icons/
 
   # reboot
-  printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in "
+  printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in:\n"
   for sec in {10..1}; do
     printf "%s...\n" "$sec"
     sleep 1

@@ -53,7 +53,7 @@ exec_always --no-startup-id mpd &
 
 ### FONT ###
 
-font pango:Hack 10
+font Hack 10
 
 ### SOUND ###
 
@@ -80,16 +80,16 @@ bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
 ### BRIGHTNESS ###
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && light -O && ~/.bin/brightness & # -O = save
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O && ~/.bin/brightness & # -O = save
-# bindsym ctrl+alt+Right exec brightness + && notify-send 'Brightness +10%'
-# bindsym ctrl+alt+Left exec brightness - && notify-send 'Brightness -10%'
+# bindsym ctrl+$alt+Right exec brightness + && notify-send 'Brightness +10%'
+# bindsym ctrl+$alt+Left exec brightness - && notify-send 'Brightness -10%'
 
 ### KEYBINDINGS ###
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+a exec --no-startup-id alacritty
 
 # Turn off and Lock screen (random wallpaper)
-bindsym ctrl+alt+l exec --no-startup-id xset dpms force off && ~/.bin/lock &
+bindsym ctrl+$alt+l exec --no-startup-id xset dpms force off && ~/.bin/lock &
 
 # Adjust monitors
 bindsym $mod+ctrl+n exec --no-startup-id ~/.bin/monitor ext && i3-msg restart &
@@ -158,7 +158,7 @@ bindsym $mod+Shift+space floating toggle
 # bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -230,7 +230,7 @@ mode "resize" {
         bindsym Right resize grow width 10 px or 10 ppt
 
         # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
+        bindsym Enter mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
@@ -254,7 +254,7 @@ mode "$mode_gaps" {
         bindsym i      mode "$mode_inner_gaps"
 
         bindsym Escape mode "default"
-        bindsym Return mode "default"
+        bindsym Enter mode "default"
 }
 mode "$mode_inner_gaps" {
         bindsym plus  gaps inner current plus 2
@@ -266,7 +266,7 @@ mode "$mode_inner_gaps" {
         bindsym Shift+0     gaps inner all set 0
 
         bindsym Escape mode "default"
-        bindsym Return mode "default"
+        bindsym Enter mode "default"
 }
 mode "$mode_outer_gaps" {
         bindsym plus  gaps outer current plus 2
@@ -278,7 +278,7 @@ mode "$mode_outer_gaps" {
         bindsym Shift+0     gaps outer all set 0
 
         bindsym Escape mode "default"
-        bindsym Return mode "default"
+        bindsym Enter mode "default"
 }
 
 ### BORDERS ###
@@ -288,7 +288,7 @@ default_border pixel 2
 
 ### APPS SHORTCUTS ###
 
-set $mode_launcher "Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Escape|Return"
+set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Escape, Enter
 bindsym $mod+Enter mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec --no-startup-id bitwarden
@@ -303,5 +303,5 @@ mode "$mode_launcher" {
     bindsym z exec --no-startup-id zoom
 
     bindsym Escape mode "default"
-    bindsym Return mode "default"
+    bindsym Enter mode "default"
 }

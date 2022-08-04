@@ -45,7 +45,7 @@ if ! shopt -oq posix; then
 fi
 
 ## ARCHIVE EXTRACTION
-extract() {
+ex() {
   if [ -f "$1" ]; then
     arch="$1"
     case $1 in
@@ -80,6 +80,7 @@ alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 # utility
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
+alias ff="fastfetch"
 
 # changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
@@ -91,10 +92,10 @@ alias l.='exa -a | egrep "^\."'
 
 # apt, pacman
 alias aptup="sudo apt update && sudo apt upgrade -y && sudo apt autoremove --purge -y"
-alias pacsyu="sudo pacman -Syu"                 # update only standard pkgs
-alias parsua="paru -Sua --noconfirm"            # update only AUR pkgs (paru)
-alias parsyu="paru -Syu --noconfirm"            # update standard pkgs and AUR pkgs (paru)
-alias unlock="sudo rm /var/lib/pacman/db.lck"   # remove pacman lock
+alias pacsyu="sudo pacman -Syu"                                                              # update only standard pkgs
+alias parsua="paru -Sua --noconfirm"                                                         # update only AUR pkgs (paru)
+alias parsyu="paru -Syu --noconfirm"                                                         # update standard pkgs and AUR pkgs (paru)
+alias unlock="sudo rm /var/lib/pacman/db.lck"                                                # remove pacman lock
 alias cleanup="sudo pacman -Sc && paccache -r -u0 && sudo pacman -Qtdq | sudo pacman -Rns -" # remove orphaned packages
 
 # get fastest mirrors
@@ -117,7 +118,7 @@ alias rm="rm -i"
 alias echo="echo -e" # enable \ escapes
 alias du="du -h"
 alias df="df -h"
-alias free="free --si -hmw"
+alias free="free -hw --si"
 
 # ps
 alias psa="ps auxf"
@@ -140,11 +141,11 @@ alias yta-wav="youtube-dl --extract-audio --audio-format wav"
 alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
 # git
-alias ghpush="git s && git a . && git cam 'autocommit' && git psom"
+alias gitp="git s && git a . && git cam 'autocommit' && git psom"
 
 # bare git repo aliasing for dotfiles
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-alias dotspush="dots s && dots cam 'autocommit' && dots psom"
+alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
 ## SCRIPTS
 # eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)" # RSA SSH keychain

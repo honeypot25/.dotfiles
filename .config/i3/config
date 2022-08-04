@@ -104,7 +104,7 @@ bindsym $mod+Shift+q kill
 bindsym $alt+F4 kill
 
 # start Rofi launcher
-bindsym $mod+Menu exec --no-startup-id rofi -show drun
+bindsym Menu exec --no-startup-id rofi -show drun
 bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu
 
 # Flameshot screenshots
@@ -218,16 +218,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 3 px or 3 ppt
+        bindsym j resize grow height 3 px or 3 ppt
+        bindsym k resize shrink height 3 px or 3 ppt
+        bindsym l resize grow width 3 px or 3 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 3 px or 3 ppt
+        bindsym Down resize grow height 3 px or 3 ppt
+        bindsym Up resize shrink height 3 px or 3 ppt
+        bindsym Right resize grow width 3 px or 3 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Enter mode "default"
@@ -289,7 +289,7 @@ default_border pixel 2
 ### APPS SHORTCUTS ###
 
 set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Escape, Enter
-bindsym $mod+Enter mode "$mode_launcher"
+bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec --no-startup-id bitwarden
     bindsym c exec --no-startup-id codium

@@ -14,8 +14,8 @@ x11_pkgs=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "xdotool" "xorg
 wayland_pkgs=("wayland" "xorg-server-xwayland" "xdg-desktop-portal-wlr" "wlogout" "wl-randr")
 
 ### Packages ###
-pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "btop" "gparted" "grub-customizer" "stacer" "tlpui"
-  "ttf-hack" "ttf-iosevka-nerd" "ttf-roboto" "ttf-roboto-mono" "papirus-icon-theme" "qt5ct" "lxappearence" "noto-fonts" "noto-fonts-cjk" "noto-fonts-emoji" "noto-fonts-extra"
+pkgs=("timeshift" "timeshift-autosnap" "light" "upower" "dunst" "catfish" "btop" "gparted" "grub-customizer" "stacer" "tlpui"
+  "ttf-hack" "ttf-iosevka-nerd" "ttf-roboto" "ttf-roboto-mono" "papirus-icon-theme" "noto-fonts" "noto-fonts-cjk" "noto-fonts-emoji" "noto-fonts-extra" # "qt5ct" "lxappearence"
   "fastfetch" "cava" "ranger" "thunar" "zathura" "flameshot" "obs-studio" "mpv" "mpd" "ncmpcpp" # "inkscape" "tenacity-git"
   "speedtest-cli" "telegram-desktop" "bitwarden" "ddgr" "discord_arch_electron" "zoom" "spotify" "realvnc-vnc-viewer"
   "vscodium-bin" "vscodium-bin-features" "vscodium-bin-marketplace" "github-desktop" # "mysql-workbench" "pgadmin4" "postgresql"
@@ -26,7 +26,7 @@ pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "btop" "gparte
 kde_pkgs=("plasma" "xdg-desktop-portal-kde" "picom")
 
 # i3
-i3_pkgs=("i3-gaps" "i3-status" "i3lock-color" "i3-resurrect" "picom" "nitrogen" "rofi" "polybar")
+i3_pkgs=("i3-gaps" "i3lock-color" "i3-resurrect" "picom" "nitrogen" "rofi" "polybar" # i3-status)
 
 # Sway
 sway_pkgs=("sway" "waybar" "swaybg" "swaylock" "swayidle" "rofi-lbonn-wayland")

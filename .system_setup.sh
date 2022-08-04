@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 source ~/.packages
 
 preparing() {
@@ -129,7 +127,7 @@ set_virtualization() {
   # manually resolve iptables conflict
   paru -S --needed iptables-nft
   paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
-  sudo usermod -a -G libvirt,kvm "$USERNAME"
+  sudo usermod -a -G libvirt,kvm "$(whoami)"
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
   # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
   sudo virsh net-define ~/.config/.br10.xml && sudo virsh net-start .br10 && sudo virsh net-autostart .br10

@@ -7,12 +7,11 @@ source ~/.packages
 preparing() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src
-  mkdir -p apps coding games media projects uni varie
-  mkdir -p Pictures && git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  mkdir -p Videos/screenrec
-  mkdir -p .{fonts,themes,icons} # /usr/share/{fonts,themes,icons}
-  popd || return                 # $PWD
+  mkdir -p .src apps coding games media projects uni varie Pictures/wallpapers Videos/screenrec
+  # wallpapers
+  git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
+  mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin
+  popd || return # $PWD
 
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
@@ -46,9 +45,6 @@ install_displaymanager() (
     Current=sddm-flower-theme" | sudo tee /etc/sddm.conf
     sudo systemctl enable sddm
   }
-
-  # get lockscreen for i3lock-colors
-  wget https://github.com/Keyitdev/dotfiles/blob/v3/wallpapers/lockscreen.png -P ~/Pictures/
 
   install_"$disp_man"
 )

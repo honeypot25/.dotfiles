@@ -5,12 +5,15 @@ set -e
 source ~/.packages
 
 preparing() {
+  # system update
+  sudo pacman -Syu --needed --noconfirm
+
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src apps coding games media projects uni varie Pictures/wallpapers Videos/screenrec
+  mkdir -p .src apps coding games media projects uni varie vms Pictures/wallpapers Videos/screenrec
   # wallpapers
   git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin
+  # mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin
   popd || return # $PWD
 
   # install paru
@@ -104,18 +107,16 @@ install_GUI() (
 )
 
 install_packages() {
-  # full system update
-  paru -Syu
   paru -S --needed --noconfirm "${pkgs[@]}"
 
   ## MISC
   # xdg-ninja
-  paru -S --noconfirm jq
+  paru -S --needed --noconfirm jq
   git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
 }
 
 set_zram() {
-  paru -S --noconfirm --needed zramswap
+  paru -S --needed --noconfirm zramswap
   sudo systemctl enable --now zramswap
   # # zramd
   # read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
@@ -127,7 +128,7 @@ set_zram() {
 set_virtualization() {
   # manually resolve iptables conflict
   paru -S --needed iptables-nft
-  paru -S --noconfirm --needed virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
+  paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$USERNAME"
   sudo systemctl enable libvirtd && sudo systemctl start libvirtd
   # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml

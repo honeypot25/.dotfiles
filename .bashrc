@@ -6,9 +6,8 @@ export TERM=xterm-256color
 # export VISUAL=
 # export MANPAGER="nvim -c 'set ft=man' -"
 # export MANPAGER=less
-# export QT_QPA_PLATFORMTHEME=qt5ct
-#export PATH="$PATH:$HOME/.bin:$HOME/apps"
-export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin/:usr/games"
+export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin"
+# export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin/:usr/games"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -67,7 +66,7 @@ extract() {
     *) echo "$arch cannot be extracted via ex()" ;;
     esac
   else
-    echo "$arch is not a valid archive file"
+    echo "\"$arch\" is not a valid archive file"
   fi
 }
 
@@ -92,11 +91,11 @@ alias l.='exa -a | egrep "^\."'
 
 # apt, pacman
 alias aptup="sudo apt update && sudo apt upgrade -y && sudo apt autoremove --purge -y"
-alias pacsyu="sudo pacman -Syyu"                # update only standard pkgs
+alias pacsyu="sudo pacman -Syu"                 # update only standard pkgs
 alias parsua="paru -Sua --noconfirm"            # update only AUR pkgs (paru)
 alias parsyu="paru -Syu --noconfirm"            # update standard pkgs and AUR pkgs (paru)
 alias unlock="sudo rm /var/lib/pacman/db.lck"   # remove pacman lock
-alias cleanup="sudo pacman -Rns (pacman -Qtdq)" # remove orphaned packages
+alias cleanup="sudo pacman -Sc && paccache -r -u0 && sudo pacman -Qtdq | sudo pacman -Rns -" # remove orphaned packages
 
 # get fastest mirrors
 alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
@@ -142,11 +141,10 @@ alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
 # git
 alias ghpush="git s && git a . && git cam 'autocommit' && git psom"
-alias hktest="cd ~/coding/telegram/honeybot && heroku local"
 
 # bare git repo aliasing for dotfiles
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias dotspush="dots s && dots cam 'autocommit' && dots psom"
 
 ## SCRIPTS
-eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)" # RSA SSH keychain
+# eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)" # RSA SSH keychain

@@ -13,8 +13,8 @@ exec_always --no-startup-id picom &
 # Dunst
 exec_always --no-startup-id dunst &
 
-# Network
-exec --no-startup-id nm-applet
+# Network Manager
+# exec --no-startup-id nm-applet
 
 # Enabling Touchpad on-tap click
 exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput Tapping Enabled" 1
@@ -239,10 +239,10 @@ bindsym $mod+r mode "resize"
 
 ### GAPS ###
 
-gaps inner 10
-gaps outer 0
-# smart_gaps on
-# smart_borders on
+# gaps inner 10
+# gaps outer 0
+smart_gaps on
+smart_borders on
 
 set $mode_gaps Gaps: [i]nner, [o]uter
 set $mode_inner_gaps Inner gaps: +|-|0 (local; global with Shift)
@@ -288,7 +288,7 @@ default_border pixel 2
 
 ### APPS SHORTCUTS ###
 
-set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Escape, Enter
+set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Esc|Enter
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec --no-startup-id bitwarden

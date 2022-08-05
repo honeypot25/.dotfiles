@@ -72,8 +72,7 @@ ex() {
 
 ## ALIASES
 # coding
-alias vi="nvim"
-alias vim="nvim"
+alias v="nvim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 

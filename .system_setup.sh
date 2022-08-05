@@ -109,8 +109,8 @@ install_packages() {
 
   ## MISC
   # xdg-ninja
-  paru -S --needed --noconfirm jq
-  git clone https://github.com/b3nj5m1n/xdg-ninja /usr/local/bin/xdg-ninja
+  # paru -S --needed --noconfirm jq
+  # wget https://github.com/b3nj5m1n/xdg-ninja/releases/download/v0.2.0.1/xdgnj ~/.bin/xdgnj
 }
 
 set_zram() {
@@ -145,6 +145,7 @@ end() {
   # sudo cp -r ~/.themes/* /usr/share/themes/
   # sudo cp -r ~/.icons/* /usr/share/icons/
   rmdir ~/{Public,Templates}
+  fc-cache -fv
 
   # reboot
   printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in:\n"

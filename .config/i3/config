@@ -33,7 +33,8 @@ exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wall
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
 # Screen locking (random wallpaper)
-exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock &
+exec --no-startup-id ~/.bin/screenlock autolock &
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock &
 
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
@@ -89,7 +90,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O && ~/.bi
 bindsym $mod+a exec --no-startup-id alacritty
 
 # Turn off and Lock screen (random wallpaper)
-bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/lock & # xset dpms force off
+bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
 
 # Adjust monitors
 bindsym $mod+ctrl+n exec --no-startup-id ~/.bin/monitor ext && i3-msg restart &

@@ -8,7 +8,7 @@ preparing() {
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src apps coding games media projects uni varie vms Pictures/wallpapers Videos/screenrec
+  mkdir -p .src apps coding games misc projects uni vms Pictures/wallpapers Videos/screenrec
   # wallpapers
   git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
   # mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin
@@ -139,16 +139,18 @@ set_virtualization() {
 end() {
   # adjust permissions
   sudo chmod +s /usr/bin/light
-  chmod +x ~/.config/polybar/launch.sh
-  # and destination dirs
-  # sudo cp -r ~/.fonts/* /usr/share/fonts/
-  # sudo cp -r ~/.themes/* /usr/share/themes/
-  # sudo cp -r ~/.icons/* /usr/share/icons/
-  rmdir ~/{Public,Templates}
+  chmod u+x ~/.config/polybar/launch.sh
+  # copy
+  sudo cp -r ~/.fonts/* /usr/share/fonts/
+  sudo cp -r ~/.themes/* /usr/share/themes/
+  sudo cp -r ~/.icons/* /usr/share/icons/
+  # update
   fc-cache -fv
+  # delete
+  rmdir ~/{Public,Templates}
 
   # reboot
-  printf "All done!\nRemember to open and config Timeshift after reboot (with 5, 7, 0, 0, 0)\nRebooting in:\n"
+  printf "All done!\nRemember to config Timeshift (5, 7, 0, 0, 0)\n\nRebooting in:\n"
   for sec in {10..1}; do
     printf "%s...\n" "$sec"
     sleep 1

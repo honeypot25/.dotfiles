@@ -300,7 +300,7 @@ mode "$mode_launcher" {
     bindsym s exec spotify
     bindsym t exec telegram-desktop
     bindsym v exec realvnc-vnc-viewer
-    bindsym w exec chromium
+    bindsym w exec firefox
     bindsym z exec zoom
 
     bindsym Escape mode "default"

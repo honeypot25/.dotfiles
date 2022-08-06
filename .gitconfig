@@ -41,6 +41,7 @@ pl = pull
 plom = pull origin main
 ps = push
 psom = push origin main
+rao = remote add origin
 rb = rebase
 ro = restore
 rs = reset
@@ -48,4 +49,4 @@ s = status
 t = tag
 
 [init]
-	defaultBranch = main
+defaultBranch = main

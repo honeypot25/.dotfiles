@@ -14,7 +14,7 @@ exec_always --no-startup-id picom &
 exec_always --no-startup-id dunst &
 
 # Network Manager
-# exec --no-startup-id nm-applet
+#exec_always --no-startup-id nm-applet &
 
 # Enabling Touchpad on-tap click
 exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput Tapping Enabled" 1
@@ -23,9 +23,7 @@ exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput 
 exec_always --no-startup-id light -I # -I = restore
 
 # Start with main monitor only
-exec --no-startup-id xrandr \
---output eDP-1 --primary --auto --pos 0x0 --rotate normal \
---output DP-1 --off
+#exec_always --no-startup-id ~/.bin/monitor main &
 
 # Setting Background image
 exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/
@@ -37,14 +35,14 @@ exec --no-startup-id ~/.bin/screenlock autolock &
 # exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/lock &
 
 # Polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh &
 # bar {   
 #         mode invisible
 #         tray_output none
 # }
 
 # Tray icons
-exec --no-startup-id volumeicon
+exec_always --no-startup-id volumeicon
 
 # Battery level monitor
 exec_always --no-startup-id ~/.bin/battery 20 99 60 &
@@ -211,8 +209,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 bindsym $mod+t exec --no-startup-id i3-resurrect restore
 bindsym $mod+y exec --no-startup-id i3-resurrect save
 
+
 # resize window (you can also use the mouse for that)
-mode "resize" {
+set $mode_resize Resizing active window
+mode "$mode_resize" {
         # These bindings trigger as soon as you enter the resize mode
 
         # Pressing left will shrink the window’s width.
@@ -231,12 +231,12 @@ mode "resize" {
         bindsym Right resize grow width 3 px or 3 ppt
 
         # back to normal: Enter or Escape or $mod+r
-        bindsym Enter mode "default"
+        bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode "$mode_resize"
 
 ### GAPS ###
 
@@ -255,7 +255,7 @@ mode "$mode_gaps" {
         bindsym i      mode "$mode_inner_gaps"
 
         bindsym Escape mode "default"
-        bindsym Enter mode "default"
+        bindsym Return mode "default"
 }
 mode "$mode_inner_gaps" {
         bindsym plus  gaps inner current plus 2
@@ -267,7 +267,7 @@ mode "$mode_inner_gaps" {
         bindsym Shift+0     gaps inner all set 0
 
         bindsym Escape mode "default"
-        bindsym Enter mode "default"
+        bindsym Return mode "default"
 }
 mode "$mode_outer_gaps" {
         bindsym plus  gaps outer current plus 2
@@ -279,7 +279,7 @@ mode "$mode_outer_gaps" {
         bindsym Shift+0     gaps outer all set 0
 
         bindsym Escape mode "default"
-        bindsym Enter mode "default"
+        bindsym Return mode "default"
 }
 
 ### BORDERS ###
@@ -304,5 +304,5 @@ mode "$mode_launcher" {
     bindsym z exec zoom
 
     bindsym Escape mode "default"
-    bindsym Enter mode "default"
+    bindsym Return mode "default"
 }

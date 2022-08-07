@@ -91,11 +91,13 @@ alias l.='exa -a | egrep "^\."'
 
 # apt, pacman
 alias aptup="sudo apt update && sudo apt upgrade -y && sudo apt autoremove --purge -y"
+alias pm="sudo pacman -S --noconfirm"
 alias pacsyu="sudo pacman -Syu"                                                              # update only standard pkgs
 alias parsua="paru -Sua --noconfirm"                                                         # update only AUR pkgs (paru)
 alias parsyu="paru -Syu --noconfirm"                                                         # update standard pkgs and AUR pkgs (paru)
 alias unlock="sudo rm /var/lib/pacman/db.lck"                                                # remove pacman lock
-alias cleanup="sudo pacman -Sc && paccache -r -u0 && sudo pacman -Qtdq | sudo pacman -Rns -" # remove orphaned packages
+# unused, orphaned packages; some home files
+alias cleanup="sudo pacman -Sc && paccache -r -u0 && sudo pacman -Qtdq | sudo pacman -Rns -; rm -fv $HOME/.{lesshst,wget-hsts}"
 
 # get fastest mirrors
 alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
@@ -129,6 +131,7 @@ alias pscpu="ps auxf | sort -nr -k 3"
 alias jctl="journalctl -p 3 -xb"
 
 # youtube-dl
+alias yt="youtube-dl"
 alias yta-aac="youtube-dl --extract-audio --audio-format aac"
 alias yta-best="youtube-dl --extract-audio --audio-format best"
 alias yta-flac="youtube-dl --extract-audio --audio-format flac"
@@ -146,5 +149,6 @@ alias gitp="git s && git a . && git cam 'autocommit' && git psom"
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
-## SCRIPTS
-# eval "$(keychain --eval --quiet --nogui --noask ~/.ssh/id_rsa)" # RSA SSH keychain
+### SCRIPTS
+# SSH keychain
+eval "$(keychain --eval --quiet --nogui --noask)"

@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-uptime -p
+# Xd Yh Zm
+uptime -p | cut -d' ' -f2- | rg "(\d+) (.)\w+,?" -r '$1$2'
+

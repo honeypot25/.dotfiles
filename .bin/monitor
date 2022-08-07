@@ -6,31 +6,29 @@ mon=$1
    exit 1
 }
 
-# Check for another connected monitor
+# Look for another connected monitor, exit otherwise
 connected=$(xrandr --query | grep '\bconnected\b')
 count=$(echo "$connected" | wc -l)
-if [ "$count" -lt 2 ]; then
-   echo "Can't find a second monitor"
-   exit 1
-fi
+[ "$count" -gt 1 ] || exit 1
 
 case "$mon" in
 main)
-   xrandr --output DP1 --off \
-      --output eDP1 --primary --mode 1366x768 --pos 0x0 --rotate normal \
-      --output HDMI-1 --off
-   ex
+   xrandr \
+      --output eDP1 --primary --auto \
+      --output DP1 --off \      
+      # --output HDMI-1 --off
    ;;
 ext)
-   xrandr --output eDP1 --off \
-      --output DP1 --primary --mode 1680x1050 --pos 0x0 --rotate normal \
-      --output HDMI-1 --off
+   xrandr \
+      --output DP1 --primary --auto \
+      --output eDP1 --off \      
+      # --output HDMI-1 --off
    ;;
 both)
-   xrandr --output DP1 --primary --mode 1680x1050 --pos 1366x0 --rotate normal \
-      --output eDP1 --mode 1366x768 --pos 0x283 --rotate normal \
-      --output HDMI-1 --off
+   xrandr \
+      --output eDP1 --auto --pos 0x283 \
+      --output DP1 --primary --auto --pos 1366x0 \
+      # --output HDMI-1 --off
    ;;
 esac
 
-exit 0

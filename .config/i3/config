@@ -16,8 +16,8 @@ exec_always --no-startup-id dunst &
 # Network Manager
 #exec_always --no-startup-id nm-applet &
 
-# Enabling Touchpad on-tap click
-exec --no-startup-id xinput set-prop "SYNA7DB5:00 06CB:7DB7 Touchpad" "libinput Tapping Enabled" 1
+# Enabling Touchpad tapping
+exec --no-startup-id xinput set-prop $(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1') "libinput Tapping Enabled" 1
 
 # Screen light
 exec_always --no-startup-id light -I # -I = restore
@@ -240,6 +240,7 @@ bindsym $mod+r mode "$mode_resize"
 
 ### GAPS ###
 
+# gaps top 10
 gaps outer 5
 gaps inner 10
 # smart_gaps on

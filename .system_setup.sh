@@ -144,6 +144,7 @@ end() {
   sudo cp -r ~/.fonts/* /usr/share/fonts/
   sudo cp -r ~/.themes/* /usr/share/themes/
   sudo cp -r ~/.icons/* /usr/share/icons/
+  ln -Pf ~/.packages ~/projects/auto-arch/packages # hard link
   # update
   fc-cache -fv
   # delete

@@ -79,7 +79,7 @@ alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 # utility
 alias notrash="rm -rfv $HOME/.local/share/Trash/*"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
-alias ff="fastfetch"
+alias ff="fastfetch | lolcat"
 
 # changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
@@ -97,7 +97,7 @@ alias parsua="paru -Sua --noconfirm"                                            
 alias parsyu="paru -Syu --noconfirm"                                                         # update standard pkgs and AUR pkgs (paru)
 alias unlock="sudo rm /var/lib/pacman/db.lck"                                                # remove pacman lock
 # unused, orphaned packages; some home files
-alias cleanup="sudo pacman -Sc && paccache -r -u0 && sudo pacman -Qtdq | sudo pacman -Rns -; rm -fv $HOME/.{lesshst,wget-hsts}"
+alias cleanup="sudo pacman -Sc && paccache -ru && sudo pacman -Qtdq | sudo pacman -Rns -; rm -fv $HOME/.{lesshst,wget-hsts}"
 
 # get fastest mirrors
 alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"

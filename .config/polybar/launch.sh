@@ -7,7 +7,7 @@ echo "---" | tee -a /tmp/polybar.log
 ### env variables
 #DEFAULT_NIC=$(ip route | grep "^default" | head -n1 | cut -d' ' -f5)
 #WIFI_NIC=$(ip link | rg "^\d: (w\w+)" -or '$1')
-MONITOR=$(polybar -m|tail -1|sed -e 's/:.*$//g') # fallback eDP1
+MONITOR=$(polybar -m | head -n1 | cut -d':' -f1) # ext*. fallback: main
 
 function network() {
   read -r ETH_NIC eth_up WIFI_NIC wifi_up < <(ip link | rg "^\d: ([ew]\w+):.+ state (\w+)" -or '$1 $2')

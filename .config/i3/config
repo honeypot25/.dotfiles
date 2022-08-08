@@ -22,8 +22,8 @@ exec --no-startup-id xinput set-prop $(xinput list | rg "Touchpad\s+id=(\d+)" -o
 # Screen light
 exec_always --no-startup-id light -I # -I = restore
 
-# Start with main monitor only
-#exec_always --no-startup-id ~/.bin/monitor main &
+# Try to start with both monitors
+exec_always --no-startup-id ~/.bin/monitor both &
 
 # Setting Background image
 exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/

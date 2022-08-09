@@ -3,7 +3,7 @@
 usage() { echo -e "Usage:\t$(basename "$0") <main|ext|both>" && exit 1; }
 [ $# -eq 0 ] && usage
 
-# eDP1 DP1 HDMI1 VIRTUAL1
+# eDP1 DP1 [HDMI1] [VIRTUAL1]
 read -d'\n' -r main ext hdmi virt < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
@@ -11,7 +11,6 @@ read -d'\n' -r main ext hdmi virt < <(xrandr --query | tail -n+2 | rg "^(\w+) " 
 [ -z "$ext" ] && m="$main"
 m=$1
 
-xrandr --output HDMI1 --off --output VIRTUAL1 --off
 case "$m" in
 main)
    xrandr \
@@ -30,4 +29,3 @@ both)
    ;;
 *) usage ;;
 esac
-

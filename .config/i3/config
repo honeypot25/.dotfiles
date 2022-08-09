@@ -24,7 +24,7 @@ exec_always --no-startup-id light -I
 exec_always --no-startup-id ~/.bin/monitor both &
 
 # Set random background image
-exec_always --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/
+exec_always --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/
 # exec --no-startup-id feh --no-fehbg --bg-scale --no-xinerama $(ls ~/Pictures/wallpapers/*.jpg | sort -R | head -n1)
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
@@ -55,20 +55,20 @@ bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1 # && ~/.bin/
 # toggle audio
 bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute # && ~/.bin/volume &
 # toggle mic
-bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute # && ~/.bin/microphone &
+bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && ~/.bin/microphone &
 # audio player
-# bindsym XF86AudioPlay exec --no-startup-id playerctl play
-# bindsym XF86AudioPause exec --no-startup-id playerctl pause
-# bindsym XF86AudioNext exec --no-startup-id playerctl next
-# bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioPlay exec --no-startup-id playerctl play
+bindsym XF86AudioPause exec --no-startup-id playerctl pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 ### TOUCHPAD ###
 
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
 
 ### BRIGHTNESS ###
-bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && light -O # && ~/.bin/brightness & # -O = save
-bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O # && ~/.bin/brightness & # -O = save
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O # && ~/.bin/brightness &
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O # && ~/.bin/brightness &
 
 ### KEYBINDINGS ###
 
@@ -88,12 +88,12 @@ bindsym $mod+n move workspace to output left
 bindsym $mod+m move workspace to output right
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 bindsym $alt+F4 kill
 
 # start Rofi launcher
-bindsym Menu exec --no-startup-id rofi -show drun
-bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu
+bindsym Menu exec --no-startup-id rofi -show run
+bindsym $alt+Escape exec --no-startup-id ~/.bin/rofi-powermenu
 
 # Flameshot screenshots
 # manual region
@@ -107,7 +107,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -119,37 +118,28 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-bindsym $mod+ctrl+h split h
-
-# split in vertical orientation
-bindsym $mod+ctrl+v split v
+# future horizontal/vertical split for active window
+bindsym $alt+h split h
+bindsym $alt+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+e layout toggle split
 
-# toggle tiling / floating
+# toggle tiling / floating wm mode
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+Shift+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
+#bindsym $mod+space focus mode_toggle
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -188,34 +178,33 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# reload the configuration file
+# reload this file
 bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 (preserve layout & session)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-# restore and save layout with i3-resurrect
+# X session logout
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3 and logout?' -B 'Y' 'i3-msg exit'"
+# i3-resurrect
 bindsym $mod+t exec --no-startup-id i3-resurrect restore
 bindsym $mod+y exec --no-startup-id i3-resurrect save
 
 
-# resize window (you can also use the mouse for that)
-set $mode_resize Resizing active window
+# resize active window
+set $mode_resize Resizing active window...
 mode "$mode_resize" {
-        bindsym h resize shrink width 3 px or 3 ppt
-        bindsym j resize grow height 3 px or 3 ppt
-        bindsym k resize shrink height 3 px or 3 ppt
-        bindsym l resize grow width 3 px or 3 ppt
-	bindsym Left resize shrink width 3 px or 3 ppt
-        bindsym Down resize grow height 3 px or 3 ppt
-        bindsym Up resize shrink height 3 px or 3 ppt
-        bindsym Right resize grow width 3 px or 3 ppt
+        bindsym h resize shrink width 2 px or 2 ppt
+        bindsym j resize grow height 2 px or 2 ppt
+        bindsym k resize shrink height 2 px or 2 ppt
+        bindsym l resize grow width 2 px or 2 ppt
+	bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Down resize grow height 2 px or 2 ppt
+        bindsym Up resize shrink height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
-
 bindsym $mod+r mode "$mode_resize"
 
 ### GAPS ###
@@ -226,9 +215,9 @@ gaps inner 10
 # smart_gaps on
 # smart_borders on
 
-set $mode_gaps Gaps: [i]nner, [o]uter
-set $mode_inner_gaps Inner gaps: +|-|0 (local; global with Shift)
-set $mode_outer_gaps Outer gaps: +|-|0 (local; global with Shift)
+set $mode_gaps Setting gaps: Outer / Inner
+set $mode_inner_gaps Inner gaps: + / - / 0 (hold Shift for global effect)
+set $mode_outer_gaps Outer gaps: + / - / 0 (hold Shift for global effect)
 bindsym $mod+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
@@ -265,16 +254,16 @@ mode "$mode_outer_gaps" {
 
 ### BORDERS ###
 
-default_border pixel 2
+default_border pixel 0
 # for_window [class="^.*"] border pixel 2
 
 ### APPS SHORTCUTS ###
 
-set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Esc|Enter
+set $mode_launcher Application shortcuts: B / C / D / E / F / S / T / V / W / Z, Esc / Enter
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden
-    bindsym c exec code-oss
+    bindsym c exec code
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish

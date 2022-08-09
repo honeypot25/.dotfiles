@@ -15,7 +15,7 @@ lock)
 	light -I
 	;;
 
-autolock)
+autosuspend)
 	killall -9 xidlehook
 	xidlehook \
 		--not-when-fullscreen \
@@ -23,7 +23,7 @@ autolock)
 		--timer 840 \
 		'light -O; light -S 10' \
 		--timer 60 \
-		'betterlockscreen -l blurdim --off 300; light -I' \
+		'betterlockscreen -l blurdim --off 300; light -I'; systemctl suspend \
 		&
 	;;
 h | *) usage;;

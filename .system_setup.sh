@@ -111,6 +111,12 @@ install_packages() {
   # xdg-ninja
   # paru -S --needed --noconfirm jq
   # wget https://github.com/b3nj5m1n/xdg-ninja/releases/download/v0.2.0.1/xdgnj ~/.bin/xdgnj
+  
+  echo -e "Installing VSCode extensions from ~/.vscode-oss/extensions_list\n"
+  for ext in $(cat ~/.vscode-oss/extensions_list); do
+    code --install-extension "$ext" &>/dev/null
+  done
+  echo -e "\nDone."
 }
 
 set_zram() {

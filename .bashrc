@@ -150,4 +150,4 @@ alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
 ### SCRIPTS
 # SSH keychain
-eval $(keychain --eval --confhost --noask --nogui --quiet id_github)
+eval $(keychain --confhost --eval --noask --nogui --quiet id_github)

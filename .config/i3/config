@@ -259,10 +259,10 @@ default_border pixel 0
 
 ### APPS SHORTCUTS ###
 
-set $mode_launcher Application shortcuts: B / C / D / E / F / S / T / V / W / Z, Esc / Enter
+set $mode_launcher Shortcuts: B / C / D / E / F / S / T / V / W / Z, Esc / Enter
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
-    bindsym b exec bitwarden
+    bindsym b exec bitwarden-desktop
     bindsym c exec code
     bindsym d exec discord
     bindsym e exec nemo

@@ -112,10 +112,10 @@ install_packages() {
   # paru -S --needed --noconfirm jq
   # wget https://github.com/b3nj5m1n/xdg-ninja/releases/download/v0.2.0.1/xdgnj ~/.bin/xdgnj
   
-  echo -e "Installing VSCode extensions from ~/.vscode-oss/extensions_list\n"
-  for ext in $(cat ~/.vscode-oss/extensions_list); do
+  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt""
+  while read -r ext; do 
     code --install-extension "$ext" &>/dev/null
-  done
+  done < "$HOME/.config/Code - OSS/User/extensions.txt"
   echo -e "\nDone."
 }
 

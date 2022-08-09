@@ -28,7 +28,7 @@ exec_always --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --rand
 # exec --no-startup-id feh --no-fehbg --bg-scale --no-xinerama $(ls ~/Pictures/wallpapers/*.jpg | sort -R | head -n1)
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 
-# Screen autolock and system suspend (14+1 min)
+# Screen autolock and system suspend (9+1+5 min)
 exec --no-startup-id ~/.bin/screenlock autosuspend &
 
 # Polybar

@@ -4,14 +4,12 @@ usage() { echo -e "Usage:\t$(basename "$0") <lock|autolock>" && exit 1; }
 [ $# -eq 0 ] && usage
 
 # look for cached file
-[ -d "$HOME/.cache/betterlockscreen/" ] || betterlockscreen -u ~/Pictures/wallpapers/lockscreen.png --fx blur,dim -q
-# random_wp="$(find ~/Pictures/wallpapers/ -name "*.jpg" | sort -R | tail -1)"
+[ -d "$HOME/.cache/betterlockscreen/" ] || betterlockscreen -u ~/Pictures/wallpapers/lockscreen.png --fx blur -q
 
 case "$1" in
 lock)
 	light -O
-	light -S 10
-	betterlockscreen -l blurdim --off 300
+	light -S25 && betterlockscreen -l blur --off 300
 	light -I
 	;;
 
@@ -20,11 +18,9 @@ autosuspend)
 	xidlehook \
 		--not-when-fullscreen \
 		--not-when-audio \
-		--timer 840 \
-		'light -O; light -S 10' \
-		--timer 60 \
-		'betterlockscreen -l blurdim --off 300; light -I'; systemctl suspend \
-		&
+		--timer 540 'light -O && light -S5' \
+		--timer 60 'light -S25 && betterlockscreen -l blur' \
+		--timer 300 'light -I && systemctl suspend'
 	;;
 h | *) usage;;
 esac

@@ -2,7 +2,8 @@
 
 set $mod Mod4
 set $alt Mod1
-set $refresh_i3status killall -SIGUSR1 i3status
+# set $refresh_i3status killall -SIGUSR1 i3status
+set $i3res i3-msg restart
 floating_modifier $mod
 
 ### INITIAL STARTUPS ###
@@ -42,7 +43,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 # }
 
 # Tray icons
-exec_always --no-startup-id volumeicon
+#exec_always --no-startup-id volumeicon
 
 # Battery level monitor
 exec_always --no-startup-id ~/.bin/battery 20 99 60 &
@@ -57,15 +58,15 @@ font Hack 10
 ### SOUND ###
 
 # volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && ~/.bin/volume &
-bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && ~/.bin/volume &
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 # && ~/.bin/volume &
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 # && ~/.bin/volume &
 # atomic volume
-bindsym $mod+XF86AudioLowerVolume exec --no-startup-id pamixer -d 1 && ~/.bin/volume &
-bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1 && ~/.bin/volume &
+bindsym $mod+XF86AudioLowerVolume exec --no-startup-id pamixer -d 1 # && ~/.bin/volume &
+bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1 # && ~/.bin/volume &
 # toggle audio
-bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute && ~/.bin/volume &
+bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute # && ~/.bin/volume &
 # toggle mic
-bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && ~/.bin/microphone &
+bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute # && ~/.bin/microphone &
 # audio player
 # bindsym XF86AudioPlay exec --no-startup-id playerctl play
 # bindsym XF86AudioPause exec --no-startup-id playerctl pause
@@ -77,10 +78,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
 
 ### BRIGHTNESS ###
-bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && light -O && ~/.bin/brightness & # -O = save
-bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O && ~/.bin/brightness & # -O = save
-# bindsym ctrl+$alt+Right exec brightness + && notify-send 'Brightness +10%'
-# bindsym ctrl+$alt+Left exec brightness - && notify-send 'Brightness -10%'
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && light -O # && ~/.bin/brightness & # -O = save
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && light -O # && ~/.bin/brightness & # -O = save
 
 ### KEYBINDINGS ###
 
@@ -91,8 +90,9 @@ bindsym $mod+a exec --no-startup-id alacritty
 bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
 
 # Adjust monitors
-bindsym $mod+ctrl+n exec --no-startup-id ~/.bin/monitor ext && i3-msg restart &
-bindsym $mod+ctrl+m exec --no-startup-id ~/.bin/monitor both && i3-msg restart &
+bindsym ctrl+$alt+b exec --no-startup-id ~/.bin/monitor main && $i3res
+bindsym ctrl+$alt+n exec --no-startup-id ~/.bin/monitor ext && $i3res
+bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both && $i3res
 
 # move workspaces between monitors
 bindsym $mod+n move workspace to output left
@@ -213,24 +213,15 @@ bindsym $mod+y exec --no-startup-id i3-resurrect save
 # resize window (you can also use the mouse for that)
 set $mode_resize Resizing active window
 mode "$mode_resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 3 px or 3 ppt
         bindsym j resize grow height 3 px or 3 ppt
         bindsym k resize shrink height 3 px or 3 ppt
         bindsym l resize grow width 3 px or 3 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 3 px or 3 ppt
+	bindsym Left resize shrink width 3 px or 3 ppt
         bindsym Down resize grow height 3 px or 3 ppt
         bindsym Up resize shrink height 3 px or 3 ppt
         bindsym Right resize grow width 3 px or 3 ppt
 
-        # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
@@ -252,8 +243,8 @@ set $mode_outer_gaps Outer gaps: +|-|0 (local; global with Shift)
 bindsym $mod+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
-        bindsym o      mode "$mode_outer_gaps"
-        bindsym i      mode "$mode_inner_gaps"
+        bindsym o mode "$mode_outer_gaps"
+        bindsym i mode "$mode_inner_gaps"
 
         bindsym Escape mode "default"
         bindsym Return mode "default"
@@ -294,7 +285,7 @@ set $mode_launcher Application shortcuts: W, T, C, B, V, E, D, Z, S, F, Esc|Ente
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden
-    bindsym c exec codium
+    bindsym c exec code-oss
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish

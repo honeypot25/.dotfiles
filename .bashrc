@@ -96,8 +96,7 @@ alias pacsyu="sudo pacman -Syu"                                                 
 alias parsua="paru -Sua --noconfirm"                                                         # update only AUR pkgs (paru)
 alias parsyu="paru -Syu --noconfirm"                                                         # update standard pkgs and AUR pkgs (paru)
 alias unlock="sudo rm /var/lib/pacman/db.lck"                                                # remove pacman lock
-# unused, orphaned packages; some home files
-alias cleanup="sudo pacman -Sc && paccache -ru && sudo pacman -Qtdq | sudo pacman -Rns -; rm -fv $HOME/.{lesshst,wget-hsts}"
+# unused, orphaned packages; some home files; cache
 
 # get fastest mirrors
 alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
@@ -151,4 +150,4 @@ alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
 ### SCRIPTS
 # SSH keychain
-eval "$(keychain --eval --quiet --nogui --noask)"
+eval $(keychain --eval --confhost --noask --nogui --quiet id_github)

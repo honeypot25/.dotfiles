@@ -1,0 +1,9 @@
+#!/bin/env/bash
+
+sudo pacman -Sc --noconfirm
+paccache -ru --noconfirm
+sudo pacman -Qtdq --noconfirm | sudo pacman -Rns - --noconfirm
+
+rm -v ~/.{lesshst,wget-hsts}
+# preserve only cached lockscreen
+# find ~/.cache/ -mindepth 1 -maxdepth 1 -not -name betterlockscreen -not -name ImageMagick # -exec rm -rv {} \;

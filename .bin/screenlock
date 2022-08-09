@@ -1,25 +1,33 @@
 #!/usr/bin/env bash
 
-# xidlehook & betterlockscreen
+usage() { echo -e "Usage:\t$(basename "$0") <lock|autolock>" && exit 1; }
+[ $# -eq 0 ] && usage
 
-random_wp="$(find ~/Pictures/wallpapers/ -name "*.jpg" | sort -R | tail -1)"
+# look for cached file
+[ -d "$HOME/.cache/betterlockscreen/" ] || betterlockscreen -u ~/Pictures/wallpapers/lockscreen.png --fx blur,dim -q
+# random_wp="$(find ~/Pictures/wallpapers/ -name "*.jpg" | sort -R | tail -1)"
 
-if [ "$1" = "lock" ]; then
-	light -O && betterlockscreen -u "$random_wp" -l dimblur --off 60 -w --span && light -I
-elif [ "$1" = "autolock" ]; then
-	betterlockscreen -u "$random_wp"
+case "$1" in
+lock)
+	light -O
+	light -S 10
+	betterlockscreen -l blurdim --off 300
+	light -I
+	;;
+
+autolock)
 	killall -9 xidlehook
 	xidlehook \
 		--not-when-fullscreen \
 		--not-when-audio \
 		--timer 840 \
-		'light -O; light -S 10; light -I' \
+		'light -O; light -S 10' \
 		--timer 60 \
-		'betterlockscreen -l dimblur -w --span' \
-		--timer 300 \
-		'betterlockscreen --off 0' \
+		'betterlockscreen -l blurdim --off 300; light -I' \
 		&
-fi
+	;;
+h | *) usage;;
+esac
 
 # font="dedede"
 # green="9ece6a"

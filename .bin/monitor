@@ -1,34 +1,32 @@
 #!/usr/bin/env bash
 
 usage() { echo -e "Usage:\t$(basename "$0") <main|ext|both>" && exit 1; }
+[ $# -eq 0 ] && usage
 
-# main & ext*
-read -d'\n' -r main_mon ext_mon < <(xrandr --listmonitors | tail -n+2 | cut -d' ' -f6 | sort -dr)
+# eDP1 DP1 HDMI1 VIRTUAL1
+read -d'\n' -r main ext hdmi virt < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
-# fallback to main monitor if no external found
-[ -z "$ext_mon" ] && mon="main"
+# fallback to main monitor if no other monitors found
+[ -z "$ext" ] && m="$main"
+m=$1
 
-mon=$1
-case "$mon" in
+xrandr --output HDMI1 --off --output VIRTUAL1 --off
+case "$m" in
 main)
    xrandr \
-      --output "$main_mon" --primary \
-      --output "$ext_mon" --off \      
-      # --output HDMI-1 --off
+      --output "$main" --primary --auto \
+      --output "$ext" --off \
    ;;
 ext)
    xrandr \
-      --output "$main_mon" --off \
-      --output "$ext_mon" --primary \      
-      # --output HDMI-1 --off
+      --output "$main" --off \
+      --output "$ext" --primary --auto \
    ;;
 both)
-   # main & ext*
    xrandr \
-      --output "$main_mon" --pos 0x283 \
-      --output "$ext_mon" --pos 1366x0 --primary \
-      # --output HDMI-1 --off
+      --output "$main" --pos 0x282 --auto \
+      --output "$ext" --pos 1366x0 --primary --auto \
    ;;
 *) usage ;;
 esac

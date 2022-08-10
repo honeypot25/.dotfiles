@@ -3,6 +3,7 @@ set adjust-open "best-fit"
 
 # One page per row by default
 set pages-per-row 1
+set first-page-column 1:1
 
 #stop at page boundries
 set scroll-page-aware "true"
@@ -21,9 +22,14 @@ set recolor-lightcolor "#16161e"
 set recolor-darkcolor "#dedede"
 set recolor-reverse-video "true"
 set recolor-keephue "true"
-
 set render-loading "false"
+
 set scroll-step 200
+set selection-clipboard clipboard
+
+unmap d
+map d set "first-page-column 1:2"
+
 unmap f
 map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen

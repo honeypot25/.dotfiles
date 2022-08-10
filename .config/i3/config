@@ -14,6 +14,9 @@ exec_always --no-startup-id picom &
 # Dunst
 exec_always --no-startup-id dunst &
 
+# NetworkManager applet
+# exec_always --no-startup-id nm-applet &
+
 # Enabling Touchpad tapping
 exec --no-startup-id xinput set-prop $(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1') "libinput Tapping Enabled" 1
 
@@ -259,7 +262,7 @@ default_border pixel 0
 
 ### APPS SHORTCUTS ###
 
-set $mode_launcher Shortcuts: B / C / D / E / F / S / T / V / W / Z, Esc / Enter
+set $mode_launcher Shortcuts: B / C / D / E / F / P / S / T / V / W / Z, Esc / Enter
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop
@@ -267,6 +270,7 @@ mode "$mode_launcher" {
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish
+    bindsym p exec zathura
     bindsym s exec spotify
     bindsym t exec telegram-desktop
     bindsym v exec realvnc-vnc-viewer

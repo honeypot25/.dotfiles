@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# after gutenprint updates
+sudo cups-genppdupdate
+sudo systemctl restart cups

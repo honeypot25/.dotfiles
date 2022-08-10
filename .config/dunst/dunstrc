@@ -9,16 +9,16 @@
     # height = 150
     geometry = "250x50-25+25"
     origin = bottom-right
-    offset = 20x20
+    offset = 10x10
     scale = 0
-    notification_limit = 1
+    notification_limit = 3
     progress_bar = true
     progress_bar_height = 10
     progress_bar_frame_width = 2
     progress_bar_min_width = 150
     progress_bar_max_width = 300
     indicate_hidden = yes
-    transparency = 20 # (X11 only)
+    transparency = 0 # (X11 only)
     separator_height = 0
     padding = 8 # between text and separator.
     horizontal_padding = 10
@@ -122,7 +122,7 @@
     background = "#1b1b25"
     foreground = "#dedede"
     frame_color = "#f07178"
-    timeout = 0
+    timeout = 30
 
 # [shortcuts]
 #     close = ctrl+space

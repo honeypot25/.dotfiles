@@ -4,7 +4,7 @@ source ~/.packages
 
 preparing() {
   # system update
-  sudo pacman -Syu --needed --noconfirm
+  pacup --needed --noconfirm
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
@@ -107,15 +107,10 @@ install_GUI() (
 install_packages() {
   paru -S --needed --noconfirm "${pkgs[@]}"
 
-  ## MISC
-  # xdg-ninja
-  # paru -S --needed --noconfirm jq
-  # wget https://github.com/b3nj5m1n/xdg-ninja/releases/download/v0.2.0.1/xdgnj ~/.bin/xdgnj
-  
-  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt""
-  while read -r ext; do 
+  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt\""
+  while read -r ext; do
     code --install-extension "$ext" &>/dev/null
-  done < "$HOME/.config/Code - OSS/User/extensions.txt"
+  done <"$HOME/.config/Code - OSS/User/extensions.txt"
   echo -e "\nDone."
 }
 
@@ -145,15 +140,14 @@ set_virtualization() {
 end() {
   # adjust permissions
   sudo chmod +s /usr/bin/light
-  chmod u+x ~/.config/polybar/launch.sh
-  # copy
+  # copies
   sudo cp -r ~/.fonts/* /usr/share/fonts/
   sudo cp -r ~/.themes/* /usr/share/themes/
   sudo cp -r ~/.icons/* /usr/share/icons/
   ln -Pf ~/.packages ~/projects/auto-arch/packages # hard link
-  # update
+  # updates
   fc-cache -fv
-  # delete
+  # removals
   rmdir ~/{Public,Templates}
 
   # reboot

@@ -24,7 +24,7 @@ exec --no-startup-id xinput set-prop $(xinput list | rg "Touchpad\s+id=(\d+)" -o
 exec_always --no-startup-id light -I
 
 # Start with main monito only
-exec_always --no-startup-id ~/.bin/monitor main &
+# exec_always --no-startup-id ~/.bin/monitor main &
 # Try to start with both monitors
 # exec_always --no-startup-id ~/.bin/monitor both &
 

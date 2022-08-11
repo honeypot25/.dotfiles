@@ -71,14 +71,14 @@ ex() {
   fi
 }
 
-## ALIASES
+### ALIASES
 # coding
 alias v="nvim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 
 # utility
-alias notrash="rm -rfv $HOME/.local/share/Trash/*"
+alias trash="rm -rfv $HOME/.local/share/Trash/*"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
 alias ff="fastfetch | lolcat"
 
@@ -91,18 +91,28 @@ alias lt="exa -T --color=always --group-directories-first"
 alias l.='exa -a | egrep "^\."'
 
 # pacman & paru
-alias pacsy="sudo pacman -Sy"
-alias pacsyu="sudo pacman -Syu" # update standard pkgs
-alias parsy="paru -Sy"
-alias parsau="paru -Sau"                      # update AUR pkgs
-alias parsyu="paru -Syu"                      # update standard & AUR pkgs (same as running "paru")
-alias unlock="sudo rm /var/lib/pacman/db.lck" # remove pacman lock
+# query | install
+alias pacq="sudo pacman -Sy && sudo pacman -Qu"
+alias pac="sudo pacman -Sy"
+alias parq="paru -Sy && paru -Qua"
+alias par="paru -Sy"
+# autoupdate
+alias pacup="sudo pacman -Syu" # update standard pkgs
+alias parup="paru -Sua"        # update AUR pkgs
+alias up="paru"                # update standard & AUR pkgs (paru -Syu)
+# misc
+alias unlock="sudo rm /var/lib/pacman/db.lck"
 
 # get fastest mirrors
-alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
-alias mirrora="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort age --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector \
+  --country it \
+  --fastest 3 \
+  --latest 3 \
+  --protocol https \
+  --completion-percent 100 \
+  --sort rate \
+  --threads 4 \
+  --save /etc/pacman.d/mirrorlist"
 
 # colorize grep output
 alias grep="grep --color=auto"

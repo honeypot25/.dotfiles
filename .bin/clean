@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-# pacman
-sudo pacman -Scq --noconfirm
-paccache -ru
-sudo pacman -Qtdq --noconfirm | sudo pacman -Rnsu - --noconfirm 2>/dev/null
+# packages
+paru -Scq --noconfirm
+paccache -ruq
+sudo pacman -Rnus $(sudo pacman -Qdtq --noconfirm) 2>/dev/null
 
 # home files
-rm -v ~/.{lesshst,wget-hsts} 2>/dev/null
+rm ~/.{lesshst,wget-hsts} 2>/dev/null
 
 # ~/.cache
 shopt -s extglob
 pushd ~/.cache/ &>/dev/null || exit 1
-rm -rf !(betterlockscreen|ImageMagick|fontconfig) &>/dev/null
+rm -rf !(betterlockscreen|ImageMagick|fontconfig) 2>/dev/null
 popd &>/dev/null || exit 1
 shopt -u extglob

@@ -3,29 +3,29 @@
 usage() { echo -e "Usage:\t$(basename "$0") <main|ext|both>" && exit 1; }
 [ $# -eq 0 ] && usage
 
-# eDP1 DP1 [HDMI1] [VIRTUAL1]
+# get all monitors: eDP1 DP1 [HDMI1] [VIRTUAL1]
 read -d'\n' -r main ext hdmi virt < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
-# fallback to main monitor if no other monitors found
-[ -z "$ext" ] && m="$main"
 m=$1
+# fallback to main monitor if the external one is not connected
+xrandr --listactivemonitors | rg "$ext$" || m="$main"
 
 case "$m" in
 main)
    xrandr \
       --output "$main" --primary --auto \
-      --output "$ext" --off \
+      --output "$ext" --off
    ;;
 ext)
    xrandr \
       --output "$main" --off \
-      --output "$ext" --primary --auto \
+      --output "$ext" --primary --auto
    ;;
 both)
    xrandr \
       --output "$main" --pos 0x282 --auto \
-      --output "$ext" --pos 1366x0 --primary --auto \
+      --output "$ext" --pos 1366x0 --primary --auto
    ;;
 *) usage ;;
 esac

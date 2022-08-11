@@ -9,7 +9,7 @@ usage() { echo -e "Usage:\t$(basename "$0") <lock|autolock>" && exit 1; }
 case "$1" in
 lock)
 	light -O
-	light -S25 && betterlockscreen -l blur --off 300
+	light -S 25 && betterlockscreen -l blur --off 300
 	light -I
 	;;
 
@@ -18,11 +18,15 @@ autosuspend)
 	xidlehook \
 		--not-when-fullscreen \
 		--not-when-audio \
-		--timer 540 'light -O && light -S5' \
-		--timer 60 'light -S25 && betterlockscreen -l blur' \
+		--timer 540 'light -O && light -S 5' \
+		--timer 60 'light -S 25 && betterlockscreen -l blur' \
 		--timer 300 'light -I && systemctl suspend'
 	;;
-h | *) usage;;
+lid)
+	betterlockscreen -l blur && systemctl suspend
+	;;
+
+h | *) usage ;;
 esac
 
 # font="dedede"

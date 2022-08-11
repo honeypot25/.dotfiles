@@ -8,7 +8,7 @@ preparing() {
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src apps coding games misc projects uni vms Pictures/wallpapers Videos/screenrec
+  mkdir -p .src apps coding games misc projects uni vms Pictures/{screenshots,wallpapers} Videos/screenrec
   # wallpapers
   git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
   # mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin

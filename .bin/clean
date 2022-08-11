@@ -1,9 +1,16 @@
-#!/bin/env/bash
+#!/usr/bin/env bash
 
-sudo pacman -Sc --noconfirm
-paccache -ru --noconfirm
-sudo pacman -Qtdq --noconfirm | sudo pacman -Rns - --noconfirm
+# pacman
+sudo pacman -Scq --noconfirm
+paccache -ru
+sudo pacman -Qtdq --noconfirm | sudo pacman -Rnsu - --noconfirm 2>/dev/null
 
-rm -v ~/.{lesshst,wget-hsts}
-# preserve only cached lockscreen
-# find ~/.cache/ -mindepth 1 -maxdepth 1 -not -name betterlockscreen -not -name ImageMagick # -exec rm -rv {} \;
+# home files
+rm -v ~/.{lesshst,wget-hsts} 2>/dev/null
+
+# ~/.cache
+shopt -s extglob
+pushd ~/.cache/ &>/dev/null || exit 1
+rm -rf !(betterlockscreen|ImageMagick|fontconfig) &>/dev/null
+popd &>/dev/null || exit 1
+shopt -u extglob

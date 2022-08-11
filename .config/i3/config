@@ -34,6 +34,9 @@ exec_always --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --rand
 # Screen autolock and system suspend (9+1+5 min)
 exec --no-startup-id ~/.bin/screenlock autosuspend &
 
+# xss-lock deamon for events (lid)
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
+
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
 

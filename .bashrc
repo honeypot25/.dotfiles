@@ -6,8 +6,8 @@ export TERM=xterm-256color
 # export VISUAL=
 # export MANPAGER="nvim -c 'set ft=man' -"
 # export MANPAGER=less
-export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin"
-# export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin/:usr/games"
+# PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
+export PATH="$PATH:/bin:/sbin:/usr/sbin/:/usr/games"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -16,7 +16,7 @@ export PATH="$PATH:$HOME/.bin:$HOME/apps:$HOME/.local/bin"
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 rst=$(tput sgr0)
-PS1="[\[$green\]\u\[$rst\] ➜ \[$red\]\w\[$rst\]] » "
+PS1="[\[$green\]\u\[$rst\] ➜ \[$red\]\w\[$rst\]] »»» "
 unset green red rst
 
 ## HISTORY
@@ -25,13 +25,14 @@ HISTSIZE=1000
 HISTFILE=~/.bash_history
 
 ## SHOPT
-shopt -s autocd  # change to named directory
-shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s autocd       # change to named directory
+shopt -s cdspell      # autocorrects cd misspellings
+shopt -s checkwinsize # checks term size when bash regains control
+shopt -s cmdhist      # save multi-line commands in history as single line
 shopt -s dotglob
-shopt -s histappend     # do not overwrite history
+# shopt -s extglob # ? * + @ !
 shopt -s expand_aliases # expand aliases
-shopt -s checkwinsize   # checks term size when bash regains control
-shopt -s cdspell        # autocorrects cd misspellings
+shopt -s histappend     # do not overwrite history
 
 ## COMPLETION
 bind "set completion-ignore-case on" # ignore upper and lowercase when TAB completion
@@ -89,14 +90,13 @@ alias lal="exa -al --color=always --group-directories-first"
 alias lt="exa -T --color=always --group-directories-first"
 alias l.='exa -a | egrep "^\."'
 
-# apt, pacman
-alias aptup="sudo apt update && sudo apt upgrade -y && sudo apt autoremove --purge -y"
-alias pm="sudo pacman -S --noconfirm"
-alias pacsyu="sudo pacman -Syu"                                                              # update only standard pkgs
-alias parsua="paru -Sua --noconfirm"                                                         # update only AUR pkgs (paru)
-alias parsyu="paru -Syu --noconfirm"                                                         # update standard pkgs and AUR pkgs (paru)
-alias unlock="sudo rm /var/lib/pacman/db.lck"                                                # remove pacman lock
-# unused, orphaned packages; some home files; cache
+# pacman & paru
+alias pacsy="sudo pacman -Sy"
+alias pacsyu="sudo pacman -Syu" # update standard pkgs
+alias parsy="paru -Sy"
+alias parsau="paru -Sau"                      # update AUR pkgs
+alias parsyu="paru -Syu"                      # update standard & AUR pkgs (same as running "paru")
+alias unlock="sudo rm /var/lib/pacman/db.lck" # remove pacman lock
 
 # get fastest mirrors
 alias mirror="sudo reflector -c Italy -a24 -n5 -f5 -l5 --verbose"
@@ -106,8 +106,6 @@ alias mirrors="sudo reflector -c Italy -a24 -n5 -f5 -l5 --sort score --save /etc
 
 # colorize grep output
 alias grep="grep --color=auto"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
 
 # confirm before overwriting
 alias cp="cp -i"
@@ -150,4 +148,4 @@ alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
 ### SCRIPTS
 # SSH keychain
-eval $(keychain --confhost --eval --noask --nogui --quiet id_github)
+eval "$(keychain --confhost --eval --noask --nogui --quiet id_github)"

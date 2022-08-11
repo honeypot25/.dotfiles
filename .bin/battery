@@ -21,8 +21,9 @@ low=$1
 high=$2
 check=$3
 
+bat_path=$(upower -e | grep BAT)
+
 while true; do
-  bat_path=$(upower -e | grep BAT)
   cur_lvl=$(upower -i "$bat_path" | grep -E "percentage" | sed 's/[^0-9]//g')
   discharging=$(upower -i "$bat_path" | grep -E "state" | grep -c discharging)
   time_left=$(upower -i "$bat_path" | rg "time to empty: +([.0-9]+) (\w).+" -or '$1$2')
@@ -30,7 +31,6 @@ while true; do
   # low and discharging
   if [ "$cur_lvl" -le "$low" ] && [ "$discharging" -eq 1 ]; then
     dunstify -a "Battery" \
-      -u URGENT \
       -r 100 \
       -i ~/.icons/battery.svg \
       "Low battery: $cur_lvl%" \
@@ -38,7 +38,6 @@ while true; do
   # high and charging
   elif [ "$cur_lvl" -ge "$high" ] && [ "$discharging" -eq 0 ]; then
     dunstify -a "Battery" \
-      -u NORMAL \
       -r 100 \
       -i ~/.icons/battery.svg \
       "Battery charged: $cur_lvl%" \

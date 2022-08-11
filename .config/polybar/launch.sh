@@ -2,18 +2,18 @@
 
 killall -q polybar && sleep 1
 
-echo -e "\n+ + +\n" | tee -a /tmp/polybar.log
+echo -e "\n+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" | tee -a /tmp/polybar.log
 
 ### env variables
 #DEFAULT_NIC=$(ip route | grep "^default" | head -n1 | cut -d' ' -f5)
 #WIFI_NIC=$(ip link | rg "^\d: (w\w+)" -or '$1')
 #MONITOR=$(polybar -m | head -n1 | cut -d':' -f1) # ext*. fallback: main
-read -d'\n' -r MAIN EXT HDMI VIRT < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
-export MAIN EXT
+read -d'\n' -r MAIN_MON EXT_MON HDMI_MON VIRT_MON < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
+read -d' ' -r ADAPTER BATTERY < <(ls /sys/class/power_supply/)
 
 function network() {
   read -r ETH_NIC eth_up WIFI_NIC wifi_up < <(ip link | rg "^\d: ([ew]\w+):.+ state (\w+)" -or '$1 $2')
-  if [ "eth_up" = "UP" ] && [ "wifi_up" = "UP" ]; then
+  if [ "$eth_up" = "UP" ] && [ "$wifi_up" = "UP" ]; then
     ACTIVE_NIC="$ETH_NIC"
     #LABEL_CONNECTED=" E|W %{F#6C77BB}%{F-} %downspeed%"
   elif [ "$eth_up" = "UP" ]; then
@@ -24,10 +24,14 @@ function network() {
     #LABEL_CONNECTED=" W %{F#6C77BB}%{F-} %downspeed%"
   fi
 
-  export ACTIVE_NIC ETH_NIC #LABEL_CONNECTED
 }
 network
 
-# start
-polybar main 2>&1 | tee -a /tmp/polybar.log &
+### env variables exports
+export ADAPTER BATTERY
+export MAIN_MON EXT_MON
+export ACTIVE_NIC ETH_NIC #LABEL_CONNECTED
+
+# start (with automatic reloads after config.ini changes)
+polybar --log=error --reload main 2>&1 | tee -a /tmp/polybar.log &
 disown

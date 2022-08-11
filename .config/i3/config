@@ -2,7 +2,7 @@
 
 set $mod Mod4
 set $alt Mod1
-# set $refresh_i3status killall -SIGUSR1 i3status
+# set $refresh_i3status killall i3status
 set $i3res i3-msg restart
 floating_modifier $mod
 
@@ -23,13 +23,13 @@ exec --no-startup-id xinput set-prop $(xinput list | rg "Touchpad\s+id=(\d+)" -o
 # Restore prev screen brightness
 exec_always --no-startup-id light -I
 
-# Start with main monito only
+# Start with main monitor only
 # exec_always --no-startup-id ~/.bin/monitor main &
 # Try to start with both monitors
 # exec_always --no-startup-id ~/.bin/monitor both &
 
 # Set random background image
-exec_always --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/
+exec_always --no-startup-id sleep 1 && nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/
 # exec --no-startup-id feh --no-fehbg --bg-scale --no-xinerama $(ls ~/Pictures/wallpapers/*.jpg | sort -R | head -n1)
 # exec --no-startup-id feh --no-fehbg --bg-scale ~/Pictures/wallpapers/$(ls ~/Pictures/wallpapers | shuf | head -1)
 

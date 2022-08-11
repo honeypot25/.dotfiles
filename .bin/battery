@@ -14,7 +14,7 @@ done
 
 # kill other instances if found
 for pid in $(pidof -x "$(basename "$0")"); do
-  [ "$pid" -ne $$ ] || kill -9 "$pid"
+  [ "$pid" -ne $$ ] || kill "$pid"
 done
 
 low=$1

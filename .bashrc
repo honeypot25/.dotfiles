@@ -158,4 +158,4 @@ alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 
 ### SCRIPTS
 # SSH keychain
-eval "$(keychain --confhost --eval --noask --nogui --quiet id_github)"
+eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/{id_github}")"

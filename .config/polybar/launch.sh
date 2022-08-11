@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-killall -9 polybar && sleep 1
+killall polybar
 
 echo -e "\n+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" | tee -a /tmp/polybar.log
 

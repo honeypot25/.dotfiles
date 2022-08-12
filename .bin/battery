@@ -12,14 +12,10 @@ while getopts ":l:h:i:" opt; do
   esac
 done
 
-# SIGTERM if other instances are running (because of "while true")
-for pid in $(pidof -x "$0"); do
-  [ "$pid" -ne $$ ] && kill -15 "$pid"
+# kill other running instances of the script if present
+for pid in $(ps aw -u "$(whoami)" -o pid,args | rg "(\d+).*$0" -or '$1'); do
+  [ "$pid" -ne $$ ] && kill "$pid"
 done
-
-low=$1
-high=$2
-interval=$3
 
 bat_path=$(upower -e | grep BAT)
 
@@ -35,11 +31,14 @@ while true; do
     message="Battery charged\nUnplug the AC!"
   fi
 
-  [ -n "$message" ] && dunstify \
-    -a "Battery" \
-    -r 1 \
-    -i ~/.icons/battery.svg \
-    "$message"
+  [ -n "$message" ] && {
+    dunstify \
+      -a "Battery" \
+      -r 1 \
+      -i ~/.icons/battery.svg \
+      "$message"
+    unset message
+  }
 
   sleep "$interval"
 done

@@ -150,10 +150,9 @@ alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis"
 alias yta-wav="youtube-dl --extract-audio --audio-format wav"
 alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
-# git
+# generic git
 alias gitp="git s && git a . && git cam 'autocommit' && git psom"
-
-# bare git repo aliasing for dotfiles
+# dotfiles bare git repo
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias dotsp="dots s && dots cam 'autocommit' && dots psom"
 

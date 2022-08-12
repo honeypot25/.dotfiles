@@ -24,7 +24,7 @@ autosuspend)
   ;;
 
 manualsuspend | lid)
-  betterlockscreen -l blur && systemctl suspend
+  betterlockscreen -l blur && sleep 1 && systemctl suspend
   ;;
 
 h | *) usage ;;

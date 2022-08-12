@@ -10,14 +10,26 @@ font pango:Hack 10
 ### EXEC AT INITIAL i3 START ###
 ################################
 
+# xss-lock deamon for events (lid)
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
+
 # Set random background image
-exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/ &
+exec --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/ &
 
 # Enabling Touchpad tapping
 exec --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
 
+# Dunst
+exec --no-startup-id dunst &
+
+# Picom
+exec --no-startup-id picom &
+
 # mpd
 exec --no-startup-id mpd &
+
+# NetworkManager applet
+# exec_always --no-startup-id nm-applet &
 
 # Start with main monitor only
 # exec --no-startup-id ~/.bin/monitor main &
@@ -28,29 +40,17 @@ exec --no-startup-id mpd &
 ### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
 #############################################
 
-# xss-lock deamon for events (lid)
-exec_always --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
-
-# Screen autolock and system suspend (9+1+5 min)
-exec_always --no-startup-id ~/.bin/screenlock autosuspend &
-
-# Picom
-exec_always --no-startup-id picom &
-
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
-
-# Restore previous screen brightness
-exec_always --no-startup-id light -I &
-
-# Dunst
-exec_always --no-startup-id dunst &
 
 # Battery level monitoring
 exec_always --no-startup-id ~/.bin/battery -l 20 -h 99 -i 12 &
 
-# NetworkManager applet
-# exec_always --no-startup-id nm-applet &
+# Screen autolock and system suspend (9+1+5 min)
+exec_always --no-startup-id ~/.bin/screenlock autosuspend &
+
+# Restore previous screen brightness
+exec_always --no-startup-id light -I &
 
 ###################
 ### KEYBINDINGS ###

@@ -2,19 +2,17 @@
 
 cur_state=$(pamixer --default-source --get-mute)
 
-if [ "$cur_state" = "true" ]; then
-  dunstify -a "Microphone" \
-    -r 100 \
-    -i ~/.icons/mic-off.svg \
-    "Microphone" \
-    "Mic muted"
-else
-  dunstify -a "Microphone" \
-    -r 100 \
-    -i ~/.icons/mic.svg \
-    "Microphone" \
-    "Mic activated"
-fi
+# shellcheck disable=2015
+[ "$cur_state" = "true" ] && {
+  icon="mic-off"
+  state="ON"
+} || {
+  icon="mic"
+  state="OFF"
+}
 
-# refresh i3status
-killall -SIGUSR1 i3status
+dunstify \
+  -a "Microphone" \
+  -r 3 \
+  -i ~/.icons/$icon.svg \
+  "Mic $state"

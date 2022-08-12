@@ -91,11 +91,12 @@ alias lt="exa -T --color=always --group-directories-first"
 alias l.='exa -a | egrep "^\."'
 
 # pacman & paru
-# query | install
-alias pacq="sudo pacman -Sy && sudo pacman -Qu"
+# install
 alias pac="sudo pacman -Sy"
-alias parq="paru -Sy && paru -Qua"
 alias par="paru -Sy"
+# query updates
+alias pacq="sudo pacman -Sy && sudo pacman -Qu"
+alias parq="paru -Sy && paru -Qua"
 # autoupdate
 alias pacup="sudo pacman -Syu" # update standard pkgs
 alias parup="paru -Sua"        # update AUR pkgs

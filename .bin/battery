@@ -1,48 +1,45 @@
 #!/usr/bin/env bash
 
-usage() { echo -e "Usage:\t$(basename "$0") <low> <high> <check>" && exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") -l <low> -h <high> -i <interval>" && exit 1; }
 [ $# -eq 0 ] && usage
 
-while getopts ":l:h:c:" opt; do
+while getopts ":l:h:i:" opt; do
   case $opt in
   l) low=$OPTARG ;;
   h) high=$OPTARG ;;
-  c) check=$OPTARG ;;
+  i) interval=$OPTARG ;;
   *) usage ;;
   esac
 done
 
-# kill other instances if found
-for pid in $(pidof -x "$(basename "$0")"); do
-  [ "$pid" -ne $$ ] || kill "$pid"
+# SIGTERM if other instances are running (because of "while true")
+for pid in $(pidof -x "$0"); do
+  [ "$pid" -ne $$ ] && kill -15 "$pid"
 done
 
 low=$1
 high=$2
-check=$3
+interval=$3
 
 bat_path=$(upower -e | grep BAT)
 
 while true; do
   cur_lvl=$(upower -i "$bat_path" | grep -E "percentage" | sed 's/[^0-9]//g')
   discharging=$(upower -i "$bat_path" | grep -E "state" | grep -c discharging)
-  time_left=$(upower -i "$bat_path" | rg "time to empty: +([.0-9]+) (\w).+" -or '$1$2')
 
-  # low and discharging
+  # <=low and discharging
   if [ "$cur_lvl" -le "$low" ] && [ "$discharging" -eq 1 ]; then
-    dunstify -a "Battery" \
-      -r 100 \
-      -i ~/.icons/battery.svg \
-      "Low battery: $cur_lvl%" \
-      "Time left: $time_left. Charge it!"
-  # high and charging
+    message="Low battery ($cur_lvl%)\nPlug the AC!"
+  # >=high and charging
   elif [ "$cur_lvl" -ge "$high" ] && [ "$discharging" -eq 0 ]; then
-    dunstify -a "Battery" \
-      -r 100 \
-      -i ~/.icons/battery.svg \
-      "Battery charged: $cur_lvl%" \
-      "Unplug the AC adapter."
+    message="Battery charged\nUnplug the AC!"
   fi
 
-  sleep "$check"
+  [ -n "$message" ] && dunstify \
+    -a "Battery" \
+    -r 1 \
+    -i ~/.icons/battery.svg \
+    "$message"
+
+  sleep "$interval"
 done

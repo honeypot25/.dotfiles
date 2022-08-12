@@ -11,7 +11,7 @@
     origin = bottom-right
     offset = 10x10
     scale = 0
-    notification_limit = 3
+    notification_limit = 5
     progress_bar = true
     progress_bar_height = 10
     progress_bar_frame_width = 2
@@ -111,7 +111,7 @@
 [urgency_low]
     background = "#1b1b25"
     foreground = "#dedede"
-    timeout = 1.5
+    timeout = 2
 
 [urgency_normal]
     background = "#1b1b25"

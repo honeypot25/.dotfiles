@@ -13,19 +13,32 @@ xrandr --listactivemonitors | rg "$ext$" || m="$main"
 
 case "$m" in
 main)
-   xrandr \
-      --output "$main" --primary --auto \
-      --output "$ext" --off
-   ;;
+  xrandr \
+    --output "$main" --primary --auto \
+    --output "$ext" --off
+  list="$main"
+  ;;
 ext)
-   xrandr \
-      --output "$main" --off \
-      --output "$ext" --primary --auto
-   ;;
+  xrandr \
+    --output "$main" --off \
+    --output "$ext" --primary --auto
+  list="$ext"
+  ;;
 both)
-   xrandr \
-      --output "$main" --pos 0x282 --auto \
-      --output "$ext" --pos 1366x0 --primary --auto
-   ;;
-*) usage ;;
+  xrandr \
+    --output "$main" --pos 0x282 --auto \
+    --output "$ext" --pos 1366x0 --primary --auto
+  list="$main, $ext"
+  ;;
+h | *) usage ;;
 esac
+
+# restart i3
+i3-msg restart
+
+dunstify \
+  -a "Monitor" \
+  -r 5 \
+  "Active monitor(s): $list"
+
+exit 0

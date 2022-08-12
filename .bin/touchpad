@@ -4,7 +4,14 @@ id=$(xinput | grep -i "TouchPad" | cut -f 2 | cut -d= -f 2)
 status=$(xinput --list-props "$id" | grep "Device Enabled" | cut -f 3)
 
 if [ "$status" -eq 1 ]; then
-    xinput --disable "$id"
+  xinput --disable "$id"
+  state="OFF"
 else
-    xinput --enable "$id"
+  xinput --enable "$id"
+  state="ON"
 fi
+
+dunstify \
+  -a "Touchpad" \
+  -r 4 \
+  "Touchpad $state"

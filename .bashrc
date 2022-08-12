@@ -6,8 +6,7 @@ export TERM=xterm-256color
 # export VISUAL=
 # export MANPAGER="nvim -c 'set ft=man' -"
 # export MANPAGER=less
-# PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
-export PATH="$PATH:/bin:/sbin:/usr/sbin/:/usr/games"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -74,6 +73,8 @@ ex() {
 ### ALIASES
 # coding
 alias v="nvim"
+alias vi="nvim"
+alias vim="nvim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 

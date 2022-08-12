@@ -2,7 +2,7 @@
 
 killall polybar
 
-echo -e "\n+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" >>/tmp/polybar.log
+echo -e "\n+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" | tee -a /tmp/polybar.log
 
 ### env variables
 #DEFAULT_NIC=$(ip route | grep "^default" | head -n1 | cut -d' ' -f5)
@@ -37,5 +37,5 @@ export ADAPTER BATTERY
 export ACTIVE_NIC ETH_NIC #LABEL_CONNECTED
 
 # start with automatic reloads after config.ini changes
-polybar --log=error --reload main &>/tmp/polybar.log &
+polybar --log=error --reload main &>/dev/null | tee -a /tmp/polybar.log &
 disown

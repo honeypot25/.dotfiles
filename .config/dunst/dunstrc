@@ -7,7 +7,6 @@
     shrink = no
     # width = (200,300)
     # height = 150
-    geometry = "250x50-25+25"
     origin = bottom-right
     offset = 10x10
     scale = 0
@@ -64,13 +63,11 @@
     class = Dunst
     corner_radius = 10
     ignore_dbusclose = false
-    startup_notification = false
-    verbosity = mesg
     force_xinerama = false
 
     ### Wayland ###
-    # layer = overlay # top
-    # force_xwayland = false
+    #layer = overlay # top
+    #force_xwayland = false
 
     # Possible values are:
     # * none: Don't do anything.
@@ -84,7 +81,11 @@
     # * context_all: Open context menu for all notifications.
     mouse_left_click = do_action, close_current
     mouse_right_click = close_all
-    
+
+#verbosity = mesg
+#geometry = "250x50-25+25"
+#startup_notification = false
+
 # Experimental features that may or may not work correctly. Do not expect them to have a consistent behaviour across releases.
 [experimental]
     per_monitor_dpi = true
@@ -106,7 +107,7 @@
 #     background = "#2f343f"
 #     foreground = "#d8dee8"
 #     frame_color = "#bf616a"
-#     timeout = 0
+#     timeout = 60
 
 [urgency_low]
     background = "#1b1b25"
@@ -148,7 +149,6 @@
 # [rulename]
 #
 # Messages can be matched by
-#    appname (discouraged, see desktop_entry)
 #    body
 #    category
 #    desktop_entry

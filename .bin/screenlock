@@ -18,7 +18,7 @@ autosuspend)
     --not-when-audio \
     --detect-sleep \
     --timer 540 'light -O; light -S 5' \
-    --timer 60 'light -S 20; betterlockscreen -l blur' light -I \
+    --timer 60 'light -S 20; betterlockscreen -l blur' 'light -I' \
     --timer 300 'light -I && systemctl suspend'
   ;;
 

@@ -15,7 +15,7 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 rst=$(tput sgr0)
-PS1="[\[$green\]\u\[$rst\] ➜ \[$red\]\w\[$rst\]] »»» "
+PS1="[\[$green\]\u\[$rst\]   \[$red\]\w\[$rst\]]   "
 unset green red rst
 
 ## HISTORY
@@ -80,8 +80,10 @@ alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 
 # utility
 alias trash="rm -rfv $HOME/.local/share/Trash/*"
+alias prename="perl-rename"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
-alias ff="fastfetch | lolcat"
+alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
+alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
 
 # changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"

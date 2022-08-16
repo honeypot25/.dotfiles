@@ -13,7 +13,7 @@ font pango:Hack 10
 # xss-lock deamon for events (lid)
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
 
-# Set random background image
+# start with a random background
 exec --no-startup-id sleep 2 && nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/ &
 
 # Enabling Touchpad tapping
@@ -26,7 +26,7 @@ exec --no-startup-id dunst &
 exec --no-startup-id picom &
 
 # mpd
-#exec --no-startup-id mpd &
+exec --no-startup-id mpd &
 
 # NetworkManager applet
 # exec_always --no-startup-id nm-applet &
@@ -73,18 +73,21 @@ bindsym ctrl+$alt+s exec --no-startup-id i3-resurrect restore
 # speakers (+-5)
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && ~/.bin/volume &
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && ~/.bin/volume &
-# speakers (+-1)
-bindsym ctrl+XF86AudioLowerVolume exec --no-startup-id pamixer -d 1 && ~/.bin/volume &
-bindsym ctrl+XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1 && ~/.bin/volume &
 # toggle speakers
 bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute && ~/.bin/volume &
 # toggle mic
 bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && ~/.bin/microphone &
-# audio player
-bindsym XF86AudioPlay exec --no-startup-id playerctl play
-bindsym XF86AudioPause exec --no-startup-id playerctl pause
-bindsym XF86AudioNext exec --no-startup-id playerctl next
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+# mpc audio commands
+bindsym XF86AudioPlay exec --no-startup-id mpc toggle
+bindsym XF86AudioStop exec --no-startup-id mpc stop
+bindsym XF86AudioPrev exec --no-startup-id mpc prev
+bindsym XF86AudioNext exec --no-startup-id mpc next
+bindsym ctrl+XF86AudioPlay exec --no-startup-id "killall -q mpd; mpd &"
+bindsym ctrl+XF86AudioStop exec --no-startup-id killall -q mpd
+bindsym ctrl+XF86AudioPrev exec --no-startup-id mpc seekthrough -5
+bindsym ctrl+XF86AudioNext exec --no-startup-id mpc seekthrough +5
+bindsym ctrl+XF86AudioLowerVolume exec --no-startup-id mpc volume -5 && dunstify -r 7 -i ~/.icons/volume-mpd-down.svg "mpc volume: $(mpc volume | cut -d' ' -f2)"
+bindsym ctrl+XF86AudioRaiseVolume exec --no-startup-id mpc volume +5 && dunstify -r 7 -i ~/.icons/volume-mpd-up.svg "mpc volume: $(mpc volume | cut -d' ' -f2)"
 
 ### WINDOWS ###
 
@@ -152,6 +155,9 @@ bindsym $mod+n move workspace to output left
 bindsym $mod+m move workspace to output right
 
 ### UTILITY ###
+
+# set a random background
+bindsym ctrl+$mod+b exec --no-startup-id nitrogen --no-recurse --set-scaled --random ~/Pictures/wallpapers/ &
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
@@ -256,7 +262,7 @@ mode "$mode_outer_gaps" {
 
 ### PROGRAMS ###
 
-set $mode_launcher Shortcuts: B / C / D / E / F / P / S / T / V / W / Z, Esc / Enter
+set $mode_launcher Shortcuts: B / C / D / E / F / M / P / S / T / V / W / Z, Esc / Enter
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop
@@ -264,6 +270,7 @@ mode "$mode_launcher" {
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish
+    bindsym m exec alacritty -e ncmpcpp
     bindsym p exec zathura
     bindsym s exec spotify
     bindsym t exec telegram-desktop

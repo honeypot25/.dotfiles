@@ -11,6 +11,6 @@ rm ~/.{lesshst,wget-hsts} 2>/dev/null
 # ~/.cache
 shopt -s extglob
 pushd ~/.cache/ &>/dev/null || exit 1
-rm -rf !(betterlockscreen|ImageMagick|fontconfig) 2>/dev/null
+rm -rf !(betterlockscreen|ImageMagick|fontconfig)
 popd &>/dev/null || exit 1
 shopt -u extglob

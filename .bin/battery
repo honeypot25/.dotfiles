@@ -25,10 +25,10 @@ while true; do
 
   # <=low and discharging
   if [ "$cur_lvl" -le "$low" ] && [ "$discharging" -eq 1 ]; then
-    message="Low battery ($cur_lvl%)\nPlug the AC!"
+    message="Low battery: $cur_lvl%. Plug the AC!"
   # >=high and charging
   elif [ "$cur_lvl" -ge "$high" ] && [ "$discharging" -eq 0 ]; then
-    message="Battery charged\nUnplug the AC!"
+    message="Battery charged: $cur_lvl%. Unplug the AC!"
   fi
 
   [ -n "$message" ] && {
@@ -36,6 +36,7 @@ while true; do
       -a "Battery" \
       -r 1 \
       -i ~/.icons/battery.svg \
+      -u CRITICAL \
       "$message"
     unset message
   }

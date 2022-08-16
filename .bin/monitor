@@ -39,6 +39,7 @@ i3-msg restart
 dunstify \
   -a "Monitor" \
   -r 5 \
+  -i ~/.icons/monitor.svg \
   "Active monitor(s): $list"
 
 exit 0

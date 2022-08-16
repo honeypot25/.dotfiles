@@ -84,6 +84,7 @@ alias prename="perl-rename"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
 alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
 alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
+alias ts="sudo timeshift-gtk"
 
 # changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
@@ -154,6 +155,7 @@ alias yta-wav="youtube-dl --extract-audio --audio-format wav"
 alias ytv-best="youtube-dl -f bestvideo+bestaudio"
 
 # generic git
+alias aa="cd $HOME/projects/auto-arch/"
 alias gitp="git s && git a . && git cam 'autocommit' && git psom"
 # dotfiles bare git repo
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'

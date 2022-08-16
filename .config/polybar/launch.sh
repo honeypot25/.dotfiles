@@ -2,39 +2,24 @@
 
 killall polybar
 
-echo -e "\n+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" | tee -a /tmp/polybar.log
-
 ### env variables
 
-# ADAPTER & BATTERY
+# ADAPTER, BATTERY
 read -d' ' -r ADAPTER BATTERY < <(ls /sys/class/power_supply/)
 
-# DEFAULT_MON & MAIN_MON
+# DEFAULT_MON, MAIN_MON
 read -d'\n' -r DEFAULT_MON MAIN_MON < <(polybar -m | head -n2 | cut -d':' -f1) # ext*. fallback: main
-# read -d'\n' -r MAIN_MON EXT_MON HDMI_MON VIRT_MON < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 
 function network() {
   read -d '\n' -r ETH_NIC eth_up WIFI_NIC wifi_up < <(ip link | rg "^\d: ([ew]\w+):.+ state (UP|DOWN)" -or '$1 $2')
   [ "$wifi_up" = "UP" ] && ACTIVE_NIC="$WIFI_NIC" || ACTIVE_NIC="$ETH_NIC"
-  # if [ "$eth_up" = "UP" ] && [ "$wifi_up" = "UP" ]; then
-  #   ACTIVE_NIC="$ETH_NIC"
-  #   #LABEL_CONNECTED=" E|W %{F#6C77BB}%{F-} %downspeed%"
-  # elif [ "$eth_up" = "UP" ]; then
-  #   ACTIVE_NIC="$ETH_NIC"
-  #   #LABEL_CONNECTED=" E %{F#6C77BB}%{F-} %downspeed%"
-  # elif [ "$wifi_up" = "UP" ]; then
-  #   ACTIVE_NIC="$WIFI_NIC"
-  #   #LABEL_CONNECTED=" W %{F#6C77BB}%{F-} %downspeed%"
-  # fi
-
 }
 network
 
-### env variables exports
 export ADAPTER BATTERY
 export DEFAULT_MON MAIN_MON
-export ACTIVE_NIC ETH_NIC WIFI_NIC #LABEL_CONNECTED
+export ACTIVE_NIC ETH_NIC WIFI_NIC
 
 # start with automatic reloads after config.ini changes
-polybar --log=error --reload main | tee -a /tmp/polybar.log &
-disown
+echo -e "+++ +++ +++ $(date +"%a %d %b | %X") +++ +++ +++\n" >/tmp/polybar.log
+polybar --log=error --reload main &>>/tmp/polybar.log &

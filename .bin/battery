@@ -12,9 +12,9 @@ while getopts ":l:h:i:" opt; do
   esac
 done
 
-# kill other running instances of the script if present
-for pid in $(ps aw -u "$(whoami)" -o pid,args | rg "(\d+).*$0" -or '$1'); do
-  [ "$pid" -ne $$ ] && kill "$pid"
+# kill other running instances of the current script if present
+for pid in $(pgrep -f "$0"); do
+  [ "$pid" -ne $$ ] && kill "$pid" 2>/dev/null
 done
 
 bat_path=$(upower -e | grep BAT)

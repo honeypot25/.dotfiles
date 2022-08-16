@@ -8,7 +8,10 @@ usage() { echo -e "Usage:\t$(basename "$0") <lock|autosuspend|manualsuspend|lid>
 
 case "$1" in
 lock)
-  light -O && light -S 25 && betterlockscreen -l blur --off 300 && light -I
+  light -O
+  light -S 25
+  betterlockscreen -l blur --off 300
+  light -I
   ;;
 
 autosuspend)
@@ -18,8 +21,8 @@ autosuspend)
     --not-when-audio \
     --detect-sleep \
     --timer 540 'light -O; light -S 5' \
-    --timer 60 'light -S 20; betterlockscreen -l blur' 'light -I' \
-    --timer 300 'light -I && systemctl suspend'
+    --timer 60 'light -S 20; betterlockscreen -l blur' \
+    --timer 300 'light -I; systemctl suspend'
   ;;
 
 manualsuspend | lid)

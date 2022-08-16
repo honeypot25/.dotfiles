@@ -171,7 +171,7 @@ bindsym ctrl+Print flameshot gui -c # manual region
 bindsym Print flameshot screen -c # mouse screen
 
 # Toggle WiFi
-bindsym XF86WIFI exec --no-startup-id wifi toggle
+bindsym XF86WLAN exec --no-startup-id wifi toggle &
 
 # Toggle touchpad
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &

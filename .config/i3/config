@@ -52,7 +52,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 # Battery level monitoring
 exec_always --no-startup-id ~/.bin/battery -l 20 -h 99 -i 12 &
 
-# Power saving (+10min: dim; +2min: lock; +3min: susp)
+# Power saving (+13min: dim; +1min: lock; +1min: susp)
 exec_always --no-startup-id ~/.bin/screenlock powersave &
 
 # Restore previous screen brightness

@@ -7,14 +7,16 @@ files=("$@")
 outs=()
 
 for file in "${files[@]}"; do
-  if [ -f "$file" ] && [[ $file =~ .*\.c$ ]]; then
+  if [[ $(file "$file") =~ "C source" ]]; then
     out=${file%.*}
     gcc "$file" -o "$out" && outs+=("$out")
   else
-    echo "Skipped \"$file\", not a .c file"
+    echo -e "Err: skipped \"$file\", not a C script\n"
   fi
 done
 
 for out in "${outs[@]}"; do
+  echo -e "Running \"$out\":"
   ./"$out"
+  echo
 done

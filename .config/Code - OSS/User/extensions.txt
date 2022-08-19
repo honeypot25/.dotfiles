@@ -1,5 +1,6 @@
 aaron-bond.better-comments
 ecmel.vscode-html-css
+esbenp.prettier-vscode
 formulahendry.auto-close-tag
 formulahendry.auto-rename-tag
 formulahendry.code-runner
@@ -7,12 +8,10 @@ foxundermoon.shell-format
 KevinRose.vsc-python-indent
 ms-azuretools.vscode-docker
 ms-python.python
-ms-vscode.cpptools-themes
+ms-vscode.cpptools
 PKief.material-icon-theme
+redhat.vscode-xml
 shd101wyy.markdown-preview-enhanced
 timonwong.shellcheck
-tomoki1207.pdf
-vscodevim.vim
-yzane.markdown-pdf
 yzhang.markdown-all-in-one
 zhuangtongfa.material-theme

@@ -3,7 +3,7 @@
 # packages
 paru -Scq --noconfirm
 paccache -ruq
-sudo pacman -Rnus --noconfirm $(sudo pacman -Qdtq --noconfirm) 2>/dev/null
+sudo pacman -Rnus $(sudo pacman -Qdtq --noconfirm) 2>/dev/null
 
 # home files
 rm ~/.{lesshst,wget-hsts} 2>/dev/null
@@ -11,6 +11,7 @@ rm ~/.{lesshst,wget-hsts} 2>/dev/null
 # ~/.cache
 shopt -s extglob
 pushd ~/.cache/ &>/dev/null || exit 1
-rm -rfv !(betterlockscreen|ImageMagick|fontconfig)
+echo -e "Press Enter to delete ~/.cache\n"
+rm -rf !(betterlockscreen|ImageMagick|fontconfig)
 popd &>/dev/null || exit 1
 shopt -u extglob

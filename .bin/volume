@@ -1,38 +1,48 @@
 #!/usr/bin/env bash
 
-# cur_vol=$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master) | sed 's/%//g')
-cur_vol=$(pamixer --get-volume)
-low_vol=33
-high_vol=66
+usage() { echo -e "Usage:\t$(basename "$0") <audio-service>" && exit 1; }
+[ $# -ne 1 ] && usage
+service=$1
 
-if [[ "$cur_vol" =~ ^0|muted$ ]]; then
-  icon="x"
-elif [ "$cur_vol" -lt $low_vol ]; then
-  icon=1
-elif [ "$cur_vol" -ge $low_vol ] && [ "$cur_vol" -le $high_vol ]; then
-  icon=2
-elif [ "$cur_vol" -gt $high_vol ]; then
-  icon=3
-fi
+case $service in
+speakers)
+  vol=$(pamixer --get-volume)
+  low_vol=33
+  high_vol=66
+  if [[ "$vol" =~ ^0|muted$ ]]; then
+    lvl=0
+  elif [ "$vol" -lt $low_vol ]; then
+    lvl=1
+  elif [ "$vol" -ge $low_vol ] && [ "$vol" -le $high_vol ]; then
+    lvl=2
+  elif [ "$vol" -gt $high_vol ]; then
+    lvl=3
+  fi
+  app="Speakers"
+  id=6
+  icon="vol-$lvl.svg"
+  msg="Speakers volume: $vol%"
+  ;;
+
+spotify)
+  app="Spotify"
+  id=7
+  icon="spotify.svg"
+  msg="Spotify volume: $(echo "$(playerctl -p spotify volume) * 100" | bc -l | xargs printf '%.0f%%')"
+  ;;
+
+mpd)
+  app="MPD"
+  id=8
+  icon="vol-mpd.svg"
+  msg="MPD volume: $(echo "$(playerctl -p mpd volume) * 100" | bc -l | xargs printf '%.0f%%')"
+  ;;
+
+h | *) usage ;;
+esac
 
 dunstify \
-  -a "Speakers" \
-  -r 6 \
-  -i ~/.icons/volume-$icon.svg \
-  "Speakers volume: $cur_vol%"
-
-# how=$1
-# value=$2
-# script=$(basename "$0")
-
-# if [[ "$how" == "down" ]]; then
-#   # pactl set-sink-volume @DEFAULT_SINK@ -"$value"%
-#   amixer sset Master $value%-
-#   new=$(awk '/%/ {gsub(/[\[\]]/,""); print $4}' <(amixer sget Master))
-#   notify-send --urgency=low --expire-time=50 --app-name="$script" "Down to $new"
-# elif [[ "$how" == "up" ]]; then
-#   # pactl set-sink-volume @DEFAULT_SINK@ +"$value"%
-#   amixer sset Master $value%+
-#   new=$(awk '/%/ {gsub(/[\[\]]/,""); print $4}' <(amixer sget Master))
-#   notify-send --urgency=low --expire-time=50 --app-name="$script" "Up to $new"
-# fi
+  -a "$app" \
+  -r $id \
+  -i ~/.icons/$icon \
+  "$msg"

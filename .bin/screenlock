@@ -3,30 +3,41 @@
 usage() { echo -e "Usage:\t$(basename "$0") <lock|autosuspend|manualsuspend|lid>" && exit 1; }
 [ $# -eq 0 ] && usage
 
-# look for the cached file(s), create cache otherwise
+# look for the cached file, or create it
 [ -d "$HOME/.cache/betterlockscreen/" ] || betterlockscreen -u ~/Pictures/wallpapers/lockscreen.png --fx blur -q
 
 case "$1" in
 lock)
   light -O
-  light -S 25
-  betterlockscreen -l blur --off 300
-  light -I
+  light -S 15
+  betterlockscreen -l blur
+  xidlehook \
+    --timer 180 \
+    'light -I; systemctl suspend' \
+    '' \
+    --once &
   ;;
 
-autosuspend)
-  killall -9 xidlehook
+susp | lid)
+  betterlockscreen -l blur
+  systemctl suspend
+  ;;
+
+powersave)
+  killall -q xidlehook
   xidlehook \
     --not-when-fullscreen \
     --not-when-audio \
-    --detect-sleep \
-    --timer 540 'light -O; light -S 5' \
-    --timer 60 'light -S 20; betterlockscreen -l blur' \
-    --timer 300 'light -I; systemctl suspend'
-  ;;
-
-manualsuspend | lid)
-  betterlockscreen -l blur && sleep 1 && systemctl suspendx
+    --timer 600 \
+    'light -O; light -S 5' \
+    'light -I' \
+    --timer 120 \
+    'light -S 15; betterlockscreen -l blur' \
+    '' \
+    --timer 180 \
+    'light -I; systemctl suspend' \
+    '' \
+    --detect-sleep &
   ;;
 
 h | *) usage ;;

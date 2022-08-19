@@ -84,6 +84,8 @@ alias prename="perl-rename"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
 alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
 alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
+alias nf="neofetch --config $HOME/.config/neofetch/nf.conf"
+alias nfa="neofetch --config $HOME/.config/neofetch/nfa.conf"
 alias ts="sudo timeshift-gtk"
 
 # changing "ls" to "exa"

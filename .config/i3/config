@@ -10,7 +10,7 @@ font pango:Hack 10
 ### EXEC AT INITIAL i3 START ###
 ################################
 
-# xss-lock deamon for events (lid)
+# xss-lock deamon for events (lid closing)
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
 
 # start with a random background
@@ -27,6 +27,12 @@ exec --no-startup-id picom &
 
 # mpd
 exec --no-startup-id mpd &
+
+# mpdDris2 for playerctl & mpd
+exec --no-startup-id mpdDris2 &
+
+# players discovery
+exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
 # exec_always --no-startup-id nm-applet &
@@ -46,8 +52,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 # Battery level monitoring
 exec_always --no-startup-id ~/.bin/battery -l 20 -h 99 -i 12 &
 
-# Screen autolock and system suspend (9+1+5 min)
-exec_always --no-startup-id ~/.bin/screenlock autosuspend &
+# Power saving (+10min: dim; +2min: lock; +3min: susp)
+exec_always --no-startup-id ~/.bin/screenlock powersave &
 
 # Restore previous screen brightness
 exec_always --no-startup-id light -I &
@@ -70,24 +76,38 @@ bindsym ctrl+$alt+s exec --no-startup-id i3-resurrect restore
 
 ### MEDIA ###
 
-# speakers (+-5)
-bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && ~/.bin/volume &
-bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && ~/.bin/volume &
-# toggle speakers
-bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute && ~/.bin/volume &
-# toggle mic
+# mic
 bindsym XF86AudioMicMute exec --no-startup-id pamixer --default-source --toggle-mute && ~/.bin/microphone &
-# mpc audio commands
-bindsym XF86AudioPlay exec --no-startup-id mpc toggle
-bindsym XF86AudioStop exec --no-startup-id mpc stop
-bindsym XF86AudioPrev exec --no-startup-id mpc prev
-bindsym XF86AudioNext exec --no-startup-id mpc next
-bindsym ctrl+XF86AudioPlay exec --no-startup-id "killall -q mpd; mpd &"
-bindsym ctrl+XF86AudioStop exec --no-startup-id killall -q mpd
-bindsym ctrl+XF86AudioPrev exec --no-startup-id mpc seekthrough -5
-bindsym ctrl+XF86AudioNext exec --no-startup-id mpc seekthrough +5
-bindsym ctrl+XF86AudioLowerVolume exec --no-startup-id mpc volume -5 && dunstify -r 7 -i ~/.icons/volume-mpd-down.svg "mpc volume: $(mpc volume | cut -d' ' -f2)"
-bindsym ctrl+XF86AudioRaiseVolume exec --no-startup-id mpc volume +5 && dunstify -r 7 -i ~/.icons/volume-mpd-up.svg "mpc volume: $(mpc volume | cut -d' ' -f2)"
+# speakers
+bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute && ~/.bin/volume speakers &
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && ~/.bin/volume speakers &
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && ~/.bin/volume speakers &
+# playerctl: spotify only (main)
+bindsym XF86AudioPlay exec --no-startup-id playerctl -p spotify play-pause
+bindsym XF86AudioStop exec --no-startup-id playerctl -p spotify stop
+bindsym XF86AudioPrev exec --no-startup-id playerctl -p spotify previous
+bindsym XF86AudioNext exec --no-startup-id playerctl -p spotify next
+bindsym Shift+XF86AudioPlay exec --no-startup-id "killall -q mpd mpDris2; spotify &" 
+bindsym Shift+XF86AudioStop exec --no-startup-id killall -q spotify
+bindsym Shift+XF86AudioPrev exec --no-startup-id playerctl -p spotify position 5-
+bindsym Shift+XF86AudioNext exec --no-startup-id playerctl -p spotify position 5+
+# bindsym Shift+XF86AudioMute exec --no-startup-id playerctl -p spotify volume 0 && ~/.bin/volume spotify &
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id playerctl -p spotify volume 0.05- && ~/.bin/volume spotify &
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id playerctl -p spotify volume 0.05+ && ~/.bin/volume spotify &
+# playerctl: mpd only
+bindsym XF86AudioPlay+$alt exec --no-startup-id playerctl -p mpd play-pause
+bindsym XF86AudioStop+$alt exec --no-startup-id playerctl -p mpd stop
+bindsym XF86AudioPrev+$alt exec --no-startup-id playerctl -p mpd previous
+bindsym XF86AudioNext+$alt exec --no-startup-id playerctl -p mpd next
+bindsym Shift+XF86AudioPlay+$alt exec --no-startup-id "killall -q spotify; mpd && mpDris2 &"
+bindsym Shift+XF86AudioStop+$alt exec --no-startup-id killall -q mpd mpDris2
+bindsym Shift+XF86AudioPrev+$alt exec --no-startup-id playerctl -p mpd position 5-
+bindsym Shift+XF86AudioNext+$alt exec --no-startup-id playerctl -p mpd position 5+
+# bindsym Shift+XF86AudioMute+$alt exec --no-startup-id playerctl -p mpd volume 0 && ~/.bin/volume mpd &
+bindsym Shift+XF86AudioLowerVolume+$alt exec --no-startup-id playerctl -p mpd volume 0.05- && ~/.bin/volume mpd &
+bindsym Shift+XF86AudioRaiseVolume+$alt exec --no-startup-id playerctl -p mpd volume 0.05+ && ~/.bin/volume mpd &
+# playerctl: any service except spotify
+# ...
 
 ### WINDOWS ###
 
@@ -150,6 +170,12 @@ bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
 
+# default workspace for specific windows
+# 1
+for_window [class="Firefox"] move to workspace $ws2
+# 3
+for_window [class="Spotify"] move to workspace $ws3
+
 # move workspaces between monitors
 bindsym $mod+n move workspace to output left
 bindsym $mod+m move workspace to output right
@@ -171,7 +197,7 @@ bindsym ctrl+Print flameshot gui -c # manual region
 bindsym Print flameshot screen -c # mouse screen
 
 # Toggle WiFi
-bindsym XF86WLAN exec --no-startup-id wifi toggle &
+bindsym XF86WLAN exec --no-startup-id rfkill toggle wlan &
 
 # Toggle touchpad
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
@@ -185,11 +211,11 @@ bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O && ~/.bin/brightness &
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O && ~/.bin/brightness &
 
-# Turn off & Lock screen
+# Lock (3min Suspend)
 bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
 
 # Lock & Suspend
-bindsym XF86Sleep exec --no-startup-id ~/.bin/screenlock manualsuspend &
+bindsym XF86Sleep exec --no-startup-id ~/.bin/screenlock susp &
 
 #############
 ### MODES ###

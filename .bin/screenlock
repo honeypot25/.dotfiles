@@ -1,44 +1,45 @@
 #!/usr/bin/env bash
 
-usage() { echo -e "Usage:\t$(basename "$0") <lock|susp|powersave>" && exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") <lock|susp|autosusp>" && exit 1; }
 [ $# -eq 0 ] && usage
 
 # look for the cached file, or create it
 [ -d "$HOME/.cache/betterlockscreen/" ] || betterlockscreen -u ~/Pictures/wallpapers/lockscreen.png --fx blur -q
 
+# always try to kill other running timers
+killall -q xidlehook
+
 case "$1" in
 lock)
-  light -O
-  light -S 15
-  betterlockscreen -l blur
-  sleep 1
-  xidlehook \
-    --timer 180 \
-    'light -I; systemctl suspend' \
-    '' &
-  ;;
-
-susp | lid)
-  betterlockscreen -l blur
-  sleep 1
+  # Dim
+  # Lock & Turn Off
+  # Suspend after 3m
+  light -O && light -S 10
+  betterlockscreen -l blur --off 180
   systemctl suspend
   ;;
 
-powersave)
-  killall -q xidlehook
+susp | lid)
+  # Suspend
+  systemctl suspend
+  ;;
+
+autosusp)
+  # Dim after 13m
+  # Lock & Turn Off after 1m
+  # Suspend after 1m
   xidlehook \
     --not-when-fullscreen \
     --not-when-audio \
     --timer 780 \
-    'light -O; light -S 5' \
+    'light -O && light -S 10' \
     'light -I' \
     --timer 60 \
-    'light -S 15; betterlockscreen -l blur' \
-    '' \
+    'betterlockscreen -l blur' \
+    'light -I' \
     --timer 60 \
-    'light -I; systemctl suspend' \
-    '' \
-    --detect-sleep &
+    'systemctl suspend' \
+    '' &
   ;;
 
 h | *) usage ;;

@@ -46,17 +46,17 @@ exec --no-startup-id sleep 1 && playerctld daemon &
 ### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
 #############################################
 
+# Always restore previous screen brightness
+exec_always --no-startup-id light -I &
+
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
 
-# Battery level monitoring
+# Battery monitoring
 exec_always --no-startup-id ~/.bin/battery -l 20 -h 99 -i 12 &
 
-# Power saving (+13min: dim; +1min: lock; +1min: susp)
-exec_always --no-startup-id ~/.bin/screenlock powersave &
-
-# Restore previous screen brightness
-exec_always --no-startup-id light -I &
+# Autosuspend
+exec_always --no-startup-id ~/.bin/screenlock autosusp &
 
 ###################
 ### KEYBINDINGS ###
@@ -71,8 +71,8 @@ bindsym $mod+Shift+r restart
 # logout X session
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3 and logout?' -B 'Y' 'i3-msg exit'"
 # save/restore i3 layout
-bindsym ctrl+$alt+r exec --no-startup-id i3-resurrect save
-bindsym ctrl+$alt+s exec --no-startup-id i3-resurrect restore
+bindsym ctrl+$alt+s exec --no-startup-id i3-resurrect save
+bindsym ctrl+$alt+r exec --no-startup-id i3-resurrect restore
 
 ### MEDIA ###
 
@@ -211,10 +211,10 @@ bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O && ~/.bin/brightness &
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O && ~/.bin/brightness &
 
-# Lock (3min Suspend)
+# Lock
 bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
 
-# Lock & Suspend
+# Suspend
 bindsym XF86Sleep exec --no-startup-id ~/.bin/screenlock susp &
 
 #############

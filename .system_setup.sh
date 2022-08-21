@@ -108,8 +108,9 @@ install_GUI() (
 install_packages() {
   paru -S --needed --noconfirm "${pkgs[@]}"
 
-  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt\""
+  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt\"\n"
   while read -r ext; do
+    echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
   done <"$HOME/.config/Code - OSS/User/extensions.txt"
   echo -e "\nDone."
@@ -139,6 +140,8 @@ set_virtualization() {
 }
 
 end() {
+  # services
+  sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
   # adjust permissions
   sudo chmod +s /usr/bin/light
   # copies
@@ -150,6 +153,10 @@ end() {
   fc-cache -fv
   # removals
   rmdir ~/{Public,Templates}
+  # install GRUB theme
+  sudo cp -r ~/.themes/Xenlism-Arch/ /boot/grub/themes/
+  sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
+  sudo grub-mkconfig -o /boot/grub/grub.cfg
 
   # reboot
   printf "All done!\nRemember to config Timeshift (5, 7, 0, 0, 0)\n\nRebooting in:\n"

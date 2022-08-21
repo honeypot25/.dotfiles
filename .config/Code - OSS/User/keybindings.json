@@ -31,5 +31,57 @@
   {
     "key": "ctrl+alt+meta+n",
     "command": "-welcome.showNewFileEntries"
+  },
+  {
+    "key": "home",
+    "command": "code-runner.run",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+alt+n",
+    "command": "-code-runner.run"
+  },
+  {
+    "key": "home",
+    "command": "-cursorHome",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "home",
+    "command": "-firstCompressedFolder",
+    "when": "explorerViewletCompressedFocus && explorerViewletVisible && filesExplorerFocus && !explorerViewletCompressedFirstFocus && !inputFocus"
+  },
+  {
+    "key": "home",
+    "command": "-list.focusFirst",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "home",
+    "command": "-notifications.focusFirstToast",
+    "when": "notificationFocus && notificationToastsVisible"
+  },
+  {
+    "key": "home",
+    "command": "-workbench.statusBar.focusFirst",
+    "when": "statusBarFocused"
+  },
+  {
+    "key": "shift+home",
+    "command": "-workbench.action.terminal.scrollToTop",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocus && terminalProcessSupported && !terminalAltBufferActive"
+  },
+  {
+    "key": "shift+home",
+    "command": "-cursorHomeSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "shift+home",
+    "command": "code-runner.stop"
+  },
+  {
+    "key": "ctrl+alt+m",
+    "command": "-code-runner.stop"
   }
 ]

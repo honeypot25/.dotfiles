@@ -34,9 +34,6 @@ exec --no-startup-id mpdDris2 &
 # players discovery
 exec --no-startup-id sleep 1 && playerctld daemon &
 
-# save Nemo preferences
-exec --no-startup-id dconf dump /org/nemo/ >~/.config/nemo/preferences &
-
 # NetworkManager applet
 # exec_always --no-startup-id nm-applet &
 
@@ -177,7 +174,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 # 1. Home
 for_window [class="(?i)bitwarden|firefox"] move container to workspace $ws1; workspace $ws1
 # 2. Code
-for_window [class="(?i)code|supernotes"] move container to workspace $ws2; workspace $ws2
+for_window [class="(?i)code|github-desktop|supernotes"] move container to workspace $ws2; workspace $ws2
 # 3. Chat
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|zoom"] move container to workspace $ws3; workspace $ws3
 
@@ -294,7 +291,7 @@ mode "$mode_outer_gaps" {
 
 ### PROGRAMS ###
 
-set $mode_launcher SHORTCUTS: B, C, D, E, F, M, N, P, S, T, V, W, Z
+set $mode_launcher SHORTCUTS: B, C, D, E, F, G, M, N, P, S, T, V, W, Z
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop
@@ -302,6 +299,7 @@ mode "$mode_launcher" {
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish
+    bindsym g exec github-desktop
     bindsym m exec alacritty -e ncmpcpp
     bindsym n exec appimage supernotes
     bindsym p exec zathura

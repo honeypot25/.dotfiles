@@ -167,6 +167,10 @@ end() {
   ln -Pf ~/.packages ~/projects/auto-arch/packages # hard link
   # updates
   fc-cache -fv
+  # Nemo preferences
+  dconf dump /org/nemo/ >~/.config/nemo/preferences &
+  # VScode extensions' list
+  code --list-extensions >"$HOME/.config/Code - OSS/User/extensions.txt" 
   # removals
   rmdir ~/{Public,Templates}
   # install GRUB theme

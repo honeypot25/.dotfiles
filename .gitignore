@@ -22,16 +22,25 @@
 .log
 .netrc
 .pciids-cache
-.python_history
-.ssh/id*
 .sudo_as_admin_successful
+.tmp
 .uuid
 .viminfo
 .wget-hsts
 .Xauthority
 .xsession-errors
+.old.*
 
-## special
-# exclude all except config
+# coding
+.vscode/
+.env
+*.session*
+
+# python
+.python_history
+__pycache__/
+*.py[cod]=
+
+# ssh: exclude all except config
 .ssh/*
 !.ssh/config

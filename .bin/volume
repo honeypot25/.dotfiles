@@ -20,29 +20,30 @@ speakers)
   fi
   app="Speakers"
   id=6
-  icon="vol-$lvl.svg"
+  icon="vol-$lvl"
   msg="Speakers volume: $vol%"
   ;;
 
 spotify)
   app="Spotify"
   id=7
-  icon="spotify.svg"
+  icon="spotify"
   msg="Spotify volume: $(echo "$(playerctl -p spotify volume) * 100" | bc -l | xargs printf '%.0f%%')"
   ;;
 
 mpd)
   app="MPD"
   id=8
-  icon="vol-mpd.svg"
+  icon="vol-mpd"
   msg="MPD volume: $(echo "$(playerctl -p mpd volume) * 100" | bc -l | xargs printf '%.0f%%')"
   ;;
 
 h | *) usage ;;
 esac
 
+icons="$XDG_DATA_HOME/icons"
 dunstify \
   -a "$app" \
   -r $id \
-  -i ~/.icons/$icon \
+  -i "$icons/$icon.svg" \
   "$msg"

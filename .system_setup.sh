@@ -12,7 +12,10 @@ preparing() {
   mkdir -p apps coding games misc projects uni vms Pictures/{screenshots,wallpapers} Videos/screenrec
   # wallpapers
   git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  # mkdir -p .{fonts,themes,icons} /usr/share/{fonts,themes,icons} /usr/local/bin
+  # system
+  mkdir "$XDG_STATE_HOME/bash"
+  mkdir "$XDG_DATA_HOME/{cargo,gnupg,pki}"
+  mkdir "$XDG_CONFIG_HOME/python"
   popd || return # $PWD
 
   # install paru
@@ -36,6 +39,8 @@ install_displaymanager() (
   install_lightdm() {
     paru -S --needed --noconfirm "${lightdm_pkgs[@]}"
     sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+    # .Xauthority XDG-compliance
+    sudo sed -i '/[LightDM]/a user-authority-in-system-dir=true' /etc/lightdm/lightdm.conf
     sudo systemctl enable lightdm
   }
 
@@ -54,8 +59,10 @@ install_displaymanager() (
 install_GUI() (
   # choose GUI
   echo
-  while [[ ! "$GUI" =~ ^kde|xfce|gnome|cinnamon|i3|sway$ ]]; do
-    read -rp "Install your DE/WM (kde|xfce|gnome|cinnamon|i3|sway): " GUI
+  # kde|xfce|gnome|cinnamon|sway
+  while [[ ! "$GUI" =~ ^kde|i3$ ]]; do
+    # kde|xfce|gnome|cinnamon|sway
+    read -rp "Install your DE/WM (i3): " GUI
   done
   echo
 
@@ -114,16 +121,19 @@ install_packages() {
     code --install-extension "$ext" &>/dev/null
   done <"$HOME/.config/Code - OSS/User/extensions.txt"
   echo -e "\nDone."
+
+  echo -e "\nInstalling AppImage apps\n"
+  pushd ~/apps || return
+  curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
+  chmod u+x ./*
+  popd || return
 }
 
 set_zram() {
   paru -S --needed --noconfirm zramswap
+  # 50% RAM
+  echo "ZRAM_SIZE_PERCENT=50" | sudo tee /etc/zramswap.conf
   sudo systemctl enable --now zramswap
-  # # zramd
-  # read -rp "Enter the max ZRAM size in MB (actual RAM + 1GB, e.g. 8640): " MAX_ZRAM
-  # sudo sed -i 's/^# ALGORITHM=.*/ALGORITHM=zstd/' /etc/default/zramd
-  # sed -i "s/^# MAX_SIZE=.*/MAX_SIZE=$MAX_ZRAM/" /etc/default/zramd # e.g. if 8.64GB: +1GB than actual RAM (8GiB = 7.64GB)
-  # sudo systemctl enable --now zramd
 }
 
 set_virtualization() {
@@ -139,22 +149,28 @@ set_virtualization() {
   # sudo virsh net-autostart .br10
 }
 
+# set_crontab() {
+#   {
+#     echo ""
+#   } | sudo tee var/spool/cron/"$(whoami)"
+# }
+
 end() {
   # services
   sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
   # adjust permissions
   sudo chmod +s /usr/bin/light
   # copies
-  sudo cp -r ~/.fonts/* /usr/share/fonts/
-  sudo cp -r ~/.themes/* /usr/share/themes/
-  sudo cp -r ~/.icons/* /usr/share/icons/
+  sudo cp -r "$XDG_DATA_HOME"/icons/* /usr/share/icons/
+  sudo cp -r "$XDG_DATA_HOME"/fonts/* /usr/share/fonts/
+  sudo cp -r "$XDG_DATA_HOME"/themes/* /usr/share/themes/
   ln -Pf ~/.packages ~/projects/auto-arch/packages # hard link
   # updates
   fc-cache -fv
   # removals
   rmdir ~/{Public,Templates}
   # install GRUB theme
-  sudo cp -r ~/.themes/Xenlism-Arch/ /boot/grub/themes/
+  sudo cp -r "$XDG_DATA_HOME/themes/Xenlism-Arch/" /boot/grub/themes/
   sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -174,4 +190,5 @@ install_packages
 set_zram
 set_virtualization
 # set_timeshift
+# set_crontab
 end

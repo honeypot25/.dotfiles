@@ -36,10 +36,11 @@ esac
 # restart i3
 i3-msg restart
 
+icons="$XDG_DATA_HOME/icons"
 dunstify \
   -a "Monitor" \
   -r 5 \
-  -i ~/.icons/monitor.svg \
+  -i "$icons/monitor.svg" \
   "Active monitor(s): $list"
 
 exit 0

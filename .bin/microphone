@@ -2,6 +2,7 @@
 
 cur_state=$(pamixer --default-source --get-mute)
 
+icons="$XDG_DATA_HOME/icons"
 # shellcheck disable=2015
 [ "$cur_state" = "true" ] && {
   icon="mic-off"
@@ -14,5 +15,5 @@ cur_state=$(pamixer --default-source --get-mute)
 dunstify \
   -a "Microphone" \
   -r 3 \
-  -i ~/.icons/$icon.svg \
+  -i "$icons/$icon.svg" \
   "Mic $state"

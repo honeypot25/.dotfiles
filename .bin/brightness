@@ -4,10 +4,11 @@ cur_bri=$(cat /sys/class/backlight/*/actual_brightness)
 max_bri=$(cat /sys/class/backlight/*/max_brightness)
 cur_perc=$((cur_bri * 100 / max_bri))
 
+icons="$XDG_DATA_HOME/icons"
 [ "$cur_perc" -lt 50 ] && icon="moon" || icon="sun"
 
 dunstify \
   -a "Screen" \
   -r 2 \
-  -i ~/.icons/$icon.svg \
+  -i "$icons/$icon.svg" \
   "Brightness: $cur_perc%"

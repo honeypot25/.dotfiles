@@ -18,6 +18,7 @@ for pid in $(pgrep -f "$0"); do
 done
 
 bat_path=$(upower -e | grep BAT)
+icons="$XDG_DATA_HOME/icons"
 
 while true; do
   cur_lvl=$(upower -i "$bat_path" | grep -E "percentage" | sed 's/[^0-9]//g')
@@ -35,7 +36,7 @@ while true; do
     dunstify \
       -a "Battery" \
       -r 1 \
-      -i ~/.icons/battery.svg \
+      -i "$icons/battery.svg" \
       -u CRITICAL \
       "$message"
     unset message

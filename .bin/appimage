@@ -22,5 +22,5 @@ else
     echo "Run \"chmod +x $list\" first"
     exit 1
   }
-  ./"$list"
+  "$list"
 fi

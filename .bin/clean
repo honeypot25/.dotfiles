@@ -11,7 +11,8 @@ rm ~/.{lesshst,wget-hsts} 2>/dev/null
 # ~/.cache
 shopt -s extglob
 pushd ~/.cache/ &>/dev/null || exit 1
+echo -e "\nCleaning ~/.cache"
 rm -rf !(betterlockscreen|ImageMagick|fontconfig)
 popd &>/dev/null || exit 1
 shopt -u extglob
-echo -e "\nCleaned ~/.cache\n"
+

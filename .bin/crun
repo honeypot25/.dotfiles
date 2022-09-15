@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 
-usage() { echo -e "Usage:\t$(basename "$0") <file1.c> [... <fileN.c>]" && exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") <script.c> [args]" && exit 1; }
 [ $# -eq 0 ] && usage
 
-files=("$@")
-outs=()
+script=$1
+if [[ $(file "$script") =~ "C source" ]]; then
+  out=${script%.*}
+  gcc "$script" -o "$out" || exit 1
 
-for file in "${files[@]}"; do
-  if [[ $(file "$file") =~ "C source" ]]; then
-    out=${file%.*}
-    gcc "$file" -o "$out" && outs+=("$out")
-  else
-    echo -e "Err: skipped \"$file\", not a C script\n"
-  fi
-done
+  printf "Running \"%s\"" "$out"
+  args="${*:2:$#}"
+  [ -n "$args" ] && printf " with \"%s\" args" "$args"
+  printf "...\n"
 
-for out in "${outs[@]}"; do
-  echo -e "Running \"$out\":"
-  ./"$out"
-  echo
-done
+  ./"$out" "$args"
+else
+  echo -e "Err: not a C script\n" && exit 1
+fi

@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
 
 ## EXPORTS
-export TERM=xterm-256color
+# XDG
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+# system
 # export EDITOR=nvim
 # export VISUAL=
 # export MANPAGER="nvim -c 'set ft=man' -"
-# export MANPAGER=less
+export HISTFILE="$XDG_STATE_HOME/bash/history"
+export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
+export TERM=xterm-256color
+# export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+# programs
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -21,7 +33,6 @@ unset green red rst
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth
 HISTSIZE=1000
-HISTFILE=~/.bash_history
 
 ## SHOPT
 shopt -s autocd       # change to named directory
@@ -82,8 +93,8 @@ alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 alias trash="rm -rfv $HOME/.local/share/Trash/*"
 alias prename="perl-rename"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
-alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
-alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
+#alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
+#alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
 alias nf="neofetch --config $HOME/.config/neofetch/nf.conf"
 alias nfa="neofetch --config $HOME/.config/neofetch/nfa.conf"
 alias ts="sudo timeshift-gtk"
@@ -162,6 +173,11 @@ alias gitp="git s && git a . && git cam 'autocommit' && git psom"
 # dotfiles bare git repo
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias dotsp="dots s && dots cam 'autocommit' && dots psom"
+
+# XDG-compliance
+alias keychain="keychain --dir $XDG_RUNTIME_DIR/keychain"
+alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
+alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 ### SCRIPTS
 # SSH keychain

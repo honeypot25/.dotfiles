@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-usage() { echo -e "Usage:\t$(basename "$0") -l <directory> -f <format> -r <resolution>" && exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") -d <directory> -f <format> -r <resolution>" && exit 1; }
 [ $# -eq 0 ] && usage
 
 while getopts ":hd:f:r:" opt; do
@@ -46,7 +46,7 @@ popd || exit 1 # $dir
 rmdir merging_dir
 
 # End
-while [[ ! "$delete_vids" =~ ^y|n$ ]]; do
+while [[ ! "$delete_vids" =~ ^YES|n$ ]]; do
   read -rp "Do you want to delete the original videos? (YES|n): " delete_vids
 done
 [ "$delete_vids" = "YES" ] && rm -fv ./*."$fmt"

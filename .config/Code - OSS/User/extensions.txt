@@ -11,7 +11,6 @@ ms-python.python
 ms-vscode.cpptools
 PKief.material-icon-theme
 redhat.vscode-xml
-shd101wyy.markdown-preview-enhanced
 timonwong.shellcheck
 yzhang.markdown-all-in-one
 zhuangtongfa.material-theme

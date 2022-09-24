@@ -6,14 +6,19 @@ usage() { echo -e "Usage:\t$(basename "$0") <dir1> [... <dirN>]" && exit 1; }
 dirs=("$@")
 
 for dir in "${dirs[@]}"; do
-	# exit on fail
-	[ -d "$dir" ] || usage
+  # exit on fail
+  [ -d "$dir" ] || continue  
+  pushd "$dir" || continue
+  
+  for vid in ./*.mp4; do
+    ffmpeg -i "$vid" \
+      -c:v libx264 -crf 40 -filter:v fps=fps=10 -c:a libopus -application voip -ab 16k -ac 1 -cutoff 12000 \
+      "$(echo "$vid" | sed 's/mp4/mkv/')"
+  done
 
-	pushd "$dir" || continue
-	for vid in ./*.mp4; do
-		ffmpeg -i "$vid" \
-			-c:v libx264 -crf 40 -filter:v fps=fps=10 -c:a libopus -application voip -ab 16k -ac 1 -cutoff 12000 \
-			"$(echo "$vid" | sed 's/mp4/mkv/')"
-	done
-	popd || continue
+  while [[ ! "$delete_vids" =~ ^YES|n$ ]]; do
+    read -rp "Do you want to delete the original mp4 videos in \"$PWD\"? (YES|n): " delete_vids
+  done
+  [ "$delete_vids" = "YES" ] && rm -fv ./*.mp4  
+  popd || continue
 done

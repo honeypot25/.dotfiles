@@ -21,23 +21,24 @@ lock)
 
 susp | lid)
   # Suspend
-  systemctl suspend
+    systemctl suspend
   ;;
 
 autosusp)
-  # Dim after 13m
-  # Lock & Turn Off after 1m
-  # Suspend after 1m
+  # Dim after 10m
+  # Lock after 1m
+  # Suspend after 4m
   xidlehook \
+    --detect-sleep \
     --not-when-fullscreen \
     --not-when-audio \
-    --timer 780 \
+    --timer 600 \
     'light -O && light -S 10' \
     'light -I' \
     --timer 60 \
     'betterlockscreen -l blur' \
     'light -I' \
-    --timer 60 \
+    --timer 240 \
     'systemctl suspend' \
     '' &
   ;;

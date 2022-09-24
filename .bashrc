@@ -18,7 +18,9 @@ export TERM=xterm-256color
 # programs
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -181,4 +183,5 @@ alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 ### SCRIPTS
 # SSH keychain
+mkdir -p "$XDG_RUNTIME_DIR/keychain"
 eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/{id_github}")"

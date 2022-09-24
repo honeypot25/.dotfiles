@@ -120,6 +120,12 @@ install_packages() {
     echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
   done <"$HOME/.config/Code - OSS/User/extensions.txt"
+  echo -e "Installing latest C/C++ extension\n"
+  pushd ~/.vscode-oss/extensions/ | return
+  latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
+  wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
+  code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
+  popd | return
   echo -e "\nDone."
 
   echo -e "\nInstalling AppImage apps\n"

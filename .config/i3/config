@@ -35,7 +35,7 @@ exec --no-startup-id mpdDris2 &
 exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
-# exec_always --no-startup-id nm-applet &
+exec --no-startup-id nm-applet &
 
 # Start with main monitor only
 # exec --no-startup-id ~/.bin/monitor main &
@@ -174,7 +174,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 # 1. Home
 for_window [class="(?i)bitwarden|firefox"] move container to workspace $ws1; workspace $ws1
 # 2. Code
-for_window [class="(?i)code|github-desktop|supernotes"] move container to workspace $ws2; workspace $ws2
+for_window [class="(?i)code|github-desktop|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
 # 3. Chat
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|zoom"] move container to workspace $ws3; workspace $ws3
 
@@ -196,9 +196,9 @@ bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
 
 # Flameshot screenshots
 # manual region
-bindsym ctrl+Print exec --no-startup-id flameshot gui -c
-# mouse screen
-bindsym Print exec --no-startup-id flameshot screen -c
+bindsym ctrl+Print exec --no-startup-id screengrab -m --region
+# current screen
+bindsym Print exec --no-startup-id screengrab -m --fullscreen
 
 # Toggle WiFi
 bindsym XF86WLAN exec --no-startup-id rfkill toggle wlan &
@@ -291,7 +291,7 @@ mode "$mode_outer_gaps" {
 
 ### PROGRAMS ###
 
-set $mode_launcher SHORTCUTS: B, C, D, E, F, G, M, N, P, S, T, V, W, Z
+set $mode_launcher SHORTCUTS: B, C, D, E, F, G, M, N, O, P, S, T, [shift|ctrl]V, W, Z
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop
@@ -302,10 +302,13 @@ mode "$mode_launcher" {
     bindsym g exec github-desktop
     bindsym m exec alacritty -e ncmpcpp
     bindsym n exec appimage supernotes
+    bindsym o exec obs
     bindsym p exec zathura
     bindsym s exec spotify
     bindsym t exec telegram-desktop
-    bindsym v exec realvnc-vnc-viewer
+    bindsym v exec alacritty -e nvim
+    bindsym Shift+v exec virtualbox
+    bindsym ctrl+v exec virt-manager
     bindsym w exec firefox
     bindsym z exec zoom
 

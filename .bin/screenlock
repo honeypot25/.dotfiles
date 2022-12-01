@@ -13,9 +13,10 @@ case "$1" in
 lock)
   # Dim
   # Lock & Turn Off
-  # Suspend after 3m
+  # Suspend after 2m
   light -O && light -S 10
-  betterlockscreen -l blur --off 180
+  betterlockscreen -l blur --off 120
+  light -I
   systemctl suspend
   ;;
 
@@ -25,20 +26,20 @@ susp | lid)
   ;;
 
 autosusp)
-  # Dim after 10m
-  # Lock after 1m
-  # Suspend after 4m
+  # Dim after 25m
+  # Lock after 3m
+  # Suspend after 2m
   xidlehook \
     --detect-sleep \
     --not-when-fullscreen \
     --not-when-audio \
-    --timer 600 \
+    --timer 1500 \
     'light -O && light -S 10' \
     'light -I' \
-    --timer 60 \
+    --timer 180 \
     'betterlockscreen -l blur' \
     'light -I' \
-    --timer 240 \
+    --timer 120 \
     'systemctl suspend' \
     '' &
   ;;

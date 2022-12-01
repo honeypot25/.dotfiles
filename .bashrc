@@ -12,7 +12,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # export MANPAGER="nvim -c 'set ft=man' -"
 export HISTFILE="$XDG_STATE_HOME/bash/history"
 export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
-export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
 export TERM=xterm-256color
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # programs
@@ -20,7 +20,6 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
-
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -84,22 +83,30 @@ ex() {
 }
 
 ### ALIASES
+# check for alt aliases
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+
 # coding
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
+alias sv="sudo nvim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
+alias gcc="gcc -Wall"
+alias smake="make -s"
 
 # utility
 alias trash="rm -rfv $HOME/.local/share/Trash/*"
 alias prename="perl-rename"
 alias rshrink="shopt -s globstar; rename -v 's/ /_/g' ./**; shopt -u globstar" # recursive replace spaces with _
+alias rgi="rg -i"
 #alias ff="fastfetch --load-config $HOME/.config/fastfetch/ff.conf | lolcat -t"
 #alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
 alias nf="neofetch --config $HOME/.config/neofetch/nf.conf"
 alias nfa="neofetch --config $HOME/.config/neofetch/nfa.conf"
 alias ts="sudo timeshift-gtk"
+#alias zathura='zathura -e $(tabbed -c) & disown'
 
 # changing "ls" to "exa"
 alias ls="exa --color=always --group-directories-first"
@@ -119,7 +126,7 @@ alias parq="paru -Sy && paru -Qua"
 # autoupdate
 alias pacup="sudo pacman -Syu" # update standard pkgs
 alias parup="paru -Sua"        # update AUR pkgs
-alias up="paru"                # update standard & AUR pkgs (paru -Syu)
+alias up="SKIP_AUTOSNAP= paru" # update standard & AUR pkgs (paru -Syu)
 # misc
 alias unlock="sudo rm /var/lib/pacman/db.lck"
 

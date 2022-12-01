@@ -1,0 +1,10 @@
+[Default Applications]
+x-scheme-handler/tg=userapp-Telegram Desktop-UBDNW1.desktop
+application/pdf=org.pwmt.zathura.desktop
+image/jpeg=feh.desktop
+
+[Added Associations]
+x-scheme-handler/tg=userapp-Telegram Desktop-SGXCQ1.desktop;userapp-Telegram Desktop-UBDNW1.desktop;
+application/pdf=userapp-zathura-8F60Q1.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop;firefox.desktop;
+application/zip=userapp-code-NBU9Q1.desktop;

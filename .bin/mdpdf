@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+pandoc \
+  -f markdown-raw_tex \
+  -t latex \
+  -H "$XDG_CONFIG_HOME/pandoc/LaTeX_header.tex" \
+  -V geometry:"top=2cm, bottom=1.5cm, left=2cm, right=2cm" \
+  -V colorlinks -V urlcolor=NavyBlue -V toccolor=NavyBlue \
+  --highlight-style espresso \
+  --toc -N

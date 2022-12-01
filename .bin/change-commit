@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+change-commit() {
+  commit="$1"
+  newmsg="$2"
+  branch="main"
+
+  git checkout $commit
+  git commit --amend -m "$newmsg"
+  git cherry-pick $commit..$branch
+  git checkout $branch
+}
+
+change-commit

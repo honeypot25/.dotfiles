@@ -1,5 +1,12 @@
 # Open document in fit-width mode by default
-set adjust-open "best-fit"
+set adjust-open "width"
+
+# Delete external padding
+set statusbar-h-padding 0
+set statusbar-v-padding 0
+
+# Line between pages
+set page-padding 2
 
 # One page per row by default
 set pages-per-row 1
@@ -11,25 +18,37 @@ set scroll-full-overlap 0.01
 set scroll-step 100
 
 set zoom-min 10
-set guioptions ""
+#set guioptions ""
 
-# set font "Roboto mono 15"
-set default-bg "#1b1b25"
-set default-fg "#dedede"
+# set font "Roboto mono 16"
+#set default-bg "#1b1b25"
+#set default-fg "#dedede"
 
-set recolor "true"
-set recolor-lightcolor "#16161e"
-set recolor-darkcolor "#dedede"
-set recolor-reverse-video "true"
-set recolor-keephue "true"
-set render-loading "false"
+#set recolor "true"
+#set recolor-lightcolor "#16161e"
+#set recolor-darkcolor "#dedede"
+#set recolor-reverse-video "true"
+#set recolor-keephue "true"
+#set render-loading "false"
 
-set scroll-step 200
+set scroll-step 100
 set selection-clipboard clipboard
 
+# MAPS
+map u scroll half-up
 unmap d
-map d set "first-page-column 1:2"
+map d scroll half-down
+unmap r
+map r reload
+map R rotate
+map h zoom out
+map l zoom in
+map i recolor
 
-unmap f
-map f toggle_fullscreen
-map [fullscreen] f toggle_fullscreen
+#unmap d
+#map d set "first-page-column 1:2"
+
+# Fullscreen
+#unmap f
+#map f toggle_fullscreen
+#map [fullscreen] f toggle_fullscreen

@@ -21,8 +21,8 @@ preparing() {
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
   pushd ~/.src || return
-  git clone https://aur.archlinux.org/paru-bin
-  pushd paru-bin || return
+  git clone https://aur.archlinux.org/paru
+  pushd paru || return
   makepkg -si --noconfirm
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   popd || return # ~
@@ -121,18 +121,25 @@ install_packages() {
     code --install-extension "$ext" &>/dev/null
   done <"$HOME/.config/Code - OSS/User/extensions.txt"
   echo -e "Installing latest C/C++ extension\n"
-  pushd ~/.vscode-oss/extensions/ | return
+  pushd ~/.vscode-oss/extensions/ || return
   latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
   wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
   code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
-  popd | return
+  popd || return
   echo -e "\nDone."
 
-  echo -e "\nInstalling AppImage apps\n"
+  echo -e "\nInstalling AppImage apps...\n"
   pushd ~/apps || return
   curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
   chmod u+x ./*
   popd || return
+
+  echo -e "\nInstalling Python modules...\n"
+  pip install neovim
+
+  echo -e "\nInstalling Vim-Plug...\n"
+  curl -fLo "${XDG_DATA_HOME:-~/.local/share}/nvim/site/autoload/plug.vim" --create-dirs \
+    "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 }
 
 set_zram() {
@@ -145,7 +152,8 @@ set_zram() {
 set_virtualization() {
   # manually resolve iptables conflict
   paru -S --needed iptables-nft
-  paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
+  # qemu/kvm
+  paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra virbr0 vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$(whoami)"
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd
@@ -153,6 +161,8 @@ set_virtualization() {
   # sudo virsh net-define ~/.config/.br10.xml
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
+  # VirtualBox
+  # paru -S --needed --noconfirm virtualbox virtualbox-guest-utils
 }
 
 # set_crontab() {
@@ -176,7 +186,7 @@ end() {
   # Nemo preferences
   dconf dump /org/nemo/ >~/.config/nemo/preferences &
   # VScode extensions' list
-  code --list-extensions >"$HOME/.config/Code - OSS/User/extensions.txt" 
+  code --list-extensions >"$HOME/.config/Code - OSS/User/extensions.txt"
   # removals
   rmdir ~/{Public,Templates}
   # install GRUB theme

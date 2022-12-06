@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 
+usage() { echo -e "Usage:\t$(basename "$0") <file.md>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+filemd=$1
+filepdf=${filemd%.*}.pdf
+
+printf "Generating $GREEN%s$RESET...\n" "$filepdf"
+
 pandoc \
   -f markdown-raw_tex \
   -t latex \
   -H "$XDG_CONFIG_HOME/pandoc/LaTeX_header.tex" \
   -V geometry:"top=2cm, bottom=1.5cm, left=2cm, right=2cm" \
+  --toc \
+  --number-sections \
   -V colorlinks -V urlcolor=NavyBlue -V toccolor=NavyBlue \
   --highlight-style espresso \
-  --toc -N
+  "$filemd" \
+  -o "$filepdf"

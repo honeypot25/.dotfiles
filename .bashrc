@@ -20,16 +20,17 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+# colors
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+RESET=$(tput sgr0)
+export RED GREEN RESET
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 ## PROMPT
-green=$(tput setaf 2)
-red=$(tput setaf 1)
-rst=$(tput sgr0)
-PS1="[\[$green\]\u\[$rst\]   \[$red\]\w\[$rst\]]   "
-unset green red rst
+PS1="[\[$GREEN\]\u\[$RESET\]   \[$RED\]\w\[$RESET\]]   "
 
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth

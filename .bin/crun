@@ -18,7 +18,7 @@ if [[ $(file "$script") =~ "C source" ]]; then
   }
   printf "\n\n"
 
-  ./"$out" ${args[@]} // explode string in array of arguments
+  ./"$out" ${args[@]} # explode string in array of arguments
   rm "$out"
 else
   echo -e "Err: not a C script\n" && exit 1

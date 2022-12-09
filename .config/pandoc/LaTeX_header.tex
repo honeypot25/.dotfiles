@@ -1,5 +1,15 @@
-%\usepackage{titlesec}
-%\newcommand{\sectionbreak}{\clearpage}
+\usepackage{titlesec}
 
-\let\oldtoc\tableofcontents
-\renewcommand{\tableofcontents}{\oldtoc\newpage}
+% change the table of contents to include a new page after it
+\let\myTOC\tableofcontents
+\renewcommand{\tableofcontents}{\myTOC\newpage}
+
+% start a new page for each section 
+\newcommand{\sectionbreak}{\clearpage}
+
+% background color for inline code
+\definecolor{bgcolor}{HTML}{E0E0E0}
+\let\myTextttt\texttt
+\renewcommand{\texttt}[1]{
+    \colorbox{bgcolor}{\myTextttt{#1}}
+}

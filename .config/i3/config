@@ -295,7 +295,7 @@ set $mode_launcher SHORTCUTS: B, C, D, E, F, G, M, N, O, P, S, T, [shift|ctrl]V,
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop
-    bindsym c exec code
+    bindsym c exec code --enable-proposed-api ms-python.python
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish

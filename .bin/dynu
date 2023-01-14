@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 
-data=$(date)
-apires=$(curl -k "https://api.dynu.com/nic/update?username=$1&password=$2" 2>/dev/null)
-sleep 5
-newIP=$(echo "$apires" | grep -EoP "[0-9]{,3}\.[0-9]{,3}\.[0-9]{,3}\.[0-9]{,3}")
+usage() { echo -e "Usage:\t$(basename "$0") <api_key>" && exit 1; }
+[ $# -eq 0 ] && usage
 
-if [ -n "$newIP" ]; then
-  config="/etc/ssh/ssh_config"
-  dynulog="$HOME/.logs/dynu.log"
-  sed "0,/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/{s/[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+/$newIP/}" "$config" >"$config.tmp"
-  mv "$config.tmp" "$config"
-  entry="$newIP"
-else
-  entry="$apires"
-fi
+api_key=$1
+rex="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+sshc=~/.ssh/config
 
-echo "$data ---> $entry" >>"$dynulog"
+json=$(
+  curl -X GET https://api.dynu.com/v2/dns \
+    -H "accept: application/json" \
+    -H "API-Key: $api_key" \
+    2>/dev/null &
+)
+sleep 10
+new_IP=$(echo "$json" | rg "($rex)" -or '$1')
+
+# Exit if the IP didn't change
+[ -n "$(rg "$new_IP" $sshc -or '$1')" ] && exit 0
+
+sed -i "/Host raspi/,/HostName/ s/HostName .*/HostName $new_IP/" $sshc
+echo -e "$(date)\t\t> $new_IP" >>/tmp/dynu.log

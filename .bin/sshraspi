@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") -d <host> -l <local-dir> -r <remote-dir>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+while getopts ":hd:l:r:" opt; do
+  case $opt in
+  d) host=$OPTARG ;;
+  l) ldir=$OPTARG ;;
+  r) rdir=$OPTARG ;;
+  h | *) usage ;;
+  esac
+done
+
+[ ! -f ~/.rsyncignore ] && {
+  echo "No $HOME/.rsyncignore found"
+  exit 1
+}
+
+rsync "$ldir" "$host:$rdir" -auzvhn --delete-after --exclude-from="$HOME/.rsyncignore"
+read -rp "Do you want to proceed with that? (y|n): " proceed
+if [ "$proceed" = "y" ]; then
+  rsync "$ldir" "$host:$rdir" -auzvh --progress --delete-after --exclude-from="$HOME/.rsyncignore" && echo -e "\nDone"
+else
+  echo -e "\nTransfer aborted"
+  exit 1
+fi

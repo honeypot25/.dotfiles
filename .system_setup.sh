@@ -11,7 +11,7 @@ preparing() {
   mkdir -p .src .config/mpd/playlists
   mkdir -p apps coding games misc projects uni vms Pictures/{screenshots,wallpapers} Videos/screenrec
   # wallpapers
-  git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
+  # git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
   # system
   mkdir "$XDG_STATE_HOME/bash"
   mkdir "$XDG_DATA_HOME/{cargo,gnupg,pki}"

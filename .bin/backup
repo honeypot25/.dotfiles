@@ -17,10 +17,10 @@ HDD="/media/$USER/HDD"
   exit 1
 }
 
-rsync "$HOME/$src/" "$HDD/$dst/" --dry-run -ahPuvz --delete-after
+rsync "$HOME/$src/" "$HDD/$dst/" --dry-run -ahuvz --progress --delete-after
 read -rp "Do you want to proceed with that? (y|n): " proceed
 if [ "$proceed" = "y" ]; then
-  rsync "$HOME/$src/" "$HDD/$dst/" -ahPuvz --delete-after && echo -e "\nDone"
+  rsync "$HOME/$src/" "$HDD/$dst/" -ahuvz --progress --delete-after && echo -e "\nDone"
 else
   echo -e "\nBackup aborted"
 fi

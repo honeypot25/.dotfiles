@@ -1,34 +1,35 @@
 #!/usr/bin/env bash
 
-usage() { echo -e "Usage:\t$(basename "$0") <main|ext|both>" && exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") <int|ext|both>" && exit 1; }
 [ $# -eq 0 ] && usage
 
 # get all monitors: eDP1 DP1 [HDMI1] [VIRTUAL1]
-read -d'\n' -r main ext hdmi virt < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
+# MODIFY THE ext ACCORDINGLY
+read -d'\n' -r int ext _ _ < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
 m=$1
-# fallback to main monitor if the external one is not connected
-xrandr --listactivemonitors | rg "$ext$" || m="$main"
+# fallback to internal monitor if the external one is not connected
+xrandr --listactivemonitors | rg "$ext$" || m="$int"
 
 case "$m" in
-main)
+int)
   xrandr \
-    --output "$main" --primary --auto \
+    --output "$int" --primary --auto \
     --output "$ext" --off
-  list="$main"
+  list="$int"
   ;;
 ext)
   xrandr \
-    --output "$main" --off \
+    --output "$int" --off \
     --output "$ext" --primary --auto
   list="$ext"
   ;;
 both)
   xrandr \
-    --output "$main" --pos 0x282 --auto \
+    --output "$int" --pos 0x282 --auto \
     --output "$ext" --pos 1366x0 --primary --auto
-  list="$main, $ext"
+  list="$int, $ext"
   ;;
 h | *) usage ;;
 esac

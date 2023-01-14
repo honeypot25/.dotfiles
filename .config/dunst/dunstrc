@@ -112,12 +112,12 @@
 [urgency_low]
     background = "#1b1b25"
     foreground = "#dedede"
-    timeout = 1.5
+    timeout = 3
 
 [urgency_normal]
     background = "#1b1b25"
     foreground = "#dedede"
-    timeout = 3
+    timeout = 6
 
 [urgency_critical]
     background = "#1b1b25"
@@ -157,3 +157,4 @@
 #    msg_urgency
 #    stack_tag
 #    summary
+

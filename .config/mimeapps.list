@@ -1,7 +1,7 @@
 [Default Applications]
 x-scheme-handler/tg=userapp-Telegram Desktop-UBDNW1.desktop
 application/pdf=org.pwmt.zathura.desktop
-image/jpeg=feh.desktop
+image/jpeg=org.gnome.eog.desktop
 
 [Added Associations]
 x-scheme-handler/tg=userapp-Telegram Desktop-SGXCQ1.desktop;userapp-Telegram Desktop-UBDNW1.desktop;

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # packages
-paru -Scq --noconfirm
+paru -Scq
 paccache -ruq
-sudo pacman -Rnus $(sudo pacman -Qdtq --noconfirm) 2>/dev/null
+sudo pacman -Rnus $(sudo pacman -Qdtq ) 2>/dev/null
 
 # home files
 rm ~/.lesshst 2>/dev/null
@@ -17,4 +17,4 @@ popd &>/dev/null || exit 1
 shopt -u extglob
 
 # trash
-rm -rfv ~/.local/share/Trash/*
+rm -rf ~/.local/share/Trash/*

@@ -49,7 +49,7 @@ alias mirrors="sudo reflector \
   --country it \
   --fastest 3 \
   --latest 3 \
-  --protocol https \
+  --protocol http,https \
   --completion-percent 100 \
   --sort rate \
   --threads 4 \

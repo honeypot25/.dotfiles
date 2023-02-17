@@ -8,3 +8,5 @@ x-scheme-handler/tg=userapp-Telegram Desktop-SGXCQ1.desktop;userapp-Telegram Des
 application/pdf=userapp-zathura-8F60Q1.desktop;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop;firefox.desktop;
 application/zip=userapp-code-NBU9Q1.desktop;
+text/plain=nvim.desktop;
+text/markdown=code-oss.desktop;

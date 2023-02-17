@@ -14,7 +14,7 @@ x11_pkgs=("xorg-server" "xf86-video-intel" "xf86-input-libinput" "xdotool" "xorg
 wayland_pkgs=("wayland" "xorg-server-xwayland" "xdg-desktop-portal-wlr" "wlogout" "wl-randr") # "discord_arch_electron_wayland"
 
 ### Packages ###
-pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "gparted" "grub-customizer" "stacer" "tlpui" "xdg-ninja" "imager-bin" "bleachbit"
+pkgs=("timeshift" "timeshift-autosnap" "upower" "dunst" "catfish" "gparted" "grub-customizer" "stacer" "xdg-ninja" "imager-bin" "bleachbit"
   "ttf-hack" "ttf-iosevka-nerd" "ttf-roboto" "ttf-roboto-mono" "qt5ct" "papirus-icon-theme"                                                                                                    # "lxappearence"
   "picom" "neofetch" "eog" "ranger" "nemo" "nemo-terminal" "nemo-fileroller" "zathura" "zathura-pdf-mupdf" "libmupdf" "tabbed" "flameshot" "obs-studio" "mpv" "mpd" "mpDris2" "playerctl" "ncmpcpp" "zscroll-git" # "pdfarranger" "pdfshuffler" "inkscape" "tenacity-git" "cava"
   "tldr" "neovim" "neovim-remote" "alacritty" "exa" "rclone" "ripgrep" "tree" "perl-rename"

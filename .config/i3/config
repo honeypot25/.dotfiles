@@ -34,6 +34,9 @@ exec --no-startup-id sleep 1 && playerctld daemon &
 # NetworkManager applet
 exec --no-startup-id nm-applet &
 
+# start with random background and update betterlockscreen cache with the same background (but blurred)
+exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+
 # Start with internal monitor only
 # exec --no-startup-id ~/.bin/monitor int &
 # Try to start with both monitors
@@ -42,9 +45,6 @@ exec --no-startup-id nm-applet &
 #############################################
 ### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
 #############################################
-
-# [re]start with random background and update betterlockscreen cache with the same background (but blurred)
-exec_always --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
 
 # Always restore previously saved screen brightness
 exec_always --no-startup-id light -I &
@@ -111,7 +111,7 @@ bindsym $alt+Shift+XF86AudioRaiseVolume exec --no-startup-id playerctl -p mpd vo
 
 ### WINDOWS ###
 
-# kill focused window
+# kill focused container
 bindsym $mod+q kill
 bindsym $alt+F4 kill
 
@@ -125,7 +125,7 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
+# move focused container
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
@@ -135,17 +135,17 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# future horizontal/vertical split for active window
+# future horizontal/vertical split for active container
 bindsym $alt+h split h
 bindsym $alt+v split v
 
-# fullscreen mode for active window
+# fullscreen mode for active container
 bindsym $mod+f fullscreen toggle
 
 # toggle tiling/floating wm mode
 bindsym $mod+Shift+space floating toggle
 
-# change focus between tiling/floating windows
+# change focus between tiling/floating container
 # bindsym $mod+space focus mode_toggle
 
 # change container layout (stacked, tabbed, toggle split)
@@ -172,7 +172,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 
 # assing default workspace and switch to it
 # 1. Home
-for_window [class="(?i)bitwarden|firefox"] move container to workspace $ws1; workspace $ws1
+for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
 # 2. Code
 for_window [class="(?i)code|github-desktop|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
 # 3. Chat
@@ -185,14 +185,14 @@ bindsym $mod+m move workspace to output right
 ### UTILITY ###
 
 # choose a random background
-bindsym ctrl+$alt+b exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+bindsym ctrl+$mod+b exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
 # start Rofi launcher
 bindsym Menu exec --no-startup-id rofi -show run
-bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
+bindsym $ctrl+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
 
 # Flameshot screenshots
 # manual region
@@ -207,9 +207,9 @@ bindsym XF86WLAN exec --no-startup-id rfkill toggle wlan &
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
 
 # Select monitor
-bindsym ctrl+$mod+b exec --no-startup-id ~/.bin/monitor int &
-bindsym ctrl+$mod+n exec --no-startup-id ~/.bin/monitor ext &
-bindsym ctrl+$mod+m exec --no-startup-id ~/.bin/monitor both &
+bindsym ctrl+$alt+b exec --no-startup-id ~/.bin/monitor int &
+bindsym ctrl+$alt+n exec --no-startup-id ~/.bin/monitor ext &
+bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
 
 # Brightness
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O && ~/.bin/brightness &

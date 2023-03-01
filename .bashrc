@@ -45,10 +45,11 @@ shopt -s autocd       # change to named directory
 shopt -s cdspell      # autocorrects cd misspellings
 shopt -s checkwinsize # checks term size when bash regains control
 shopt -s cmdhist      # save multi-line commands in history as single line
-shopt -s dotglob
-# shopt -s extglob # ? * + @ !
-shopt -s expand_aliases # expand aliases
-shopt -s histappend     # do not overwrite history
+shopt -s histappend
+shopt -s expand_aliases
+shopt -s failglob # error upon no match
+shopt -s dotglob  # match also dot files (except . and ..)
+# shopt -s extglob      # pattern-list ? * + @ ! before (...)
 
 ### COMPLETION
 bind "set completion-ignore-case on" # ignore upper and lowercase when TAB completion

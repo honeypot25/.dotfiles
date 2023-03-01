@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") <archive>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+arch=$1
+if [ -f "$arch" ]; then
+  case "$arch" in
+  *.tar.bz2) tar xjf "$arch" ;;
+  *.tar.gz) tar xzf "$arch" ;;
+  *.bz2) bunzip2 "$arch" ;;
+  *.rar) unrar x "$arch" ;;
+  *.gz) gunzip "$arch" ;;
+  *.tar) tar xf "$arch" ;;
+  *.tbz2) tar xjf "$arch" ;;
+  *.tgz) tar xzf "$arch" ;;
+  *.zip) unzip "$arch" ;;
+  *.Z) uncompress "$arch" ;;
+  *.7z) 7z x "$arch" ;;
+  *.deb) ar x "$arch" ;;
+  *.tar.xz) tar xf "$arch" ;;
+  *.tar.zst) unzstd "$arch" ;;
+  *) echo "$arch cannot be extracted via ex()" ;;
+  esac
+else
+  echo "\"$arch\" is not a valid archive file"
+fi

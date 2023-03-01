@@ -305,7 +305,7 @@ mode "$mode_launcher" {
     bindsym m exec thunderbird
     bindsym n exec appimage supernotes
     bindsym o exec obs
-    bindsym p exec zathura
+    bindsym p exec packettracer
     bindsym s exec spotify
     bindsym t exec telegram-desktop
     bindsym v exec alacritty -e nvim

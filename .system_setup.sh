@@ -8,7 +8,7 @@ preparing() {
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src .config/mpd/playlists
+  mkdir -p .src "$XDG_CONFIG_HOME/mpd/playlists"
   mkdir -p apps coding games misc projects uni vms Pictures/{screenshots,wallpapers} Videos/screenrec
   # wallpapers
   # git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
@@ -115,11 +115,11 @@ install_GUI() (
 install_packages() {
   paru -S --needed --noconfirm "${pkgs[@]}"
 
-  echo -e "Installing VSCode extensions from \"~/.config/Code - OSS/User/extensions.txt\"\n"
+  echo -e "Installing VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\"\n"
   while read -r ext; do
     echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
-  done <"$HOME/.config/Code - OSS/User/extensions.txt"
+  done <"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt"
   echo -e "Installing latest C/C++ extension\n"
   pushd ~/.vscode-oss/extensions/ || return
   latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
@@ -157,8 +157,8 @@ set_virtualization() {
   sudo usermod -a -G libvirt,kvm "$(whoami)"
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd
-  # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O ~/.config/.br10.xml
-  # sudo virsh net-define ~/.config/.br10.xml
+  # wget https://gitlab.com/eflinux/kvmarch/-/raw/master/br10.xml -O "$XDG_CONFIG_HOME/.br10.xml"
+  # sudo virsh net-define "$XDG_CONFIG_HOME/.br10.xml"
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
   # VirtualBox
@@ -173,6 +173,8 @@ set_virtualization() {
 
 end() {
   # services
+  sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
+  sudo sed -i 's/--lock$/-l blur/' /usr/lib/systemd/system/betterlockscreen@.service
   sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
   # adjust permissions
   sudo chmod +s /usr/bin/light
@@ -184,9 +186,9 @@ end() {
   # updates
   fc-cache -fv
   # Nemo preferences
-  dconf dump /org/nemo/ >~/.config/nemo/preferences &
+  dconf dump /org/nemo/ >"$XDG_CONFIG_HOME/nemo/preferences" &
   # VScode extensions' list
-  code --list-extensions >"$HOME/.config/Code - OSS/User/extensions.txt"
+  code --list-extensions >"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt"
   # removals
   rmdir ~/{Public,Templates}
   # install GRUB theme

@@ -71,3 +71,4 @@ fi
 # SSH keychain
 mkdir -p "$XDG_RUNTIME_DIR/keychain"
 eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/id_{github,ssh}")"
+

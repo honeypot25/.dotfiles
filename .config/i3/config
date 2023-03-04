@@ -29,19 +29,19 @@ exec --no-startup-id picom &
 #exec --no-startup-id mpdDris2 &
 
 # players discovery
-exec --no-startup-id sleep 1 && playerctld daemon &
+#exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
 exec --no-startup-id nm-applet &
 
-# start with random background and update betterlockscreen cache with the same background (but blurred)
-exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+# start with random background and re-update betterlockscreen cache with the blurred version
+# $(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1)
+exec --no-startup-id bkg=~/Pictures/wallpaper && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
 
 # Start with internal monitor only
 # exec --no-startup-id ~/.bin/monitor int &
 # Try to start with both monitors
 # exec --no-startup-id ~/.bin/monitor both &
-
 #############################################
 ### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
 #############################################
@@ -53,7 +53,7 @@ exec_always --no-startup-id light -I &
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
 
 # Battery monitoring
-#exec_always --no-startup-id ~/.bin/battery -l 20 -h 99 -i 12 &
+exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 30 &
 
 # Autosuspend service
 #exec_always --no-startup-id ~/.bin/screenlock autosusp &
@@ -109,35 +109,35 @@ bindsym $alt+Shift+XF86AudioRaiseVolume exec --no-startup-id playerctl -p mpd vo
 # playerctl: any service except spotify
 # ...
 
-### WINDOWS ###
+### WINDOWS CONTAINER ###
 
 # kill focused container
 bindsym $mod+q kill
 bindsym $alt+F4 kill
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+# bindsym $mod+h focus left
+# bindsym $mod+j focus down
+# bindsym $mod+k focus up
+# bindsym $mod+l focus right
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused container
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+# bindsym $mod+Shift+h move left
+# bindsym $mod+Shift+j move down
+# bindsym $mod+Shift+k move up
+# bindsym $mod+Shift+l move right
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # future horizontal/vertical split for active container
-bindsym $alt+h split h
-bindsym $alt+v split v
+bindsym $mod+h split h
+bindsym $mod+v split v
 
 # fullscreen mode for active container
 bindsym $mod+f fullscreen toggle
@@ -171,11 +171,11 @@ bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 
 # assing default workspace and switch to it
-# 1. Home
+# 1. Home icon
 for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
-# 2. Code
-for_window [class="(?i)code|github-desktop|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
-# 3. Chat
+# 2. Code icon
+for_window [class="(?i)code|packettracer|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
+# 3. Chat icon
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|thunderbird|zoom"] move container to workspace $ws3; workspace $ws3
 
 # move workspaces between monitors
@@ -184,15 +184,15 @@ bindsym $mod+m move workspace to output right
 
 ### UTILITY ###
 
-# choose a random background
-bindsym ctrl+$mod+b exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+# set a random background
+bindsym ctrl+$mod+b exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg"
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
 # start Rofi launcher
 bindsym Menu exec --no-startup-id rofi -show run
-bindsym $ctrl+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
+bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
 
 # Flameshot screenshots
 # manual region
@@ -215,9 +215,9 @@ bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O && ~/.bin/brightness &
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O && ~/.bin/brightness &
 
-# Lock (and turn off after 3m)
+# Lock (and turn off after 1m)
 #bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
-bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l blur --off 180
+bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l blur --off 60
 
 # Suspend (automatic lock is handled by systemd with betterlockscreen@.service, same for lid closing)
 bindsym XF86Sleep exec systemctl suspend
@@ -254,8 +254,8 @@ gaps inner 7
 gaps outer 5
 default_border pixel 0
 set $mode_gaps GAPS: Outer / Inner
-set $mode_inner_gaps Inner: [Shift] +, -, 0
-set $mode_outer_gaps Outer: [Shift] +, -, 0
+set $mode_inner_gaps Inner: [s] +, -, 0
+set $mode_outer_gaps Outer: [s] +, -, 0
 bindsym $mod+g mode "$mode_gaps"
 mode "$mode_gaps" {
         bindsym o mode "$mode_outer_gaps"
@@ -292,7 +292,7 @@ mode "$mode_outer_gaps" {
 
 ### PROGRAMS ###
 
-set $mode_launcher Shortcuts: B, C, D, E, F, G, M, N, O, P, S, T, [shift|ctrl]V, W, Z
+set $mode_launcher Shortcuts: B, C, D, E, F, M, N, O, P, S, T, [s|c]V, W, Z
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym b exec bitwarden-desktop

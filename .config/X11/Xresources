@@ -1,6 +1,6 @@
 xterm*background: black
 xterm*foreground: white
-xterm*faceName: Ubuntu Mono:pixelsize=14
+xterm*faceName: Hack:pixelsize=14
 xterm*faceSize: 10
 xterm*dynamicColors: true
 Xcursor.theme: breeze_cursors

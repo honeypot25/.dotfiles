@@ -174,7 +174,7 @@ set_virtualization() {
 end() {
   # services
   sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
-  sudo sed -i 's/--lock$/-l blur/' /usr/lib/systemd/system/betterlockscreen@.service
+  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service
   sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
   # adjust permissions
   sudo chmod +s /usr/bin/light

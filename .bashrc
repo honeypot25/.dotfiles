@@ -15,12 +15,14 @@ alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 # export VISUAL=
 # export MANPAGER="nvim -c 'set ft=man' -"
 export HISTFILE="$XDG_STATE_HOME/bash/history"
+export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
 export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 export TERM=xterm-256color
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # programs
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 # colors
@@ -38,7 +40,7 @@ PS1="[\[$GREEN\]\u\[$RESET\]   \[$RED\]\w\[$RESET\]]   "
 
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth
-HISTSIZE=1000
+HISTSIZE=5000
 
 ### SHELL OPTIONS
 shopt -s autocd       # change to named directory
@@ -72,3 +74,4 @@ fi
 mkdir -p "$XDG_RUNTIME_DIR/keychain"
 eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/id_{github,ssh}")"
 
+xrdb -load "$XDG_CONFIG_HOME/X11/Xresources"

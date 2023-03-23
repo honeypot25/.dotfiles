@@ -112,18 +112,18 @@
 [urgency_low]
     background = "#1b1b25"
     foreground = "#dedede"
-    timeout = 3
+    timeout = 2
 
 [urgency_normal]
     background = "#1b1b25"
     foreground = "#dedede"
-    timeout = 6
+    timeout = 3
 
 [urgency_critical]
     background = "#1b1b25"
     foreground = "#dedede"
     frame_color = "#f07178"
-    timeout = 30
+    timeout = 5
 
 # [shortcuts]
 #     close = ctrl+space

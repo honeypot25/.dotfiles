@@ -67,11 +67,11 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
         let g:vim_markdown_folding_disabled = 1
         let g:vim_markdown_frontmatter = 1
         let g:vim_markdown_conceal = 0
-	    let g:vim_markdown_conceal_code_blocks = 0
+	      let g:vim_markdown_conceal_code_blocks = 0
     Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-	    let g:mkdp_auto_start = 0
-	    let g:mkdp_auto_close = 1
-	    let g:mkdp_theme = 'dark'
+	      let g:mkdp_auto_start = 0
+	      let g:mkdp_auto_close = 1
+	      let g:mkdp_theme = 'dark'
     
     " Snippets
     Plug 'SirVer/ultisnips'
@@ -92,8 +92,8 @@ nnoremap <C-s> :w<CR>
 nnoremap <C-w> :bd<CR>
 nnoremap <C-q> :q!<CR>
 nnoremap <F4> :sp<CR>:terminal<CR>
-nmap <C-p> <Plug>MarkdownPreviewToggle<CR>
-nnoremap <C-p> :call VimtexCompile()<CR>
+nnoremap <C-p> <Plug>MarkdownPreviewToggle<CR>
+"nnoremap <C-p> :call VimtexCompile()<CR>
 "nnoremap <C-p> :call LatexPreviewZathura()<CR>
 
 inoremap <A-j> <Esc>:m .+1<CR>==gi

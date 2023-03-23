@@ -34,19 +34,20 @@ exec --no-startup-id picom &
 # NetworkManager applet
 exec --no-startup-id nm-applet &
 
-# start with random background and re-update betterlockscreen cache with the blurred version
-# $(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1)
-exec --no-startup-id bkg=~/Pictures/wallpaper && nitrogen --no-recurse --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
-
 # Start with internal monitor only
 # exec --no-startup-id ~/.bin/monitor int &
 # Try to start with both monitors
 # exec --no-startup-id ~/.bin/monitor both &
+
 #############################################
 ### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
 #############################################
 
-# Always restore previously saved screen brightness
+# start with default wallpaper and update betterlockscreen cache with the blurred version
+# $(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1)
+exec_always --no-startup-id bkg=~/Pictures/wallpaper && nitrogen --no-recurse --save --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+
+# restore previously saved screen brightness
 exec_always --no-startup-id light -I &
 
 # Polybar
@@ -174,7 +175,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 # 1. Home icon
 for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
 # 2. Code icon
-for_window [class="(?i)code|packettracer|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
+for_window [class="(?i)code|electron|packettracer|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
 # 3. Chat icon
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|thunderbird|zoom"] move container to workspace $ws3; workspace $ws3
 
@@ -185,7 +186,7 @@ bindsym $mod+m move workspace to output right
 ### UTILITY ###
 
 # set a random background
-bindsym ctrl+$mod+b exec --no-startup-id bkg=$(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1) && nitrogen --no-recurse --set-scaled "$bkg"
+bindsym ctrl+$mod+b exec --no-startup-id nitrogen --no-recurse --random --set-scaled ~/Pictures/wallpapers/
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
@@ -304,7 +305,7 @@ mode "$mode_launcher" {
     bindsym m exec thunderbird
     bindsym n exec appimage supernotes
     bindsym o exec obs
-    bindsym p exec packettracer
+    bindsym p exec zathura
     bindsym s exec spotify
     bindsym t exec telegram-desktop
     bindsym v exec alacritty -e nvim

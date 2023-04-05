@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+pushd /tmp >/dev/null || exit 1
+xkbcomp -xkb "$DISPLAY" xkbmap
+sed -i "s/ae\,/adiaeresis\,/" xkbmap
+sed -i "s/AE /Adiaeresis /" xkbmap
+sed -i "s/oslash\,/odiaeresis\,/" xkbmap
+sed -i "s/Oslash /Odiaeresis /" xkbmap
+xkbcomp -w 0 xkbmap "$DISPLAY"
+popd >/dev/null || exit 1

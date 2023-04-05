@@ -22,13 +22,15 @@ alias ts="sudo timeshift-gtk"
 #alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
 #alias zathura='zathura -e $(tabbed -c) & disown'
 
-# changing "ls" to "exa"
-alias ls="exa --color=always --group-directories-first"
-alias la="exa -a --color=always --group-directories-first"
-alias ll="exa -l --color=always --group-directories-first"
-alias lal="exa -al --color=always --group-directories-first"
-alias lt="exa -T --color=always --group-directories-first"
-alias l.='exa -a | egrep "^\."'
+# replace "ls" with "exa"
+alias ls="exa --icons --grid --group --group-directories-first"
+alias la="ls -a"
+alias ll="ls -l"
+alias llh="ll --header"
+alias lal="ls -al"
+alias lalh="lal --header"
+alias lt="ls -T"
+alias l.='ls -a | egrep "^\."'
 
 # pacman & paru
 # install

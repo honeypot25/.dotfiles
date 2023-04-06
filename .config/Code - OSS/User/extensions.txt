@@ -6,8 +6,11 @@ formulahendry.auto-close-tag
 formulahendry.auto-rename-tag
 formulahendry.code-runner
 foxundermoon.shell-format
+GitHub.copilot
 James-Yu.latex-workshop
+jeanp413.open-remote-ssh
 KevinRose.vsc-python-indent
+lukapetrovic.image-resizer
 ms-azuretools.vscode-docker
 ms-python.python
 ms-vscode.cpptools

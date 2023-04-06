@@ -23,7 +23,7 @@ alias ts="sudo timeshift-gtk"
 #alias zathura='zathura -e $(tabbed -c) & disown'
 
 # replace "ls" with "exa"
-alias ls="exa --icons --grid --group --group-directories-first"
+alias ls="exa --grid --group --group-directories-first"
 alias la="ls -a"
 alias ll="ls -l"
 alias llh="ll --header"

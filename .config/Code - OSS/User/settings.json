@@ -1,0 +1,229 @@
+{
+  // EDITOR
+  "editor.bracketPairColorization.enabled": true,
+  "editor.copyWithSyntaxHighlighting": false,
+  "editor.definitionLinkOpensInPeek": true,
+  "editor.fontFamily": "'Hack', 'Feather', 'monospace', monospace",
+  "editor.fontSize": 14,
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.insertSpaces": true, // maybe overridden
+  "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": true,
+  "editor.stickyTabStops": true,
+  "editor.tabSize": 4, // overridden by languages
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  // LANGUAGES
+  // "Prettier - Code formatter": C, [S]CSS, HTML, JS, JSON[C], Markdown, YAML // instead of default "vscode.<lang>-language-features"
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "editor.tabSize": 4
+  },
+  // CSS
+  "[css]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[html]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // Dart
+  // "[dart]": {
+  //   "editor.selectionHighlight": false,
+  //   "editor.suggest.snippetsPreventQuickSuggestions": false,
+  //   "editor.suggestSelection": "first",
+  //   "editor.tabCompletion": "onlySnippets",
+  //   "editor.wordBasedSuggestions": false,
+  //   "editor.tabSize": 2
+  // },
+  // JavaScript
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // JSON
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // markdown
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+    "editor.tabSize": 2
+  },
+  // Python
+  "python.formatting.provider": "black",
+  "pythonIndent.keepHangingBracketOnLine": true,
+  "pythonIndent.trimLinesWithOnlyWhitespace": true,
+  "pythonIndent.useTabOnHangingIndent": true,
+  "[python]": {
+    // "editor.defaultFormatter": "ms-python.python",
+    "editor.tabSize": 4
+  },
+  // SCSS
+  "[scss]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // shell
+  "[shellscript]": {
+    "files.eol": "\n",
+    "editor.tabSize": 2
+  },
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // EXTENSIONS
+  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        // re-generate the PDF anyway
+        "match": ".md$",
+        "cmd": "mdpdf ${file}"
+        // "isAsync": true
+      },
+      {
+        // stick with one zathura instance only
+        "match": ".md$",
+        "cmd": "pgrep zathura || { [ -f ${fileDirname}/${fileBasenameNoExt}.pdf ] && zathura ${fileDirname}/${fileBasenameNoExt}.pdf; }"
+      }
+    ]
+  },
+  "code-runner.enableAppInsights": false,
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.fileDirectoryAsCwd": true, // don't change dir with executorMap
+  "code-runner.executorMap": {
+    "javascript": "node",
+    // "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+    "java": "javac ./$fileName && java ./$fileNameWithoutExt",
+    // "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "c": "gcc ./$fileName -o ./$fileNameWithoutExt && ./$fileNameWithoutExt",
+    // "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "cpp": "g++ ./$fileName -o ./$fileNameWithoutExt && ./$fileNameWithoutExt",
+    "php": "php",
+    "python": "python3",
+    "perl": "perl",
+    "perl6": "perl6",
+    "ruby": "ruby",
+    "go": "go run",
+    "shellscript": "bash",
+    "csharp": "scriptcs",
+    "vbscript": "cscript //Nologo",
+    "typescript": "ts-node",
+    // "rust": "cd $dir && rustc $fileName && $dir$fileNameWithoutExt",
+    "rust": "rustc ./$fileName && ./$fileNameWithoutExt",
+    "dart": "dart",
+    "haskell": "runhaskell"
+  },
+  "C_Cpp.autocompleteAddParentheses": true,
+  "latex-workshop.latexindent.path": "/usr/bin/latexindent",
+  "latex-workshop.bibtex-format.trailingComma": true,
+  "latex-workshop.view.pdf.viewer": "external",
+  "latex-workshop.view.pdf.external.viewer.command": "/usr/bin/evince",
+  "latex-workshop.view.pdf.external.viewer.args": ["%PDF%"],
+  "markdown.extension.print.imgToBase64": true,
+  "markdown.extension.print.theme": "dark",
+  "markdown.extension.tableFormatter.normalizeIndentation": true,
+  "markdown.extension.theming.decoration.renderHardLineBreak": true,
+  "markdown.extension.theming.decoration.renderTrailingSpace": true,
+  "markdown.extension.toc.levels": "1..2",
+  "markdown-preview-enhanced.mermaidTheme": "dark",
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "shellcheck.executablePath": "/bin/shellcheck",
+  "shellcheck.exclude": ["1090", "1091", "2139", "2154"],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "debug.openDebug": "openOnDebugBreak",
+  "explorer.confirmDragAndDrop": true,
+  // "files.autoSave": "afterDelay",
+  // "files.autoSaveDelay": 300000,
+  "files.exclude": {
+    "**/__pycache__": true
+  },
+  "security.workspace.trust.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "security.workspace.trust.emptyWindow": false,
+  "telemetry.telemetryLevel": "off",
+  "terminal.integrated.tabs.enabled": true,
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "zenMode.hideTabs": false,
+  // STYLE
+  "window.menuBarVisibility": "toggle",
+  "window.title": "${dirty}${activeEditorMedium} - ${rootName}",
+  "window.titleBarStyle": "custom",
+  "workbench.editorAssociations": {
+    "*.pdf": "default"
+  },
+  "workbench.startupEditor": "none",
+  "workbench.iconTheme": "Monokai Pro (Filter Spectrum) Icons",
+  "workbench.colorTheme": "Monokai Pro (Filter Spectrum)",
+  "monokaiPro.fileIconsMonochrome": false,
+  // "workbench.preferredDarkColorTheme": "Monokai Pro (Filter Spectrum)",
+  // "workbench.preferredHighContrastColorTheme": "Monokai Pro (Filter Spectrum)",
+  "oneDarkPro.editorTheme": "One Dark Pro Darker",
+  "oneDarkPro.vivid": true,
+  "oneDarkPro.markdownStyle": true
+  // "workbench.colorCustomizations": {
+  //   "[One Dark Pro Darker]": {
+  //     "terminal.background": "#1b1b25",
+  //     "sideBar.background": "#1b1b25",
+  //     "focusBorder": "#16161e",
+  //     "activityBar.background": "#16161e",
+  //     "editor.background": "#1b1b25",
+  //     "button.background": "#16161e",
+  //     "widget.shadow": "#16161e",
+  //     "selection.background": "#16161e",
+  //     "descriptionForeground": "#F8F8F2",
+  //     "errorForeground": "#F8F8F2",
+  //     "icon.foreground": "#F8F8F2",
+  //     "window.activeBorder": "#16161e",
+  //     "window.inactiveBorder": "#16161e",
+  //     "editorGroup.border": "#302e31",
+  //     "editorGroup.dropBackground": "#16161e",
+  //     "editorGroupHeader.noTabsBackground": "#16161e",
+  //     "editorGroupHeader.tabsBackground": "#16161e",
+  //     "editorGroupHeader.tabsBorder": "#16161e",
+  //     "editorGroupHeader.border": "#1b1b25",
+  //     "editorGroup.emptyBackground": "#1b1b25",
+  //     "editorGroup.focusedEmptyBorder": "#16161e",
+  //     "tab.activeBackground": "#1b1b25",
+  //     "tab.unfocusedActiveBackground": "#1b1b25",
+  //     "tab.activeForeground": "#fff",
+  //     "tab.inactiveForeground": "#F8F8F2",
+  //     "tab.inactiveBackground": "#16161e",
+  //     "tab.unfocusedInactiveBackground": "#16161e",
+  //     "editorPane.background": "#16161e",
+  //     "foreground": "#F8F8F2",
+  //     "sideBar.border": "#302e31",
+  //     "sideBarSectionHeader.background": "#16161e",
+  //     "editorWidget.background": "#16161e",
+  //     "editorSuggestWidget.background": "#16161e",
+  //     "editorWidget.foreground": "#F8F8F2",
+  //     "sideBar.foreground": "#F8F8F2",
+  //     "list.activeSelectionBackground": "#16161e",
+  //     "list.activeSelectionForeground": "#fff",
+  //     "list.inactiveSelectionBackground": "#16161e",
+  //     "list.inactiveSelectionForeground": "#F8F8F2",
+  //     "textLink.foreground": "#F8F8F2",
+  //     "statusBar.background": "#16161e",
+  //     "statusBar.noFolderBackground": "#16161e",
+  //     "statusBar.debuggingBackground": "#16161e",
+  //     "statusBarItem.remoteBackground": "#16161e",
+  //     "statusBarItem.remoteForeground": "#fff"
+  //   }
+  // },
+}

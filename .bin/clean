@@ -6,7 +6,7 @@ paccache -ruq
 sudo pacman -Rnus $(sudo pacman -Qdtq ) 2>/dev/null
 
 # home files
-rm ~/.{lesshst,wget-hsts,python_history} 2>/dev/null
+rm ~/.{wget-hsts,python_history} 2>/dev/null
 
 # ~/.cache
 shopt -s extglob

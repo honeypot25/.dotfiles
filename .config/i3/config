@@ -311,7 +311,7 @@ mode "$mode_launcher" {
     bindsym v exec alacritty -e nvim
     bindsym Shift+v exec virtualbox
     bindsym ctrl+v exec virt-manager
-    bindsym w exec firefox
+    bindsym w exec opera
     bindsym z exec zoom
 
     bindsym Escape mode "default"

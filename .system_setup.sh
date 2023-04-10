@@ -130,7 +130,7 @@ install_packages() {
 
   echo -e "\nInstalling AppImage apps...\n"
   pushd ~/apps || return
-  curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
+  # curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
   chmod u+x ./*
   popd || return
 
@@ -144,8 +144,8 @@ install_packages() {
 
 set_zram() {
   paru -S --needed --noconfirm zramswap
-  # 50% RAM
-  echo "ZRAM_SIZE_PERCENT=50" | sudo tee /etc/zramswap.conf
+  # 100% RAM
+  echo "ZRAM_SIZE_PERCENT=100" | sudo tee /etc/zramswap.conf
   sudo systemctl enable --now zramswap
 }
 
@@ -162,7 +162,7 @@ set_virtualization() {
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
   # VirtualBox
-  # paru -S --needed --noconfirm virtualbox virtualbox-guest-utils
+  # paru -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
 }
 
 # set_crontab() {

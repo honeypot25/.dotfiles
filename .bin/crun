@@ -8,13 +8,11 @@ if [[ $(file "$script") =~ "C source" ]]; then
   out=${script%.*}
   gcc "$script" -o "$out" || exit 1
 
-  green=$(tput setaf 2)
-  res=$(tput sgr0)
-  printf "Running $green%s$res " "$out"
+  printf "Running $LGREEN%s$NC " "$out"
   args="${*:2:$#}"
   [ -n "$args" ] && {
     printf "with arguments: "
-    printf "$green%s$res" "$args"
+    printf "$LGREEN%s$NC" "$args"
   }
   printf "\n\n"
 

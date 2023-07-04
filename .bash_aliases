@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 # coding
-alias v="nvim"
-alias vi="nvim"
-alias vim="nvim"
-alias sv="sudo nvim"
+alias v="vim"
+alias vi="vim"
+alias sv="sudo vim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 alias gcc="gcc -Wall"
@@ -23,7 +22,7 @@ alias ts="sudo timeshift-gtk"
 #alias zathura='zathura -e $(tabbed -c) & disown'
 
 # replace "ls" with "exa"
-alias ls="exa --grid --group --group-directories-first"
+alias ls="exa --group --group-directories-first"
 alias la="ls -a"
 alias ll="ls -l"
 alias llh="ll --header"

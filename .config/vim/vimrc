@@ -1,17 +1,30 @@
+" XDG support
+
+set runtimepath=$VIMRUNTIME,$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after
+
+set backupdir=$XDG_STATE_HOME/vim/backup | call mkdir(&backupdir, 'p', 0700)
+set directory=$XDG_STATE_HOME/vim/swap   | call mkdir(&directory, 'p', 0700)
+set undodir=$XDG_STATE_HOME/vim/undo     | call mkdir(&undodir,   'p', 0700)
+set viewdir=$XDG_STATE_HOME/vim/view     | call mkdir(&viewdir,   'p', 0700)
+
+if !has('nvim') " Neovim has its own special location
+  set viminfofile=$XDG_STATE_HOME/vim/viminfo
+endif
+
 " Options
 set background=dark
-set cc=150
+set cc=120
 set clipboard=unnamedplus
 set completeopt=noinsert,menuone,noselect
 set cursorline
 set encoding=utf-8
 set hidden
 set hlsearch
-set inccommand=split
+"  set inccommand=split
 set incsearch
 set mouse=a
 set nocompatible
-set number
+set relativenumber 
 set showmatch
 set splitbelow splitright
 set ttimeoutlen=0
@@ -29,22 +42,22 @@ set tabstop=2
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
-filetype plugin indent on
-syntax enable
 let maplocalleader = "."
 
 " Plugins
-call plug#begin('$XDG_DATA_HOME/nvim/plugged')
+call plug#begin('$XDG_STATE_HOME/vim/plugged')
 
     " Appearance
-    Plug 'olimorris/onedarkpro.nvim'
+    Plug 'phanviet/vim-monokai-pro'
     Plug 'ryanoasis/vim-devicons'
     Plug 'junegunn/goyo.vim'
 
     " Utilities
-    "Plug 'sheerun/vim-polyglot'
+    Plug 'sheerun/vim-polyglot'
     Plug 'jiangmiao/auto-pairs'
     Plug 'preservim/nerdtree'
+        let g:NERDTreeShowHidden=1
+        let g:NERDTreeToggle='on'
 
     " Typesetting
     Plug 'lervag/vimtex'
@@ -61,17 +74,18 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
         let g:vimtex_view_general_viewer = 'zathura'
         let g:vimtex_view_method = 'zathura'
         "let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-    Plug 'plasticboy/vim-markdown'
+    Plug 'godlygeek/tabular'
+    Plug 'preservim/vim-markdown'
         " Disable math tex conceal feature (not good)
         let g:vim_markdown_math = 1
         let g:vim_markdown_folding_disabled = 1
         let g:vim_markdown_frontmatter = 1
         let g:vim_markdown_conceal = 0
-	      let g:vim_markdown_conceal_code_blocks = 0
+	    let g:vim_markdown_conceal_code_blocks = 0
     Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-	      let g:mkdp_auto_start = 0
-	      let g:mkdp_auto_close = 1
-	      let g:mkdp_theme = 'dark'
+	    let g:mkdp_auto_start = 0
+	    let g:mkdp_auto_close = 1
+	    let g:mkdp_theme = 'dark'
     
     " Snippets
     Plug 'SirVer/ultisnips'
@@ -80,12 +94,11 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
         let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     Plug 'honza/vim-snippets'
 
-call plug#end()
+call plug#end() " calls 'filetype plugin indent on' and 'syntax enable'
 
-colorscheme onedarkpro
-
-" NERDTree
-let NERDTreeShowHidden=1
+" Colors
+set termguicolors
+colorscheme monokai_pro
 
 """ [Re]mappings
 nnoremap <C-s> :w<CR>

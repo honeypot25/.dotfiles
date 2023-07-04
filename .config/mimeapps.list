@@ -1,10 +1,14 @@
 [Default Applications]
-x-scheme-handler/tg=userapp-Telegram Desktop-UBDNW1.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop
 text/html=opera.desktop
 x-scheme-handler/http=opera.desktop
 x-scheme-handler/https=opera.desktop
+image/png=gpicview.desktop
+x-scheme-handler/mailto=opera.desktop
 
 [Added Associations]
 text/plain=leafpad.desktop;
 application/pdf=org.gnome.Evince.desktop
 image/jpeg=gpicview.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop;
+image/png=gpicview.desktop;

@@ -60,12 +60,12 @@
     "editor.tabSize": 2
   },
   // Python
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "autopep8",
   "pythonIndent.keepHangingBracketOnLine": true,
   "pythonIndent.trimLinesWithOnlyWhitespace": true,
   "pythonIndent.useTabOnHangingIndent": true,
   "[python]": {
-    // "editor.defaultFormatter": "ms-python.python",
+    "editor.defaultFormatter": "ms-python.python",
     "editor.tabSize": 4
   },
   // SCSS
@@ -95,10 +95,15 @@
         "cmd": "mdpdf ${file}"
         // "isAsync": true
       },
+      // {
+      //   // stick with one Zathura instance only
+      //   "match": ".md$",
+      //   "cmd": "pgrep zathura || { [ -f ${fileDirname}/${fileBasenameNoExt}.pdf ] && zathura ${fileDirname}/${fileBasenameNoExt}.pdf; }"
+      // },
       {
-        // stick with one zathura instance only
+        // stick with one Evince instance only
         "match": ".md$",
-        "cmd": "pgrep zathura || { [ -f ${fileDirname}/${fileBasenameNoExt}.pdf ] && zathura ${fileDirname}/${fileBasenameNoExt}.pdf; }"
+        "cmd": "pgrep evince || { [ -f ${fileDirname}/${fileBasenameNoExt}.pdf ] && evince ${fileDirname}/${fileBasenameNoExt}.pdf; }"
       }
     ]
   },

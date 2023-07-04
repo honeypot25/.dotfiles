@@ -23,13 +23,13 @@ exec --no-startup-id dunst &
 exec --no-startup-id picom &
 
 # mpd
-#exec --no-startup-id mpd &
+exec --no-startup-id mpd &
 
 # mpdDris2 for playerctl & mpd
-#exec --no-startup-id mpdDris2 &
+exec --no-startup-id mpdDris2 &
 
 # players discovery
-#exec --no-startup-id sleep 1 && playerctld daemon &
+exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
 exec --no-startup-id nm-applet &
@@ -173,9 +173,9 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 
 # assing default workspace and switch to it
 # 1. Home icon
-for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
+for_window [class="(?i)bitwarden|firefox|obs-studio|opera"] move container to workspace $ws1; workspace $ws1
 # 2. Code icon
-for_window [class="(?i)code|electron|packettracer|supernotes|virt-manager|virtualbox"] move container to workspace $ws2; workspace $ws2
+for_window [class="(?i)code|electron|packettracer|supernotes|vim"] move container to workspace $ws2; workspace $ws2
 # 3. Chat icon
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|thunderbird|zoom"] move container to workspace $ws3; workspace $ws3
 
@@ -197,9 +197,11 @@ bindsym $mod+Escape exec --no-startup-id ~/.bin/rofi-powermenu &
 
 # Flameshot screenshots
 # manual region
-bindsym ctrl+Print exec --no-startup-id screengrab -m --region
+#bindsym ctrl+Print exec --no-startup-id screengrab -m --region
+bindsym ctrl+Print exec --no-startup-id flameshot gui
 # current screen
-bindsym Print exec --no-startup-id screengrab -m --fullscreen
+#bindsym Print exec --no-startup-id screengrab -m --fullscreen
+bindsym Print exec --no-startup-id flameshot screen --accept-on-select
 
 # Toggle WiFi
 bindsym XF86WLAN exec --no-startup-id rfkill toggle wlan &
@@ -221,7 +223,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O && ~/.bi
 bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l blur --off 60
 
 # Suspend (automatic lock is handled by systemd with betterlockscreen@.service, same for lid closing)
-bindsym XF86Sleep exec systemctl suspend
+bindsym XF86Sleep exec --no-startup-id xhost +SI:localuser:$USER && systemctl suspend
 
 #############
 ### MODES ###
@@ -254,6 +256,8 @@ bindsym $mod+r mode "$mode_resize"
 gaps inner 7
 gaps outer 5
 default_border pixel 0
+#client.focused "blue"
+#client.unfocused "blue"
 set $mode_gaps GAPS: Outer / Inner
 set $mode_inner_gaps Inner: [s] +, -, 0
 set $mode_outer_gaps Outer: [s] +, -, 0
@@ -308,7 +312,7 @@ mode "$mode_launcher" {
     bindsym p exec evince
     bindsym s exec spotify
     bindsym t exec telegram-desktop
-    bindsym v exec alacritty -e nvim
+    bindsym v exec alacritty -e vim -u $XDG_CONFIG_HOME/vim/vimrc
     bindsym Shift+v exec virtualbox
     bindsym ctrl+v exec virt-manager
     bindsym w exec opera

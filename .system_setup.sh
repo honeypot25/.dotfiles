@@ -8,14 +8,27 @@ preparing() {
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
-  mkdir -p .src "$XDG_CONFIG_HOME/mpd/playlists"
-  mkdir -p apps coding games misc projects uni vms Pictures/{screenshots,wallpapers} Videos/screenrec
-  # wallpapers
+  # - home dirs
+  mkdir -p \
+    .src \
+    apps \
+    coding \
+    games \
+    misc \
+    projects \
+    uni \
+    vms \
+    Pictures/{screenshots,wallpapers} \
+    Videos/screenrec
   # git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  # system
-  mkdir "$XDG_STATE_HOME/bash"
-  mkdir "$XDG_DATA_HOME/{cargo,gnupg,pki}"
-  mkdir "$XDG_CONFIG_HOME/python"
+  # - XDG compliance / home cleanup
+  mkdir -p \
+    "$XDG_CACHE_HOME" \
+    "$XDG_CONFIG_DIRS" \
+    "$XDG_CONFIG_HOME"/{python,mpd/playlists,gtk-2.0,vim,wget,yarn} \
+    "$XDG_DATA_DIRS" \
+    "$XDG_DATA_HOME"/{cargo,gnupg,pki,mysql/workbench} \
+    "$XDG_STATE_HOME"/bash
   popd || return # $PWD
 
   # install paru
@@ -135,10 +148,10 @@ install_packages() {
   popd || return
 
   echo -e "\nInstalling Python modules...\n"
-  pip install neovim
+  # pip install neovim
 
   echo -e "\nInstalling Vim-Plug...\n"
-  curl -fLo "${XDG_DATA_HOME:-~/.local/share}/nvim/site/autoload/plug.vim" --create-dirs \
+  curl -fLo "$XDG_CONFIG_HOME"/vim/autoload/plug.vim --create-dirs \
     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 }
 
@@ -173,8 +186,8 @@ set_virtualization() {
 
 end() {
   # services
-  sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
-  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service
+  #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
+  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service && sudo systemctl daemon-reload
   sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
   # adjust permissions
   sudo chmod +s /usr/bin/light

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### XDG compliance - cleanup
+### XDG compliance / home cleanup
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_DATA_DIRS=/usr/local/share:/usr/share
 export XDG_CACHE_HOME="$HOME"/.cache
@@ -18,6 +18,7 @@ export LESSHISTFILE="-"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
+export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 alias keychain="keychain --dir $XDG_RUNTIME_DIR/keychain"
@@ -27,17 +28,34 @@ alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 ### Colors
 export TERM=xterm-256color
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-RESET=$(tput sgr0)
-export RED GREEN RESET
+export NC='\e[0m'
+export BLACK='\e[0;30m'
+export GRAY='\e[1;30m'
+export RED='\e[0;31m'
+export LRED='\e[1;31m'
+export GREEN='\e[0;32m'
+export LGREEN='\e[1;32m'
+export BROWN='\e[0;33m'
+export YELLOW='\e[1;33m'
+export BLUE='\e[0;34m'
+export LBLUE='\e[1;34m'
+export PURPLE='\e[0;35m'
+export LPURPLE='\e[1;35m'
+export CYAN='\e[0;36m'
+export LCYAN='\e[1;36m'
+export LGRAY='\e[0;37m'
+export WHITE='\e[1;37m'
+
+### PATH
 export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
 
 ### If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 ### PROMPT
-PS1="[\[$GREEN\]\u\[$RESET\]   \[$RED\]\w\[$RESET\]]   "
+#PS1="$LCYAN[$NC$LGREEN\w$NC$LCYAN]$NC $LRED»$NC "
+PS1="[\w] » "
+#PS1="$LCYAN[$NC$LGREEN@\h$NC > $LRED\w$NC$LCYAN]$NC: "
 
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth

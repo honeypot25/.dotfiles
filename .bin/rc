@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") <general|video>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+action=$1
+base=~/uni/cybersec
+
+if [ "$action" = "general" ]; then
+  rclone sync $base cybersec: --exclude "video/**" --update --progress && rclone rmdirs cybersec: --leave-root
+elif [ "$action" = "video" ]; then
+  rclone sync $base videopurp: --include "video/**" --update --progress && rclone rmdirs videopurp: --leave-root
+else
+  echo "Unrecognized action: $action"
+  exit 1
+fi

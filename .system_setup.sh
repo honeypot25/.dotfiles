@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 
-source ~/.packages
+set -e
 
-preparing() {
+source ~/.packages
+log=~/setup.log
+
+testcmd() {
+  if command -v "$1" >/dev/null 2>&1; then
+    echo "Program \"$1\" is already installed, skipping..."
+    return 0
+  else
+    return 1
+  fi
+}
+
+prepare() {
   # system update
-  pacup --needed --noconfirm
+  sudo pacman -Syu --needed
 
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return
@@ -17,7 +29,7 @@ preparing() {
     misc \
     projects \
     uni \
-    vms \
+    vms \	
     Pictures/{screenshots,wallpapers} \
     Videos/screenrec
   # git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
@@ -33,7 +45,8 @@ preparing() {
 
   # install paru
   echo -e "\nInstalling AUR helper (paru)\n"
-  pushd ~/.src || return
+  testcmd paru && return 1
+  pushd ~/.src || return 1
   git clone https://aur.archlinux.org/paru
   pushd paru || return
   makepkg -si --noconfirm
@@ -54,7 +67,7 @@ install_displaymanager() (
     paru -S --needed --noconfirm "${lightdm_pkgs[@]}"
     sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
     # .Xauthority XDG-compliance
-    sudo sed -i '/[LightDM]/a user-authority-in-system-dir=true' /etc/lightdm/lightdm.conf
+    sudo sed -i 's/^#user-authority-in-system-dir=.*/user-authority-in-system-dir=true/' /etc/lightdm/lightdm.conf
     sudo systemctl enable lightdm
   }
 
@@ -73,10 +86,9 @@ install_displaymanager() (
 install_GUI() (
   # choose GUI
   echo
-  # kde|xfce|gnome|cinnamon|sway
-  while [[ ! "$GUI" =~ ^kde|i3$ ]]; do
-    # kde|xfce|gnome|cinnamon|sway
-    read -rp "Install your DE/WM (i3): " GUI
+  # kde/xfce/gnome/cinnamon/sway
+  while [[ ! "$GUI" =~ ^kde|xfce|i3$ ]]; do
+    read -rp "Install your DE/WM (kde/xfce/i3): " GUI
   done
   echo
 
@@ -109,7 +121,9 @@ install_GUI() (
   #   set_themes
   # }
 
-  # install_xfce() {}
+  install_xfce() {
+    paru -S --needed --noconfirm "${x11_pkgs[@]}" "${xfce_pkgs[@]}"
+  }
 
   # install_gnome() {}
 
@@ -126,31 +140,53 @@ install_GUI() (
   install_"$GUI"
 )
 
-install_packages() {
+install_locker() {
+  echo -e "\nInstalling screen locker\n"
+  paru -S --needed --noconfirm betterlockscreen
+
+  # automatically done by the AUR
+  #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
+  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service && sudo systemctl daemon-reload
+  # auto-lock screen before sleep/suspend
+  sudo systemctl enable betterlockscreen@"$(whoami)"
+}
+
+install_programs() {
   paru -S --needed --noconfirm "${pkgs[@]}"
+}
 
-  echo -e "Installing VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\"\n"
-  while read -r ext; do
-    echo "Installing $ext..."
-    code --install-extension "$ext" &>/dev/null
-  done <"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt"
-  echo -e "Installing latest C/C++ extension\n"
-  pushd ~/.vscode-oss/extensions/ || return
-  latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
-  wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
-  code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
-  popd || return
-  echo -e "\nDone."
+install_pymodules() {
+  echo -e "\nInstalling Python modules...\n"
+}
 
+install_appimages() {
   echo -e "\nInstalling AppImage apps...\n"
   pushd ~/apps || return
   # curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
   chmod u+x ./*
   popd || return
+}
 
-  echo -e "\nInstalling Python modules...\n"
-  # pip install neovim
+set_editors() {
+  ## VSCode
+  echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\"\n"
+  extdir="$XDG_CONFIG_HOME/Code - OSS/User"
+  [ -d "$extdir" ] || { echo "Directory \"$extdir\" doesn't exist, skipping..."; return 1; }
+  while read -r ext; do
+    echo "Installing $ext..."
+    code --install-extension "$ext" &>/dev/null
+  done <"$extdir"/extensions.txt
+  echo -e "Installing latest C/C++ extension\n"
+  pushd ~/.vscode-oss/extensions/ || return 1
+  latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
+  wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
+  code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
+  popd || return 1
+  echo "Updating list..."
+  code --list-extensions >"$extdir"/extensions.txt
+  echo -e "\nDone."
 
+  ## Vim-Plug
   echo -e "\nInstalling Vim-Plug...\n"
   curl -fLo "$XDG_CONFIG_HOME"/vim/autoload/plug.vim --create-dirs \
     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -158,13 +194,13 @@ install_packages() {
 
 set_zram() {
   paru -S --needed --noconfirm zramswap
-  # 100% RAM
-  echo "ZRAM_SIZE_PERCENT=100" | sudo tee /etc/zramswap.conf
+  perc=$1
+  echo "ZRAM_SIZE_PERCENT=$perc" | sudo tee /etc/zramswap.conf
   sudo systemctl enable --now zramswap
 }
 
 set_virtualization() {
-  # manually resolve iptables conflict
+  # manually resolve iptables conflict first
   paru -S --needed iptables-nft
   # qemu/kvm
   paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra virbr0 vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
@@ -176,7 +212,7 @@ set_virtualization() {
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
   # VirtualBox
-  # paru -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
+  paru -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
 }
 
 set_snapper() {
@@ -191,46 +227,45 @@ set_crontab() {
   echo "@reboot dconf dump /org/nemo/ >~/.config/nemo/preferences" | sudo tee /var/spool/cron/"$(whoami)"
 }
 
-end() {
-  # services
-  #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
-  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service && sudo systemctl daemon-reload
-  sudo systemctl enable betterlockscreen@"$(whoami)" # auto-lock screen before sleep/suspend
-  # adjust permissions
+miscellanea() {
+  ## Adjust permissions
   sudo chmod +s /usr/bin/light
-  # copies
+
+  ## Copies
   sudo cp -r "$XDG_DATA_HOME"/icons/* /usr/share/icons/
   sudo cp -r "$XDG_DATA_HOME"/fonts/* /usr/share/fonts/
   sudo cp -r "$XDG_DATA_HOME"/themes/* /usr/share/themes/
-  ln -Pf ~/.packages ~/projects/auto-arch/packages # hard link
-  # updates
+
+  ## packages hard link to ~
+  ln -Pf ~/.packages ~/projects/auto-arch/packages
+
+  ## Updates
   fc-cache -fv
-  # Nemo preferences
-  dconf dump /org/nemo/ >"$XDG_CONFIG_HOME/nemo/preferences" &
-  # VScode extensions' list
-  code --list-extensions >"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt"
-  # removals
+
+  ## Nemo preferences
+  dconf dump /org/nemo/ >"$XDG_CONFIG_HOME"/nemo/preferences &
+
+  ## Removals
   rmdir ~/{Public,Templates}
-  # install GRUB theme
-  sudo cp -r "$XDG_DATA_HOME/themes/Xenlism-Arch/" /boot/grub/themes/
+
+  ## GRUB theme
+  sudo cp -r "$XDG_DATA_HOME"/themes/Xenlism-Arch/ /boot/grub/themes/
   sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-  # reboot
-  printf "\n\nRebooting in:\n"
-  for sec in {10..1}; do
-    printf "%s...\n" "$sec"
-    sleep 1
-  done
-  reboot
 }
 
-preparing
+prepare
 install_displaymanager
 install_GUI
-install_packages
-set_zram
+install_locker
+install_programs
+install_pymodules
+install_appimages
+set_editors
+set_zram 100
 set_virtualization
 set_snapper
 set_crontab
-end
+miscellanea
+
+echo "\nDone! You can now reboot the system."

@@ -2,7 +2,6 @@
 
 # coding
 alias v="vim"
-alias vi="vim"
 alias sv="sudo vim"
 alias py="python3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"

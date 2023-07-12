@@ -49,7 +49,7 @@ check_commands() {
 
   if [[ ${#missing[@]} -gt 0 ]]; then
     echo "The following commands are not available:" 
-    for cmd in "${CMDS[@]}"; do
+    for cmd in "${missing[@]}"; do
       echo "- $cmd"
     done
     echo -e "\nAborting..."
@@ -74,11 +74,11 @@ makedirs() {
   #git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
 
   ## XDG compliance / home cleanup
+  #XDG_DATA_DIRS
   mkdir -p \
     "$XDG_CACHE_HOME" \
     "$XDG_CONFIG_DIRS" \
     "$XDG_CONFIG_HOME"/{python,mpd/playlists,gtk-2.0,vim,wget,yarn} \
-    "$XDG_DATA_DIRS" \
     "$XDG_DATA_HOME"/{cargo,gnupg,pki,mysql/workbench} \
     "$XDG_STATE_HOME"/bash
   popd || return 1 # $PWD
@@ -183,7 +183,7 @@ install_GUI() (
   install_"$GUI"
 )
 
-install_locker() {
+install_locker() { 
   echo -e "\nInstalling screen locker"
   paru -S --needed betterlockscreen
 
@@ -212,19 +212,19 @@ install_appimages() {
 
 set_editors() {
   ## VSCode
-  echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\""
-  extdir="$XDG_CONFIG_HOME/Code - OSS/User"
+  echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code/User/extensions.txt\""
+  extdir="$XDG_CONFIG_HOME/Code/User"
   ifdir "$extdir" || return 1
   while read -r ext; do
     echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
   done <"$extdir"/extensions.txt
-  echo -e "\nInstalling latest C/C++ extension"
-  pushd ~/.vscode-oss/extensions/ || return 1
-  latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
-  wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
-  code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
-  popd || return 1
+  #echo -e "\nInstalling latest C/C++ extension"
+  #pushd ~/.vscode/extensions/ || return 1
+  #latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
+  #wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
+  #code --install-extension ms-vscode.cpptools-"$latest".vsix &>/dev/null
+  #popd || return 1
   echo "Updating list..."
   code --list-extensions >"$extdir"/extensions.txt
   echo -e "\nDone."
@@ -259,14 +259,14 @@ set_virtualization() {
 
 set_snapper() {
   sudo snapper -c root create-config /
-  sudo sed -i -E "s/^(ALLOW_USERS=)\".*"/\1\"$(whoami)\"/" /etc/snapper/configs/root
+  sudo sed -i -E "s/^(ALLOW_USERS=)\".*\"/\1\"$(whoami)\"/" /etc/snapper/configs/root
   sudo sed -i -E 's/^(TIMELINE_LIMIT_HOURLY=)".*"/\1"1"/; s/^(TIMELINE_LIMIT_DAILY=)".*"/\1"3"/; s/^(TIMELINE_LIMIT_WEEKLY=)".*"/\1"7"/; s/^(TIMELINE_LIMIT_MONTHLY=)".*"/\1"4"/; s/^(TIMELINE_LIMIT_YEARLY=)".*"/\1"0"/' /etc/snapper/configs/root
   sudo chmod +rx /.snapshots/
   sudo systemctl enable snapper-{timeline,cleanup}.timer grub-btrfsd.service
 }
 
 set_crontab() {
-  echo "@reboot dconf dump /org/nemo/ >~/.config/nemo/preferences" | sudo tee /var/spool/cron/"$(whoami)"
+  #echo "@reboot dconf dump /org/nemo/ >~/.config/nemo/preferences" | sudo tee /var/spool/cron/"$(whoami)"
 }
 
 miscellanea() {
@@ -285,7 +285,7 @@ miscellanea() {
   fc-cache -fv
 
   ## Nemo preferences
-  dconf dump /org/nemo/ >"$XDG_CONFIG_HOME"/nemo/preferences &
+  cat "$XDG_CONFIG_HOME"/nemo/preferences | dconf load /org/nemo/
 
   ## Removals
   rmdir ~/{Public,Templates}

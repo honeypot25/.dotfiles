@@ -30,9 +30,8 @@ sort-favorites-first=true
 show-only-directories=false
 
 [window-state]
-geometry='554x991+563+48'
 maximized=false
 side-pane-view='places'
 sidebar-bookmark-breakpoint=0
-sidebar-width=174
+sidebar-width=175
 start-with-sidebar=true

@@ -8,11 +8,10 @@ formulahendry.code-runner
 foxundermoon.shell-format
 GitHub.copilot
 James-Yu.latex-workshop
-jeanp413.open-remote-ssh
 KevinRose.vsc-python-indent
-lukapetrovic.image-resizer
 ms-azuretools.vscode-docker
 ms-python.python
+ms-python.vscode-pylance
 ms-vscode.cpptools
 PKief.material-icon-theme
 redhat.vscode-xml

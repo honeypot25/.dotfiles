@@ -15,6 +15,7 @@ CMDS=(
   "wget"
   "git"
   "makepkg"
+  "light"
 )
 
 ZRAM_PERC=100
@@ -59,20 +60,17 @@ check_commands() {
 makedirs() {
   echo -e "\nCreating necessary directories\n"
   pushd ~ || return 1
-  # - home dirs
+  ## home dirs
   mkdir -p \
     .src \
     apps \
-    coding \
-    games \
-    misc \
-    projects \
-    uni \
+    temp \
     vms \	
     Pictures/{screenshots,wallpapers} \
     Videos/screenrec
-  # git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
-  # - XDG compliance / home cleanup
+  #git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
+
+  ## XDG compliance / home cleanup
   mkdir -p \
     "$XDG_CACHE_HOME" \
     "$XDG_CONFIG_DIRS" \
@@ -271,7 +269,7 @@ set_crontab() {
 
 miscellanea() {
   ## Adjust permissions
-  sudo chmod +s /usr/bin/light
+  sudo chmod u+s /usr/bin/light
 
   ## Copies
   sudo cp -r "$XDG_DATA_HOME"/icons/* /usr/share/icons/
@@ -291,7 +289,7 @@ miscellanea() {
   rmdir ~/{Public,Templates}
 
   ## GRUB theme
-  [ -d "$XDG_DATA_HOME"/themes/Xenlism-Arch/ ] || return 1
+  ifdir "$XDG_DATA_HOME"/themes/Xenlism-Arch || return 1
   sudo cp -r "$XDG_DATA_HOME"/themes/Xenlism-Arch/ /boot/grub/themes/
   sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -299,17 +297,17 @@ miscellanea() {
 
 check_commands
 makedirs
-install_AUR
-install_displaymanager
+#install_AUR
+#install_displaymanager
 install_GUI
 install_locker
 install_programs
 install_pymodules
-install_appimages
+#install_appimages
 set_editors
-set_zram
-set_virtualization
-set_snapper
+#set_zram
+#set_virtualization
+#set_snapper
 set_crontab
 miscellanea
 

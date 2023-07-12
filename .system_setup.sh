@@ -289,6 +289,11 @@ miscellanea() {
 
   ## Removals
   rmdir ~/{Public,Templates}
+  
+  ## Force tlp fix
+  sudo sed -i -E 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
+  sudo sed -i -E 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
+  sudo systemctl restart tlp
 
   ## GRUB theme
   ifdir "$XDG_DATA_HOME"/themes/Xenlism-Arch || return 1
@@ -301,17 +306,17 @@ miscellanea() {
 
 check_commands
 makedirs
-#install_AUR
-#install_displaymanager
+install_AUR
+install_displaymanager
 install_GUI
 install_locker
 install_programs
 install_pymodules
-#install_appimages
+install_appimages
 set_editors
-#set_zram
-#set_virtualization
-#set_snapper
+set_zram
+set_virtualization
+set_snapper
 set_crontab
 miscellanea
 

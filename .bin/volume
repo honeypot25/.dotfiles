@@ -44,6 +44,6 @@ esac
 icons="$XDG_DATA_HOME/icons"
 dunstify \
   -a "$app" \
-  -r $id \
+  -r "$id" \
   -i "$icons/$icon.svg" \
   "$msg"

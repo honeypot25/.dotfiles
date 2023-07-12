@@ -27,24 +27,24 @@ alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 alias yarn="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 ### Colors
-export TERM=xterm-256color
-export NC='\e[0m'
-export BLACK='\e[0;30m'
-export GRAY='\e[1;30m'
-export RED='\e[0;31m'
-export LRED='\e[1;31m'
-export GREEN='\e[0;32m'
-export LGREEN='\e[1;32m'
-export BROWN='\e[0;33m'
-export YELLOW='\e[1;33m'
-export BLUE='\e[0;34m'
-export LBLUE='\e[1;34m'
-export PURPLE='\e[0;35m'
-export LPURPLE='\e[1;35m'
-export CYAN='\e[0;36m'
-export LCYAN='\e[1;36m'
-export LGRAY='\e[0;37m'
-export WHITE='\e[1;37m'
+TERM=xterm-256color
+NC='\[\e[0m\]'
+BLACK='\[\e[0;30m\]'
+GRAY='\[\e[1;30m\]'
+RED='\[\e[0;31m\]'
+LRED='\[\e[1;31m\]'
+GREEN='\[\e[0;32m\]'
+LGREEN='\[\e[1;32m\]'
+BROWN='\[\e[0;33m\]'
+YELLOW='\[\e[1;33m\]'
+BLUE='\[\e[0;34m\]'
+LBLUE='\[\e[1;34m\]'
+PURPLE='\[\e[0;35m\]'
+LPURPLE='\[\e[1;35m\]'
+CYAN='\[\e[0;36m\]'
+LCYAN='\[\e[1;36m\]'
+LGRAY='\[\e[0;37m\]'
+WHITE='\[\e[1;37m\]'
 
 ### PATH
 export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
@@ -53,9 +53,7 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
 [[ $- != *i* ]] && return
 
 ### PROMPT
-#PS1="$LCYAN[$NC$LGREEN\w$NC$LCYAN]$NC $LRED»$NC "
-PS1="[\w] » "
-#PS1="$LCYAN[$NC$LGREEN@\h$NC > $LRED\w$NC$LCYAN]$NC: "
+PS1="$LCYAN[$NC$LGREEN\h$NC $LCYAN@$NC $LRED\w$NC$LCYAN]$NC » "
 
 ## HISTORY
 HISTCONTROL=ignoredups:erasedups # ignoreboth

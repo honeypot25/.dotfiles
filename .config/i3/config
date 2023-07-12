@@ -13,9 +13,6 @@ font pango:Hack 10
 # lid closing event with xss-deamon (lock & suspend)
 # exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
 
-# Enabling Touchpad tapping
-exec --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
-
 # Dunst
 exec --no-startup-id dunst &
 
@@ -39,9 +36,12 @@ exec --no-startup-id nm-applet &
 # Try to start with both monitors
 # exec --no-startup-id ~/.bin/monitor both &
 
-#############################################
-### RE-EXEC AT EVERY i3 RESTART (ORDERED) ###
-#############################################
+##########################################################
+### ORDERED RE-EXEC AT EVERY i3 RESTART ($mod+Shift+r) ###
+##########################################################
+
+# Enabling Touchpad tapping
+exec --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
 
 # start with default wallpaper and update betterlockscreen cache with the blurred version
 # $(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1)
@@ -173,7 +173,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 
 # assing default workspace and switch to it
 # 1. Home icon
-for_window [class="(?i)bitwarden|firefox|obs-studio|opera"] move container to workspace $ws1; workspace $ws1
+for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
 # 2. Code icon
 for_window [class="(?i)code|electron|packettracer|supernotes|vim"] move container to workspace $ws2; workspace $ws2
 # 3. Chat icon
@@ -297,9 +297,10 @@ mode "$mode_outer_gaps" {
 
 ### PROGRAMS ###
 
-set $mode_launcher Shortcuts: B, C, D, E, F, M, N, O, P, S, T, [s|c]V, W, Z
+set $mode_launcher Shortcuts: A, B, C, D, E, F, M, N, O, P, S, T, [s|c]V, W, Z
 bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
+    bindsym a exec android-studio
     bindsym b exec bitwarden-desktop
     bindsym c exec code # --enable-proposed-api ms-python.python
     bindsym d exec discord
@@ -315,7 +316,7 @@ mode "$mode_launcher" {
     bindsym v exec alacritty -e vim -u $XDG_CONFIG_HOME/vim/vimrc
     bindsym Shift+v exec virtualbox
     bindsym ctrl+v exec virt-manager
-    bindsym w exec opera
+    bindsym w exec firefox
     bindsym z exec zoom
 
     bindsym Escape mode "default"

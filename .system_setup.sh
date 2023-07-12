@@ -178,6 +178,14 @@ set_virtualization() {
   # paru -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
 }
 
+set_snapper() {
+  sudo snapper -c root create-config /
+  sudo sed -i -E "s/^(ALLOW_USERS=)\".*"/\1\"$(whoami)\"/" /etc/snapper/configs/root
+  sudo sed -i -E 's/^(TIMELINE_LIMIT_HOURLY=)".*"/\1"1"/; s/^(TIMELINE_LIMIT_DAILY=)".*"/\1"3"/; s/^(TIMELINE_LIMIT_WEEKLY=)".*"/\1"7"/; s/^(TIMELINE_LIMIT_MONTHLY=)".*"/\1"4"/; s/^(TIMELINE_LIMIT_YEARLY=)".*"/\1"0"/' /etc/snapper/configs/root
+  sudo chmod +rx /.snapshots/
+  sudo systemctl enable snapper-{timeline,cleanup}.timer grub-btrfsd.service
+}
+
 # set_crontab() {
 #   {
 #     echo ""
@@ -210,7 +218,7 @@ end() {
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 
   # reboot
-  printf "All done!\nRemember to config Timeshift (5, 7, 0, 0, 0)\n\nRebooting in:\n"
+  printf "\n\nRebooting in:\n"
   for sec in {10..1}; do
     printf "%s...\n" "$sec"
     sleep 1
@@ -224,6 +232,6 @@ install_GUI
 install_packages
 set_zram
 set_virtualization
-# set_timeshift
+set_snapper
 # set_crontab
 end

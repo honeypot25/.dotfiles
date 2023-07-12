@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
-change-commit() {
-  commit="$1"
-  newmsg="$2"
-  branch="main"
+usage() { echo -e "Usage:\t$(basename "$0") -c <commit> -m <message> -b <branch>" && exit 1; }
+[ $# -eq 0 ] && usage
 
-  git checkout $commit
-  git commit --amend -m "$newmsg"
-  git cherry-pick $commit..$branch
-  git checkout $branch
-}
+while getopts ":hc:m:b:" opt; do
+  case $opt in
+  c) comm=$OPTARG ;;
+  m) msg=$OPTARG ;;
+  b) branch=$OPTARG ;;
+  h | *) usage ;;
+  esac
+done
 
-change-commit
+git checkout "$comm"
+git commit --amend -m "$msg"
+git cherry-pick "$comm".."$branch"
+git checkout "$branch"

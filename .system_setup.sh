@@ -38,6 +38,7 @@ preparing() {
   pushd paru || return
   makepkg -si --noconfirm
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
+  sudo sed -i 's/^#NewsOnUpgrade/NewsOnUpgrade/' /etc/paru.conf
   popd || return # ~
   popd || return # $PWD
 }
@@ -186,11 +187,9 @@ set_snapper() {
   sudo systemctl enable snapper-{timeline,cleanup}.timer grub-btrfsd.service
 }
 
-# set_crontab() {
-#   {
-#     echo ""
-#   } | sudo tee var/spool/cron/"$(whoami)"
-# }
+set_crontab() {
+  echo "@reboot dconf dump /org/nemo/ >~/.config/nemo/preferences" | sudo tee /var/spool/cron/"$(whoami)"
+}
 
 end() {
   # services
@@ -233,5 +232,5 @@ install_packages
 set_zram
 set_virtualization
 set_snapper
-# set_crontab
+set_crontab
 end

@@ -11,7 +11,7 @@ while getopts ":hs:d:" opt; do
   esac
 done
 
-HDD="/media/$USER/HDD"
+HDD="/run/media/$USER/HDD"
 [ -d "$HDD" ] || {
   echo "Can't find external drive \"$HDD\""
   exit 1

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 set -e
-source ~/.packages
+
+[ -f ~/.packages ] && source ~/.packages
 
 ############
 ### VARS ###
@@ -50,6 +51,7 @@ check_commands() {
     echo "The following commands are not available:" 
     for cmd in "${CMDS[@]}"; do
       echo "- $cmd"
+    done
     echo -e "\nAborting..."
     exit 1
   fi
@@ -58,14 +60,15 @@ check_commands() {
 }
 
 makedirs() {
-  echo -e "\nCreating necessary directories\n"
+  echo -e "\nCreating necessary directories"
   pushd ~ || return 1
   ## home dirs
   mkdir -p \
     .src \
     apps \
+    misc \
     temp \
-    vms \	
+    vms \
     Pictures/{screenshots,wallpapers} \
     Videos/screenrec
   #git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
@@ -86,7 +89,7 @@ install_AUR() {
   sudo pacman -Syu --needed
   
   ## paru
-  echo -e "\nInstalling AUR helper (paru)\n"
+  echo -e "\nInstalling AUR helper (paru)"
   pushd ~/.src || return 1
   git clone https://aur.archlinux.org/paru
   pushd paru || return 1
@@ -116,8 +119,7 @@ install_displaymanager() (
     paru -S --needed "${sddm_pkgs[@]}"
     sudo git clone https://github.com/keyitdev/sddm-flower-theme.git /usr/share/sddm/themes/sddm-flower-theme
     sudo cp /usr/share/sddm/themes/sddm-flower-theme/Fonts/* /usr/share/fonts/
-    echo "[Theme]
-    Current=sddm-flower-theme" | sudo tee /etc/sddm.conf
+    echo -e "[Theme]\nCurrent=sddm-flower-theme" | sudo tee /etc/sddm.conf
     sudo systemctl enable sddm
   }
 
@@ -182,7 +184,7 @@ install_GUI() (
 )
 
 install_locker() {
-  echo -e "\nInstalling screen locker\n"
+  echo -e "\nInstalling screen locker"
   paru -S --needed betterlockscreen
 
   # automatically done by the AUR
@@ -197,11 +199,11 @@ install_programs() {
 }
 
 install_pymodules() {
-  echo -e "\nInstalling Python modules...\n"
+  echo -e "\nInstalling Python modules..."
 }
 
 install_appimages() {
-  echo -e "\nInstalling AppImage apps...\n"
+  echo -e "\nInstalling AppImage apps..."
   pushd ~/apps || return 1
   # curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
   chmod u+x ./*
@@ -210,14 +212,14 @@ install_appimages() {
 
 set_editors() {
   ## VSCode
-  echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\"\n"
+  echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\""
   extdir="$XDG_CONFIG_HOME/Code - OSS/User"
   ifdir "$extdir" || return 1
   while read -r ext; do
     echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
   done <"$extdir"/extensions.txt
-  echo -e "Installing latest C/C++ extension\n"
+  echo -e "\nInstalling latest C/C++ extension"
   pushd ~/.vscode-oss/extensions/ || return 1
   latest=$(curl -s "https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" | rg "Versions.*?([.0-9]+)" -o -r'$1')
   wget "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/$latest/vspackage?targetPlatform=linux-x64" -o ms-vscode.cpptools-"$latest".vsix
@@ -228,7 +230,7 @@ set_editors() {
   echo -e "\nDone."
 
   ## Vim-Plug
-  echo -e "\nInstalling Vim-Plug...\n"
+  echo -e "\nInstalling Vim-Plug..."
   curl -fLo "$XDG_CONFIG_HOME"/vim/autoload/plug.vim --create-dirs \
     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 }
@@ -276,7 +278,7 @@ miscellanea() {
   sudo cp -r "$XDG_DATA_HOME"/fonts/* /usr/share/fonts/
   sudo cp -r "$XDG_DATA_HOME"/themes/* /usr/share/themes/
 
-  ## packages hard link to ~
+  ## packages hard link
   ln -Pf ~/.packages ~/projects/auto-arch/packages
 
   ## Updates
@@ -290,8 +292,10 @@ miscellanea() {
 
   ## GRUB theme
   ifdir "$XDG_DATA_HOME"/themes/Xenlism-Arch || return 1
+  # backup
+  sudo cp /etc/default/grub /etc/default/grub.bak
   sudo cp -r "$XDG_DATA_HOME"/themes/Xenlism-Arch/ /boot/grub/themes/
-  sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
+  sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt\"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
@@ -311,4 +315,4 @@ set_editors
 set_crontab
 miscellanea
 
-echo "\nDone! You can now reboot the system."
+echo -e "\nDone! You can now reboot the system."

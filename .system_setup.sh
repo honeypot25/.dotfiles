@@ -1,25 +1,64 @@
 #!/usr/bin/env bash
 
 set -e
-
 source ~/.packages
-log=~/setup.log
 
-testcmd() {
-  if command -v "$1" >/dev/null 2>&1; then
-    echo "Program \"$1\" is already installed, skipping..."
+############
+### VARS ###
+############
+
+LOG=~/setup.log
+CMDS=(
+  "pacman"
+  "code"
+  "curl"
+  "wget"
+  "git"
+  "makepkg"
+)
+
+ZRAM_PERC=100
+
+###############
+### UTILITY ###
+###############
+
+ifdir() {
+  dir=$1
+  if [ -d "$dir" ]; then
     return 0
   else
+    echo "Directory \"$dir\" doesn't exist, skipping..."
     return 1
   fi
 }
 
-prepare() {
-  # system update
-  sudo pacman -Syu --needed
+###############
+### PROGRAM ###
+###############
 
+check_commands() {
+  missing=()
+  for cmd in "${CMDS[@]}"; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      missing+=("$cmd")
+    fi
+  done
+
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    echo "The following commands are not available:" 
+    for cmd in "${CMDS[@]}"; do
+      echo "- $cmd"
+    echo -e "\nAborting..."
+    exit 1
+  fi
+  
+  return 0
+}
+
+makedirs() {
   echo -e "\nCreating necessary directories\n"
-  pushd ~ || return
+  pushd ~ || return 1
   # - home dirs
   mkdir -p \
     .src \
@@ -41,19 +80,23 @@ prepare() {
     "$XDG_DATA_DIRS" \
     "$XDG_DATA_HOME"/{cargo,gnupg,pki,mysql/workbench} \
     "$XDG_STATE_HOME"/bash
-  popd || return # $PWD
+  popd || return 1 # $PWD
+}
 
-  # install paru
+install_AUR() {
+  # update system first
+  sudo pacman -Syu --needed
+  
+  ## paru
   echo -e "\nInstalling AUR helper (paru)\n"
-  testcmd paru && return 1
   pushd ~/.src || return 1
   git clone https://aur.archlinux.org/paru
-  pushd paru || return
+  pushd paru || return 1
   makepkg -si --noconfirm
   sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
   sudo sed -i 's/^#NewsOnUpgrade/NewsOnUpgrade/' /etc/paru.conf
-  popd || return # ~
-  popd || return # $PWD
+  popd || return 1 # ~
+  popd || return 1 # $PWD
 }
 
 install_displaymanager() (
@@ -64,7 +107,7 @@ install_displaymanager() (
   echo
 
   install_lightdm() {
-    paru -S --needed --noconfirm "${lightdm_pkgs[@]}"
+    paru -S --needed "${lightdm_pkgs[@]}"
     sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
     # .Xauthority XDG-compliance
     sudo sed -i 's/^#user-authority-in-system-dir=.*/user-authority-in-system-dir=true/' /etc/lightdm/lightdm.conf
@@ -72,7 +115,7 @@ install_displaymanager() (
   }
 
   install_sddm() {
-    paru -S --needed --noconfirm "${sddm_pkgs[@]}"
+    paru -S --needed "${sddm_pkgs[@]}"
     sudo git clone https://github.com/keyitdev/sddm-flower-theme.git /usr/share/sddm/themes/sddm-flower-theme
     sudo cp /usr/share/sddm/themes/sddm-flower-theme/Fonts/* /usr/share/fonts/
     echo "[Theme]
@@ -94,26 +137,26 @@ install_GUI() (
 
   # install_kde() {
   #   # packages
-  #   paru -S --needed --noconfirm "${wayland_pkgs[@]}" "${kde_pkgs[@]}"
+  #   paru -S --needed "${wayland_pkgs[@]}" "${kde_pkgs[@]}"
   #   set_themes() {
   #     # Lightly, for KDE Catppuccin material design: System Settings > Appearance > Application Style > Lightly
-  #     pushd "$home/.src" || return
+  #     pushd "$home/.src" || return 1
   #     paru -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
   #     git clone --single-branch --depth=1 https://github.com/Luwx/Lightly.git
-  #     pushd Lightly || return
+  #     pushd Lightly || return 1
   #     mkdir build
-  #     pushd build || return
+  #     pushd build || return 1
   #     cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_TESTING=OFF ..
   #     make
   #     sudo make install
-  #     popd || return # Lightly
-  #     popd || return # $home/.src
+  #     popd || return 1 # Lightly
+  #     popd || return 1 # $home/.src
   #     # KDE Catppuccin
   #     git clone https://github.com/catppuccin/kde.git catppuccin-kde
-  #     pushd catppuccin-kde/kde-store-archives/global-theme || return
+  #     pushd catppuccin-kde/kde-store-archives/global-theme || return 1
   #     kpackagetool5 -i catppuccin.tar.gz
-  #     popd || return # $home/.src
-  #     popd || return # $PWD
+  #     popd || return 1 # $home/.src
+  #     popd || return 1 # $PWD
   #     # VSCode Catppuccin
   #     git clone https://github.com/catppuccin/vscode.git "$home/.vscode/catppuccin-vscode" # then CTRL+K CTRL+T
   #   }
@@ -122,7 +165,7 @@ install_GUI() (
   # }
 
   install_xfce() {
-    paru -S --needed --noconfirm "${x11_pkgs[@]}" "${xfce_pkgs[@]}"
+    paru -S --needed "${x11_pkgs[@]}" "${xfce_pkgs[@]}"
   }
 
   # install_gnome() {}
@@ -130,11 +173,11 @@ install_GUI() (
   # install_cinnamon() {}
 
   install_i3() {
-    paru -S --needed --noconfirm "${x11_pkgs[@]}" "${i3_pkgs[@]}"
+    paru -S --needed "${x11_pkgs[@]}" "${i3_pkgs[@]}"
   }
 
   install_sway() {
-    paru -S --needed --noconfirm "${wayland_pkgs[@]}" "${sway_pkgs[@]}"
+    paru -S --needed "${wayland_pkgs[@]}" "${sway_pkgs[@]}"
   }
 
   install_"$GUI"
@@ -142,7 +185,7 @@ install_GUI() (
 
 install_locker() {
   echo -e "\nInstalling screen locker\n"
-  paru -S --needed --noconfirm betterlockscreen
+  paru -S --needed betterlockscreen
 
   # automatically done by the AUR
   #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
@@ -152,7 +195,7 @@ install_locker() {
 }
 
 install_programs() {
-  paru -S --needed --noconfirm "${pkgs[@]}"
+  paru -S --needed "${pkgs[@]}"
 }
 
 install_pymodules() {
@@ -161,17 +204,17 @@ install_pymodules() {
 
 install_appimages() {
   echo -e "\nInstalling AppImage apps...\n"
-  pushd ~/apps || return
+  pushd ~/apps || return 1
   # curl https://download.supernotes.app/Supernotes-2.1.3.AppImage -o Supernotes-2.1.3.AppImage
   chmod u+x ./*
-  popd || return
+  popd || return 1
 }
 
 set_editors() {
   ## VSCode
   echo -e "\nInstalling VSCode extensions from \"$XDG_CONFIG_HOME/Code - OSS/User/extensions.txt\"\n"
   extdir="$XDG_CONFIG_HOME/Code - OSS/User"
-  [ -d "$extdir" ] || { echo "Directory \"$extdir\" doesn't exist, skipping..."; return 1; }
+  ifdir "$extdir" || return 1
   while read -r ext; do
     echo "Installing $ext..."
     code --install-extension "$ext" &>/dev/null
@@ -193,9 +236,8 @@ set_editors() {
 }
 
 set_zram() {
-  paru -S --needed --noconfirm zramswap
-  perc=$1
-  echo "ZRAM_SIZE_PERCENT=$perc" | sudo tee /etc/zramswap.conf
+  paru -S --needed zramswap
+  echo "ZRAM_SIZE_PERCENT=$ZRAM_PERC" | sudo tee /etc/zramswap.conf
   sudo systemctl enable --now zramswap
 }
 
@@ -203,7 +245,7 @@ set_virtualization() {
   # manually resolve iptables conflict first
   paru -S --needed iptables-nft
   # qemu/kvm
-  paru -S --needed --noconfirm virt-manager qemu qemu-arch-extra virbr0 vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
+  paru -S --needed virt-manager qemu qemu-arch-extra virbr0 vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$(whoami)"
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd
@@ -212,7 +254,7 @@ set_virtualization() {
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
   # VirtualBox
-  paru -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
+  paru -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
 }
 
 set_snapper() {
@@ -249,12 +291,15 @@ miscellanea() {
   rmdir ~/{Public,Templates}
 
   ## GRUB theme
+  [ -d "$XDG_DATA_HOME"/themes/Xenlism-Arch/ ] || return 1
   sudo cp -r "$XDG_DATA_HOME"/themes/Xenlism-Arch/ /boot/grub/themes/
   sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-prepare
+check_commands
+makedirs
+install_AUR
 install_displaymanager
 install_GUI
 install_locker
@@ -262,7 +307,7 @@ install_programs
 install_pymodules
 install_appimages
 set_editors
-set_zram 100
+set_zram
 set_virtualization
 set_snapper
 set_crontab

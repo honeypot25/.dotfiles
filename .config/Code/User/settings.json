@@ -170,17 +170,18 @@
   "window.menuBarVisibility": "toggle",
   "window.title": "${dirty}${activeEditorMedium} - ${rootName}",
   "window.titleBarStyle": "custom",
-  "workbench.colorTheme": "Monokai Pro (Filter Spectrum)",
   "workbench.editorAssociations": {
     "*.pdf": "latex-workshop-pdf-hook"
   },
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.startupEditor": "none"
-  // "workbench.preferredDarkColorTheme": "Monokai Pro (Filter Spectrum)",
-  // "workbench.preferredHighContrastColorTheme": "Monokai Pro (Filter Spectrum)",
-  // "oneDarkPro.editorTheme": "One Dark Pro Darker",
-  // "oneDarkPro.vivid": true,
-  // "oneDarkPro.markdownStyle": true,
+  "workbench.startupEditor": "none",
+  "editor.inlineSuggest.enabled": true,
+  "workbench.colorTheme": "One Dark Pro Darker"
+  "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
+  "workbench.preferredHighContrastColorTheme": "One Dark Pro Darker",
+  "oneDarkPro.editorTheme": "One Dark Pro Darker",
+  "oneDarkPro.vivid": true,
+  "oneDarkPro.markdownStyle": true,
   // "workbench.colorCustomizations": {
   //   "[One Dark Pro Darker]": {
   //     "terminal.background": "#1b1b25",

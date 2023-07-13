@@ -4,6 +4,7 @@
 alias v="vim"
 alias sv="sudo vim"
 alias py="python3"
+alias pip="pip3"
 alias shellcheck="shellcheck -e 1090,1091,2034,2139,2154"
 alias gcc="gcc -Wall"
 alias smake="make -s"

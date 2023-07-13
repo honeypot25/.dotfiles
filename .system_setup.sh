@@ -200,6 +200,8 @@ install_programs() {
 
 install_pymodules() {
   echo -e "\nInstalling Python modules..."
+  # pip
+  python -m ensurepip --upgrade
 }
 
 install_appimages() {

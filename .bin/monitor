@@ -8,11 +8,23 @@ usage() { echo -e "Usage:\t$(basename "$0") <int|ext|both>" && exit 1; }
 read -d'\n' -r int ext _ _ < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
-m=$1
-# fallback to internal monitor if the external one is not connected
-xrandr --listactivemonitors | rg "$ext$" || m="$int"
+mon=$1
+active_list=$(xrandr --listactivemonitors)
+full_list=$(xrandr --query)
+extmode="--auto"
 
-case "$m" in
+# get the first custom mode for external mon if connected
+if rg "$ext$" <<< "$active_list" >/dev/null; then
+  # start from the requested external
+  res=$(sed -n "/$ext/{:loop; n; /_/ {p; q}; b loop}" <<< "$full_list" | rg "([^ ]+) .+" -or '$1')
+  # change extmode if custom resolution found
+  [ -n "$res" ] && extmode="--mode $res"
+# fallback to internal mon if no external
+else
+  mon="$int"
+fi
+
+case "$mon" in
 int)
   xrandr \
     --output "$int" --primary --auto \
@@ -22,13 +34,13 @@ int)
 ext)
   xrandr \
     --output "$int" --off \
-    --output "$ext" --primary --auto
+    --output "$ext" --primary $extmode
   list="$ext"
   ;;
 both)
   xrandr \
     --output "$int" --pos 0x282 --auto \
-    --output "$ext" --pos 1366x0 --primary --auto
+    --output "$ext" --pos 1366x0 --primary $extmode
   list="$int, $ext"
   ;;
 h | *) usage ;;

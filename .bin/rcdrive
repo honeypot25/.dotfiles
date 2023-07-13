@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
 path=~/uni/cybersec
-rclone sync $path cybersec: --exclude "video/**" --update --progress && \
-{ echo -e "\nCleaning remote empty dirs..." ; rclone rmdirs cybersec: --leave-root ; }
+[ ! -d "$path" ] && { "Path \"$path\" not found, aborting."; exit 1; }
+
+rclone sync "$path" cybersec: --exclude "video/**" --update --progress && \
+  echo -e "\nCleaning remote empty dirs..." && \
+  rclone rmdirs cybersec: --leave-root

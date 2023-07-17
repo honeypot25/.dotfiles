@@ -3,7 +3,7 @@
 # packages
 paru -Scq
 paccache -ruq
-sudo pacman -Rnus $(sudo pacman -Qdtq ) 2>/dev/null
+sudo pacman -Rnus $(pacman -Qdtq) 2>/dev/null
 
 # home files
 rm ~/.{wget-hsts,python_history} 2>/dev/null

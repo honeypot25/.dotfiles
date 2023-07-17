@@ -167,6 +167,7 @@
   "terminal.integrated.sendKeybindingsToShell": true,
   "zenMode.hideTabs": false,
   // STYLE
+  "window.autoDetectHighContrast": true,
   "window.menuBarVisibility": "toggle",
   "window.title": "${dirty}${activeEditorMedium} - ${rootName}",
   "window.titleBarStyle": "custom",
@@ -176,7 +177,7 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
   "editor.inlineSuggest.enabled": true,
-  "workbench.colorTheme": "One Dark Pro Darker"
+  "workbench.colorTheme": "One Dark Pro Darker",
   "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
   "workbench.preferredHighContrastColorTheme": "One Dark Pro Darker",
   "oneDarkPro.editorTheme": "One Dark Pro Darker",

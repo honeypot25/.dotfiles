@@ -3,44 +3,70 @@
 usage() { echo -e "Usage:\t$(basename "$0") <int|ext|both>" && exit 1; }
 [ $# -eq 0 ] && usage
 
-# get all monitors: eDP1 DP1 [HDMI1] [VIRTUAL1]
-# MODIFY THE ext ACCORDINGLY
+# get the list of all the possible monitors: eDP1 DP1 [HDMI1] [VIRTUAL1]
+## N.B: remember to change the "ext" accordingly
 read -d'\n' -r int ext _ _ < <(xrandr --query | tail -n+2 | rg "^(\w+) " -or '$1')
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
 mon=$1
 active_list=$(xrandr --listactivemonitors)
 full_list=$(xrandr --query)
-extmode="--auto"
 
-# get the first custom mode for external mon if connected
+# get the active mode (*) for external mon if connected
 if rg "$ext$" <<< "$active_list" >/dev/null; then
-  # start from the requested external
-  res=$(sed -n "/$ext/{:loop; n; /_/ {p; q}; b loop}" <<< "$full_list" | rg "([^ ]+) .+" -or '$1')
-  # change extmode if custom resolution found
-  [ -n "$res" ] && extmode="--mode $res"
+  extres=$(sed -n "/^$ext/{:loop; n; /\*/ {p; q}; b loop}" <<< "$full_list" | rg "(\d+x\d+)" -or '$1')
 # fallback to internal mon if no external
 else
   mon="$int"
+  intres=$(sed -n "/^$mon/{:loop; n; /\*/ {p; q}; b loop}" <<< "$full_list" | rg "(\d+x\d+)" -or '$1')
 fi
+
+wps=~/Pictures/wallpapers
+
+set_bg() {
+  screen=$1
+  res=$2
+  nitroconf="$XDG_CONFIG_HOME"/nitrogen/bg-saved.cfg
+
+  if rg "xin_${screen}" "$nitroconf" >/dev/null; then
+    nitrogen --head="$screen" --restore
+  else
+    nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res"
+  fi
+
+  betterlockscreen -u "$wps"/Lwp_"$res" -q
+}
+
+set_Lbg() {
+  res=$1
+  [ -d "$XDG_CACHE_HOME"/betterlockscreen ] || betterlockscreen -u "$wps"/Lwp_"$res" -q
+}
 
 case "$mon" in
 int)
   xrandr \
-    --output "$int" --primary --auto \
+    --output "$int" --primary --mode $intres \
     --output "$ext" --off
+  set_bg 0 "$intres"
+  set_Lbg "$intres"
   list="$int"
   ;;
 ext)
   xrandr \
     --output "$int" --off \
-    --output "$ext" --primary $extmode
+    --output "$ext" --primary --mode $extres
+  set_bg 0 "$extres"
+  set_Lbg "$extres"
   list="$ext"
   ;;
 both)
   xrandr \
-    --output "$int" --pos 0x282 --auto \
-    --output "$ext" --pos 1366x0 --primary $extmode
+    --output "$int" --pos 0x282 --mode $intres \
+    --output "$ext" --pos 1366x0 --primary --mode $extres
+  set_bg 1 "$intres"
+  set_bg 0 "$extres"
+  # choose biggest res for lockscreen
+  set_Lbg "$extres"
   list="$int, $ext"
   ;;
 h | *) usage ;;

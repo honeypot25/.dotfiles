@@ -10,8 +10,11 @@ font pango:Hack 10
 ### EXEC AT INITIAL i3 START ###
 ################################
 
-# lid closing event with xss-deamon (lock & suspend)
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock lid &
+# lid closing event with xss-deamon (auto betterlockscreen & sleep)
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock sleep &
+
+# auto sleep service (xidlehook & sleep)
+exec --no-startup-id ~/.bin/screenlock autosleep &
 
 # Dunst
 exec --no-startup-id dunst &
@@ -22,30 +25,27 @@ exec --no-startup-id picom &
 # mpd
 exec --no-startup-id mpd &
 
-# mpdDris2 for playerctl & mpd
-exec --no-startup-id mpdDris2 &
+# mpdris2 for playerctl & mpd
+exec --no-startup-id mpdris2 &
 
-# players discovery
+# player(s) discovery
 exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
 exec --no-startup-id nm-applet &
 
-# Start with internal monitor only
-# exec --no-startup-id ~/.bin/monitor int &
-# Try to start with both monitors
-# exec --no-startup-id ~/.bin/monitor both &
+# Adjust external monitor resolution
+exec --no-startup-id ~/.bin/fixmon -m DP1 -r 1680x1050 &
+
+# Start with internal monitor only (also save *wallpaper* & *lockscreen*)
+exec --no-startup-id ~/.bin/monitor int &
 
 ##########################################################
 ### ORDERED RE-EXEC AT EVERY i3 RESTART ($mod+Shift+r) ###
 ##########################################################
 
 # Enabling Touchpad tapping
-exec --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
-
-# start with default wallpaper and update betterlockscreen cache with the blurred version
-# $(find ~/Pictures/wallpapers/ -maxdepth 1 -type f | shuf -n1)
-exec_always --no-startup-id bkg=~/Pictures/wallpaper && nitrogen --no-recurse --save --set-scaled "$bkg" && betterlockscreen -u "$bkg" --fx blur -q &
+exec_always --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
 
 # restore previously saved screen brightness
 exec_always --no-startup-id light -I &
@@ -55,9 +55,6 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 
 # Battery monitoring
 exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 30 &
-
-# Autosuspend service
-#exec_always --no-startup-id ~/.bin/screenlock autosusp &
 
 ###################
 ### KEYBINDINGS ###
@@ -185,9 +182,6 @@ bindsym $mod+m move workspace to output right
 
 ### UTILITY ###
 
-# set a random background
-bindsym ctrl+$mod+b exec --no-startup-id nitrogen --no-recurse --random --set-scaled ~/Pictures/wallpapers/
-
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
@@ -218,12 +212,11 @@ bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5 && light -O && ~/.bin/brightness &
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5 && light -O && ~/.bin/brightness &
 
-# Lock (and turn off after 1m)
-#bindsym ctrl+$alt+l exec --no-startup-id ~/.bin/screenlock lock &
-bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l blur --off 60
+# Manual lock
+bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l
 
-# Suspend (automatic lock is handled by systemd with betterlockscreen@.service, same for lid closing)
-bindsym XF86Sleep exec --no-startup-id xhost +SI:localuser:$USER && systemctl suspend
+# Manual sleep (auto betterlockscreen)
+bindsym XF86Sleep exec --no-startup-id ~/.bin/screenlock sleep
 
 #############
 ### MODES ###

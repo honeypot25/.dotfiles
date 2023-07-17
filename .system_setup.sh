@@ -189,9 +189,9 @@ install_locker() {
 
   # automatically done by the AUR
   #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
-  sudo sed -i 's/--lock$/-l blur -q/' /usr/lib/systemd/system/betterlockscreen@.service && sudo systemctl daemon-reload
-  # auto-lock screen before sleep/suspend
-  sudo systemctl enable betterlockscreen@"$(whoami)"
+  sudo sed -i 's/--lock$/--lock --quiet/' /usr/lib/systemd/system/betterlockscreen@.service && \
+    sudo systemctl daemon-reload && \
+    sudo systemctl enable betterlockscreen@"$(whoami)"
 }
 
 install_programs() {
@@ -295,6 +295,7 @@ miscellanea() {
   ## Force tlp fix
   sudo sed -i -E 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
   sudo sed -i -E 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
+  sudo sed -i -E 's/^#(USB_AUTOSUSPEND=).*/\10/' /etc/tlp.conf
   sudo systemctl restart tlp
 
   ## GRUB theme

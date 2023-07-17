@@ -33,8 +33,6 @@ set_bg() {
   else
     nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res"
   fi
-
-  betterlockscreen -u "$wps"/Lwp_"$res" -q
 }
 
 set_Lbg() {

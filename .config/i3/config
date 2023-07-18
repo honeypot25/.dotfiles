@@ -17,28 +17,25 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.bin/screenlock sleep &
 exec --no-startup-id ~/.bin/screenlock autosleep &
 
 # Dunst
-exec --no-startup-id dunst &
+exec --no-startup-id dunst >/dev/null &
 
 # Picom
-exec --no-startup-id picom &
+exec --no-startup-id picom >/dev/null &
 
-# mpd
-exec --no-startup-id mpd &
-
-# mpdris2 for playerctl & mpd
-exec --no-startup-id mpdris2 &
+# mpd (and mpDris2 for playerctl)
+#exec --no-startup-id mpd && mpDris2 >/dev/null &
 
 # player(s) discovery
-exec --no-startup-id sleep 1 && playerctld daemon &
+#exec --no-startup-id sleep 1 && playerctld daemon &
 
 # NetworkManager applet
-exec --no-startup-id nm-applet &
+exec --no-startup-id nm-applet >/dev/null &
+
+# Restore all bgs
+exec --no-startup-id nitrogen --restore >/dev/null &
 
 # Adjust external monitor resolution
-exec --no-startup-id ~/.bin/fixmon -m DP1 -r 1680x1050 &
-
-# Start with internal monitor only (also save *wallpaper* & *lockscreen*)
-exec --no-startup-id ~/.bin/monitor int &
+exec --no-startup-id ~/.bin/setmon -m DP1 -r 1680x1050 &
 
 ##########################################################
 ### ORDERED RE-EXEC AT EVERY i3 RESTART ($mod+Shift+r) ###
@@ -85,7 +82,7 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl -p spotify play-pause
 bindsym XF86AudioStop exec --no-startup-id playerctl -p spotify stop
 bindsym XF86AudioPrev exec --no-startup-id playerctl -p spotify previous
 bindsym XF86AudioNext exec --no-startup-id playerctl -p spotify next
-bindsym Shift+XF86AudioPlay exec --no-startup-id killall -q mpd mpDris2; spotify &
+bindsym Shift+XF86AudioPlay exec --no-startup-id kill $(pgrep -f "^mp[dD]"); spotify &
 bindsym Shift+XF86AudioStop exec --no-startup-id killall -q spotify
 bindsym Shift+XF86AudioPrev exec --no-startup-id playerctl -p spotify position 5-
 bindsym Shift+XF86AudioNext exec --no-startup-id playerctl -p spotify position 5+
@@ -98,7 +95,7 @@ bindsym $alt+XF86AudioStop exec --no-startup-id playerctl -p mpd stop
 bindsym $alt+XF86AudioPrev exec --no-startup-id playerctl -p mpd previous
 bindsym $alt+XF86AudioNext exec --no-startup-id playerctl -p mpd next
 bindsym $alt+Shift+XF86AudioPlay exec --no-startup-id killall -q spotify; mpd && mpDris2 &
-bindsym $alt+Shift+XF86AudioStop exec --no-startup-id killall -q mpd mpDris2
+bindsym $alt+Shift+XF86AudioStop exec --no-startup-id kill $(pgrep -f "^mp[dD]")
 bindsym $alt+Shift+XF86AudioPrev exec --no-startup-id playerctl -p mpd position 5-
 bindsym $alt+Shift+XF86AudioNext exec --no-startup-id playerctl -p mpd position 5+
 # bindsym $alt+Shift+XF86AudioMute exec --no-startup-id playerctl -p mpd volume 0 && ~/.bin/volume mpd &
@@ -203,7 +200,7 @@ bindsym XF86WLAN exec --no-startup-id rfkill toggle wlan &
 # Toggle touchpad
 bindsym XF86TouchpadToggle exec --no-startup-id ~/.bin/touchpad &
 
-# Select monitor
+# Select monitor (also wallpaper & lockscreen)
 bindsym ctrl+$alt+b exec --no-startup-id ~/.bin/monitor int &
 bindsym ctrl+$alt+n exec --no-startup-id ~/.bin/monitor ext &
 bindsym ctrl+$alt+m exec --no-startup-id ~/.bin/monitor both &
@@ -299,9 +296,8 @@ mode "$mode_launcher" {
     bindsym d exec discord
     bindsym e exec nemo
     bindsym f exec catfish
-#     bindsym m exec alacritty -e ncmpcpp
     bindsym m exec thunderbird
-    bindsym n exec appimage supernotes
+    bindsym n exec alacritty -e ncmpcpp
     bindsym o exec obs
     bindsym p exec evince
     bindsym s exec spotify

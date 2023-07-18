@@ -42,20 +42,20 @@ ifdir() {
 check_commands() {
   missing=()
   for cmd in "${CMDS[@]}"; do
-    if ! command -v "$cmd" >/dev/null 2>&1; then
+    if ! command -v "$cmd" &>/dev/null; then
       missing+=("$cmd")
     fi
   done
 
   if [[ ${#missing[@]} -gt 0 ]]; then
-    echo "The following commands are not available:" 
+    echo "The following commands are not available:"
     for cmd in "${missing[@]}"; do
       echo "- $cmd"
     done
     echo -e "\nAborting..."
     exit 1
   fi
-  
+
   return 0
 }
 
@@ -71,7 +71,6 @@ makedirs() {
     vms \
     Pictures/{screenshots,wallpapers} \
     Videos/screenrec
-  #git clone https://gitlab.com/dwt1/wallpapers.git ~/Pictures/wallpapers
 
   ## XDG compliance / home cleanup
   #XDG_DATA_DIRS
@@ -87,15 +86,15 @@ makedirs() {
 install_AUR() {
   # update system first
   sudo pacman -Syu --needed
-  
+
   ## paru
   echo -e "\nInstalling AUR helper (paru)"
   pushd ~/.src || return 1
   git clone https://aur.archlinux.org/paru
   pushd paru || return 1
   makepkg -si --noconfirm
-  sudo sed -i 's/^#BottomUp/BottomUp/' /etc/paru.conf
-  sudo sed -i 's/^#NewsOnUpgrade/NewsOnUpgrade/' /etc/paru.conf
+  sudo sed -Ei 's/^#(BottomUp)/\1/' /etc/paru.conf
+  sudo sed -Ei 's/^#(NewsOnUpgrade)/\1/' /etc/paru.conf
   popd || return 1 # ~
   popd || return 1 # $PWD
 }
@@ -109,9 +108,9 @@ install_displaymanager() (
 
   install_lightdm() {
     paru -S --needed "${lightdm_pkgs[@]}"
-    sudo sed -i 's/^#greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
+    sudo sed -Ei 's/^#(greeter-session=).*/\1lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
     # .Xauthority XDG-compliance
-    sudo sed -i 's/^#user-authority-in-system-dir=.*/user-authority-in-system-dir=true/' /etc/lightdm/lightdm.conf
+    sudo sed -Ei 's/^#(user-authority-in-system-dir=).*/\1true/' /etc/lightdm/lightdm.conf
     sudo systemctl enable lightdm
   }
 
@@ -183,14 +182,14 @@ install_GUI() (
   install_"$GUI"
 )
 
-install_locker() { 
+install_locker() {
   echo -e "\nInstalling screen locker"
   paru -S --needed betterlockscreen
 
   # automatically done by the AUR
   #sudo cp "$XDG_CACHE_HOME/paru/clone/betterlockscreen/betterlockscreen@.service" /usr/lib/systemd/system/
-  sudo sed -i 's/--lock$/--lock --quiet/' /usr/lib/systemd/system/betterlockscreen@.service && \
-    sudo systemctl daemon-reload && \
+  sudo sed -i 's/--lock$/--lock --quiet/' /usr/lib/systemd/system/betterlockscreen@.service &&
+    sudo systemctl daemon-reload &&
     sudo systemctl enable betterlockscreen@"$(whoami)"
 }
 
@@ -246,7 +245,7 @@ set_zram() {
 set_virtualization() {
   # manually resolve iptables conflict first
   paru -S --needed iptables-nft
-  # qemu/kvm
+  ## qemu/kvm
   paru -S --needed virt-manager qemu qemu-arch-extra virbr0 vde2 edk2-ovmf ebtables dnsmasq bridge-utils openbsd-netcat
   sudo usermod -a -G libvirt,kvm "$(whoami)"
   sudo systemctl enable libvirtd
@@ -255,20 +254,21 @@ set_virtualization() {
   # sudo virsh net-define "$XDG_CONFIG_HOME/.br10.xml"
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
-  # VirtualBox
+  ## VirtualBox
   paru -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
 }
 
 set_snapper() {
   sudo snapper -c root create-config /
-  sudo sed -i -E "s/^(ALLOW_USERS=)\".*\"/\1\"$(whoami)\"/" /etc/snapper/configs/root
-  sudo sed -i -E 's/^(TIMELINE_LIMIT_HOURLY=)".*"/\1"1"/; s/^(TIMELINE_LIMIT_DAILY=)".*"/\1"3"/; s/^(TIMELINE_LIMIT_WEEKLY=)".*"/\1"7"/; s/^(TIMELINE_LIMIT_MONTHLY=)".*"/\1"4"/; s/^(TIMELINE_LIMIT_YEARLY=)".*"/\1"0"/' /etc/snapper/configs/root
+  sudo sed -Ei "s/^(ALLOW_USERS=)\".*\"/\1\"$(whoami)\"/" /etc/snapper/configs/root
+  sudo sed -Ei 's/^(TIMELINE_LIMIT_HOURLY=)".*"/\1"1"/; s/^(TIMELINE_LIMIT_DAILY=)".*"/\1"3"/; s/^(TIMELINE_LIMIT_WEEKLY=)".*"/\1"7"/; s/^(TIMELINE_LIMIT_MONTHLY=)".*"/\1"4"/; s/^(TIMELINE_LIMIT_YEARLY=)".*"/\1"0"/' /etc/snapper/configs/root
   sudo chmod +rx /.snapshots/
   sudo systemctl enable snapper-{timeline,cleanup}.timer grub-btrfsd.service
 }
 
 set_crontab() {
-  #echo "@reboot dconf dump /org/nemo/ >~/.config/nemo/preferences" | sudo tee /var/spool/cron/"$(whoami)"
+  #echo "..." | sudo tee /var/spool/cron/"$(whoami)"
+  return 0
 }
 
 miscellanea() {
@@ -287,15 +287,15 @@ miscellanea() {
   fc-cache -fv
 
   ## Nemo preferences
-  cat "$XDG_CONFIG_HOME"/nemo/preferences | dconf load /org/nemo/
+  dconf load /org/nemo/ <"$XDG_CONFIG_HOME"/nemo/preferences
 
   ## Removals
   rmdir ~/{Public,Templates}
-  
+
   ## Force tlp fix
-  sudo sed -i -E 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
-  sudo sed -i -E 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
-  sudo sed -i -E 's/^#(USB_AUTOSUSPEND=).*/\10/' /etc/tlp.conf
+  sudo sed -Ei 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
+  sudo sed -Ei 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
+  sudo sed -Ei 's/^#(USB_AUTOSUSPEND=).*/\10/' /etc/tlp.conf
   sudo systemctl restart tlp
 
   ## GRUB theme
@@ -303,7 +303,7 @@ miscellanea() {
   # backup
   sudo cp /etc/default/grub /etc/default/grub.bak
   sudo cp -r "$XDG_DATA_HOME"/themes/Xenlism-Arch/ /boot/grub/themes/
-  sudo sed -i 's/^#\?GRUB_THEME=.*/GRUB_THEME=\"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt\"/' /etc/default/grub
+  sudo sed -Ei 's/^#?(GRUB_THEME=).*/\1"\/boot\/grub\/themes\/Xenlism-Arch\/theme.txt"/' /etc/default/grub
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 

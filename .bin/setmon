@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") -m <monitor> -r <XxY>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+while getopts ":hm:r:" opt; do
+  case $opt in
+  m) mon="$OPTARG" ;;
+  r) res=$OPTARG ;;
+  h | *) usage ;;
+  esac
+done
+
+read -r X Y < <(rg "(\d+)x(\d+)" -or '$1 $2' <<< "$res")
+read -r mspec < <(cvt "$X" "$Y" | rg '" +(.+)' -or '$1')
+
+# exit if already existing
+rg "$res" < <(xrandr --query) >/dev/null && exit 0
+
+xrandr --newmode $res $mspec
+xrandr --addmode "$mon" $res
+echo "$res" >/tmp/"${mon}"_res

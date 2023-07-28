@@ -31,6 +31,9 @@ exec --no-startup-id picom >/dev/null &
 # NetworkManager applet
 exec --no-startup-id nm-applet >/dev/null &
 
+# Start with both monitors
+exec --no-startup-id ~/.bin/monitor both
+
 # Restore all bgs
 exec --no-startup-id nitrogen --restore >/dev/null &
 
@@ -51,7 +54,7 @@ exec_always --no-startup-id light -I &
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
 
 # Battery monitoring
-exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 30 &
+exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 60 &
 
 ###################
 ### KEYBINDINGS ###

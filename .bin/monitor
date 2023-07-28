@@ -20,22 +20,17 @@ extres=$(cat /tmp/"${ext}"_res)
 rg " $ext$" <<< "$active_list" >/dev/null || mon="$int"
 
 wps=~/Pictures/wallpapers
+nitroconf="$XDG_CONFIG_HOME"/nitrogen/bg-saved.cfg
 
 set_bg() {
   screen=$1
   res=$2
-  nitroconf="$XDG_CONFIG_HOME"/nitrogen/bg-saved.cfg
-
-  if rg "xin_${screen}" "$nitroconf" >/dev/null; then
-    nitrogen --head="$screen" --restore
-  else
-    nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res"
-  fi
+  rg "xin_${screen}" "$nitroconf" || nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res" &>/dev/null &
 }
 
 set_Lbg() {
   res=$1
-  [ -d "$XDG_CACHE_HOME"/betterlockscreen ] || betterlockscreen -u "$wps"/Lwp_"$res" -q
+  [ -d "$XDG_CACHE_HOME"/betterlockscreen ] || betterlockscreen -u "$wps"/Lwp_"$res" -q &
 }
 
 case "$mon" in

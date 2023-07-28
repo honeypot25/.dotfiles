@@ -6,8 +6,7 @@ usage() { echo -e "Usage:\t$(basename "$0") <sleep|autosleep>" && exit 1; }
 ## Sleep (auto betterlockscreen & sleep)
 
 ## Autosleep (xidlehook & sleep):
-# dim to 10% after 10m, undim if active
-# lock after 5m
+# lock after 15m
 # suspend after 1m
 
 case "$1" in
@@ -26,7 +25,7 @@ autosleep)
     'light -I' \
     --timer 300 \
     'betterlockscreen -l -q' \
-    ''
+    '' \
     --timer 60 \
     'xhost +SI:localuser:"$SLEEPING_USER"; systemctl suspend' \
     ''

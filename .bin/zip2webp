@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") -d <dir> -n <webp x dir>" && exit 1; }
+[ $# -eq 0 ] && usage
+
+while getopts ":hd:n:" opt; do
+  case $opt in
+  d) basedir=$OPTARG ;;
+  n) n=$OPTARG ;;
+  h | *) usage ;;
+  esac
+done
+
+[ ! -d "$basedir" ] && {
+  echo "\"$basedir\" is not a valid directory"
+  exit 1
+}
+
+(( n <= 0 )) && {
+  echo "n must be >= 1, exiting..."
+  exit 1
+}
+
+pushd "$basedir" >/dev/null || exit 1
+
+if ls ./*.zip &>/dev/null; then
+  rename -v 's/ /_/g' ./*.zip
+else
+  echo "No .zip files in \"$basedir\", exiting..."
+  popd >/dev/null || exit 1
+  exit 1
+fi
+
+for zipfile in ./*.zip; do
+  packdir=${zipfile%.zip}
+  unzip -q "$zipfile" -d "$packdir"
+  stickers=( "$packdir"/*.webp )
+  nstickers="${#stickers[@]}"
+  ndirs=$(( nstickers / n + (nstickers % n > 0) ))
+
+  for ((dir_i=0; dir_i < ndirs; dir_i++)); do
+    partdir="${packdir}/${packdir}_${dir_i}"
+    mkdir -p "$partdir"
+    start_i=$(( dir_i * 30 ))
+    end_i=$(( ((dir_i + 1) * 30) - 1 ))
+
+    for ((i=start_i; i <= end_i && i < nstickers; i++)); do
+      cp "${stickers[i]}" "$partdir"
+    done
+
+  done
+
+  rm "$packdir"/*.webp
+
+done
+
+popd || exit 1

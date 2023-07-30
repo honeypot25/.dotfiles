@@ -34,9 +34,6 @@ exec --no-startup-id nm-applet >/dev/null &
 # Start with both monitors
 exec --no-startup-id ~/.bin/monitor both
 
-# Restore all bgs
-exec --no-startup-id nitrogen --restore >/dev/null &
-
 # Adjust external monitor resolution
 exec --no-startup-id ~/.bin/setmon -m DP1 -r 1680x1050 &
 
@@ -44,10 +41,13 @@ exec --no-startup-id ~/.bin/setmon -m DP1 -r 1680x1050 &
 ### ORDERED RE-EXEC AT EVERY i3 RESTART ($mod+Shift+r) ###
 ##########################################################
 
-# Enabling Touchpad tapping
+# Enable touchpad tap
 exec_always --no-startup-id xinput set-prop "$(xinput list | rg "Touchpad\s+id=(\d+)" -or '$1')" "libinput Tapping Enabled" 1 &
 
-# restore previously saved screen brightness
+# Always restore all bgs
+exec_always --no-startup-id nitrogen --restore >/dev/null &
+
+# Restore previously saved screen brightness
 exec_always --no-startup-id light -I &
 
 # Polybar

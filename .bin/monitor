@@ -25,7 +25,7 @@ nitroconf="$XDG_CONFIG_HOME"/nitrogen/bg-saved.cfg
 set_bg() {
   screen=$1
   res=$2
-  rg "xin_${screen}" "$nitroconf" || nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res" &>/dev/null &
+  rg "xin_${screen}" "$nitroconf" >/dev/null || nitrogen --head="$screen" --save --set-scaled "$wps"/wp_"$res" &
 }
 
 set_Lbg() {
@@ -64,7 +64,7 @@ h | *) usage ;;
 esac
 
 # restart i3
-i3-msg restart
+i3-msg restart >/dev/null
 
 icons="$XDG_DATA_HOME/icons"
 dunstify \

@@ -31,7 +31,7 @@
 .xsession-errors
 *.exclude
 *.log
-.old.*
+*.old*
 
 # coding
 .vscode/

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+for pid in $(pgrep -f "$0"); do
+  [ "$pid" -ne $$ ] && kill "$pid" &>/dev/null
+done
+
+partnet=$(ip a | rg "inet 192\.168\.(\d{1,3})" -or '$1')
+host="192.168.${partnet}.5"
+sport=37000
+eport=44000
+totports=$((eport - sport + 1))
+procports=250
+procs=$((totports / procports))
+fifo="/tmp/adbwd_port"
+tmp=/tmp/port
+timeout=5
+
+scan_ports() {
+  local sp=$1
+  local ep=$2
+
+  # if found, write fifo and exit
+  for ((p = sp; p <= ep; p++)); do
+    (echo >/dev/tcp/"$host"/"$p") &>/dev/null && \
+    [ ! -p "$fifo" ] && mkfifo "$fifo" && \
+    echo "$p" > "$fifo" && \
+    exit 0
+  done
+}
+
+if ((totports % procports != 0)); then
+  ((procs++))
+fi
+
+# fork scans
+for ((i = 0; i < procs; i++)); do
+  sp=$((sport + (i * procports)))
+  ep=$((sport + ((i + 1) * procports) - 1))
+  if ((ep > eport)); then
+    ep=$eport
+  fi
+  scan_ports "$sp" "$ep" &
+done
+
+# start checking for fifo creation within the timeout
+while true; do
+  (read -t $timeout -r p <"$fifo" && echo "$p" >"$tmp") 2>/dev/null && break
+done
+
+pkill -P $$
+read -r port <"$tmp" && adb connect "$host:$port" >/dev/null
+rm "$fifo" "$tmp" 2>/dev/null

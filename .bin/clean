@@ -12,7 +12,7 @@ rm ~/.{wget-hsts,python_history} 2>/dev/null
 shopt -s extglob
 pushd ~/.cache/ &>/dev/null || exit 1
 echo -e "\nCleaning ~/.cache"
-rm -rf !(betterlockscreen|ImageMagick|fontconfig)
+rm -rf !(betterlockscreen|ImageMagick|fontconfig|Google)
 popd &>/dev/null || exit 1
 shopt -u extglob
 

@@ -14,7 +14,7 @@ done
 
 # kill other running instances of the current script if present
 for pid in $(pgrep -f "$0"); do
-  [ "$pid" -ne $$ ] && kill "$pid" 2>/dev/null
+  [ "$pid" -ne $$ ] && kill "$pid" &>/dev/null
 done
 
 bat_path=$(upower -e | grep BAT)
@@ -26,10 +26,10 @@ while true; do
 
   # <=low and discharging
   if [ "$cur_lvl" -le "$low" ] && [ "$discharging" -eq 1 ]; then
-    message="Low battery: $cur_lvl%. Plug the AC!"
+    message="Low battery: $cur_lvl%"
   # >=high and charging
-  elif [ "$cur_lvl" -ge "$high" ] && [ "$discharging" -eq 0 ]; then
-    message="Battery charged: $cur_lvl%. Unplug the AC!"
+  # elif [ "$cur_lvl" -ge "$high" ] && [ "$discharging" -eq 0 ]; then
+  #   message="Battery charged: $cur_lvl%"
   fi
 
   [ -n "$message" ] && {

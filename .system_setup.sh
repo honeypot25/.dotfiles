@@ -255,7 +255,12 @@ set_virtualization() {
   # sudo virsh net-start .br10
   # sudo virsh net-autostart .br10
   ## VirtualBox
-  paru -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-utils virtualbox-guest-iso
+  paru -S --needed \
+	virtualbox \
+	virtualbox-host-modules-arch \
+	virtualbox-guest-utils \
+	virtualbox-guest-iso \
+	virtualbox-ext-oracle
 }
 
 set_snapper() {
@@ -293,10 +298,14 @@ miscellanea() {
   rmdir ~/{Public,Templates}
 
   ## Force tlp fix
-  sudo sed -Ei 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
-  sudo sed -Ei 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
-  sudo sed -Ei 's/^#(USB_AUTOSUSPEND=).*/\10/' /etc/tlp.conf
-  sudo systemctl restart tlp
+  # sudo sed -Ei 's/^#(TLP_DEFAULT_MODE=).*/\1AC/' /etc/tlp.conf
+  # sudo sed -Ei 's/^#(TLP_PERSISTENT_DEFAULT=).*/\11/' /etc/tlp.conf
+  # sudo sed -Ei 's/^#(USB_AUTOSUSPEND=).*/\10/' /etc/tlp.conf
+  # sudo systemctl restart tlp
+  
+  ## set auto-cpufreq
+  sudo systemctl mask power-profiles-daemon
+  sudo systemctl enable --now auto-cpufreq
 
   ## GRUB theme
   ifdir "$XDG_DATA_HOME"/themes/Xenlism-Arch || return 1

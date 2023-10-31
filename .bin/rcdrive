@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 
-path=~/uni/cybersec
-[ ! -d "$path" ] && { "Path \"$path\" not found, aborting."; exit 1; }
+usage() { echo -e "Usage:\t$(basename "$0") [-r]" && exit 1; }
 
-rclone sync "$path" cybersec: --exclude "video/**" --update --progress && \
-  echo -e "\nCleaning remote empty dirs..." && \
-  rclone rmdirs cybersec: --leave-root
+path=~/uni/cybersec
+[ ! -d "$path" ] && { echo "Path \"$path\" not found, aborting."; exit 1; }
+
+# -r for empty dirs only, no sync
+if [ $# -eq 1 ]; then
+  if [ "$1" = "-r" ]; then
+    echo -e "\nCleaning remote empty dirs..."
+    rclone rmdirs cybersec: --leave-root &
+    exit 0
+  else
+    usage
+  fi
+fi
+
+rclone sync "$path" cybersec: --exclude "video/**" --update --progress

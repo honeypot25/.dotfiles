@@ -24,14 +24,13 @@ done
 tot_seconds=0
 
 i=1
-IFS=$'\n'
 # for vid in $(find "${dirs[@]}" -exec file -N -i -- {} + | sed -n 's!: video/[^:]*$!!p'); do
-for vid in $(find "${dirs[@]}" -name "*.$fmt" -exec realpath {} \;); do
-  raw_time=$(ffmpeg -i "$vid" 2>&1 | rg "Duration: ([0-9]{2,}:[0-9]{2}:[0-9]{2})" -or '$1')
+while read -r -d $'\n' vid; do
+  raw_time=$(ffmpeg -nostdin -i "$vid" 2>&1 | rg "Duration: ([0-9]{2,}:[0-9]{2}:[0-9]{2})" -or '$1')
   seconds=$(echo "$raw_time" | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }')
   ((tot_seconds += seconds))
   echo "$((i++))) $raw_time - $vid"
-done
+done < <(find "${dirs[@]}" -name "*.$fmt" -exec realpath {} \;)
 
 days=$((tot_seconds / 86400))
 hours=$(($((tot_seconds - days * 86400)) / 3600))

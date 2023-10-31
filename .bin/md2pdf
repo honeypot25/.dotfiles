@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+usage() { echo -e "Usage:\t$(basename "$0") [<file.md>]" && exit 1; }
+
+convertFile() {
+  mdfile="$1"
+  pdffile="${mdfile%.*}".pdf
+
+  printf "Generating $LGREEN%s$NC...\n" "$pdffile"
+
+  pandoc \
+    --from markdown-raw_tex+tex_math_single_backslash \
+    --to latex \
+    --include-in-header "$XDG_CONFIG_HOME/pandoc/LaTeX_header.tex" \
+    --variable geometry:"top=2cm, bottom=2cm, left=2cm, right=2cm" \
+    --variable colorlinks:true \
+    --variable urlcolor:NavyBlue \
+    --variable toccolor:NavyBlue \
+    --toc \
+    --number-sections \
+    --highlight-style espresso \
+    "$mdfile" \
+    --output "$pdffile"
+}
+
+case $# in
+0)
+  for mdfile in ./*.md; do
+    convertFile "$mdfile"
+  done
+  ;;
+1)
+  convertFile "$1"
+  ;;
+*)
+  usage
+  ;;
+esac

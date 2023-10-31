@@ -9,15 +9,15 @@ read -d'\n' -r int ext _ _ < <(xrandr --query | tail -n+2 | rg "^\w+" -o)
 # rg "(\d+)/\d+x(\d+).+ (\w+)$" -or '$1 $2 $3')
 
 mon=$1
-active_list=$(xrandr --listactivemonitors)
+defined_list=$(xrandr --listmonitors)
 full_list=$(xrandr --query)
 
-# get then anyway
-intres=$(sed -n "/^$int/{n;p;q}" <<< "$full_list" | rg "\d+x\d+" -o) # get preferred res (first line, highest freq)
+# get then anyway (preferred res, first line - highest freq)
+intres=$(sed -n "/^$int/{n;p;q}" <<< "$full_list" | rg "\d+x\d+" -o)
 extres=$(cat /tmp/"${ext}"_res)
 
 # fallback to int mon if no ext
-rg " $ext$" <<< "$active_list" >/dev/null || mon="$int"
+# rg " $ext$" <<< "$defined_list" >/dev/null || mon="$int"
 
 wps=~/Pictures/wallpapers
 nitroconf="$XDG_CONFIG_HOME"/nitrogen/bg-saved.cfg

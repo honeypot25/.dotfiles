@@ -47,7 +47,8 @@ LGRAY='\[\e[0;37m\]'
 WHITE='\[\e[1;37m\]'
 
 ### PATH
-export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
+ANDROID_HOME="$HOME"/coding/Android/SDK
+export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist:$ANDROID_HOME"
 
 ### If not running interactively, don't do anything
 [[ $- != *i* ]] && return

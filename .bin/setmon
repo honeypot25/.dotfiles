@@ -11,12 +11,15 @@ while getopts ":hm:r:" opt; do
   esac
 done
 
+# (overwrites if same res file)
+echo "$res" >/tmp/"${mon}"_res
+
 read -r X Y < <(rg "(\d+)x(\d+)" -or '$1 $2' <<< "$res")
 read -r mspec < <(cvt "$X" "$Y" | rg '" +(.+)' -or '$1')
 
-# exit if already existing
+# exit if res already exists
 rg "$res" < <(xrandr --query) >/dev/null && exit 0
-
+# otherwise create it
 xrandr --newmode $res $mspec
 xrandr --addmode "$mon" $res
-echo "$res" >/tmp/"${mon}"_res
+

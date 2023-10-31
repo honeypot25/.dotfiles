@@ -22,8 +22,8 @@ alias printupd="sudo cups-genppdupdate && sudo sudo systemctl restart cups" # af
 #alias ffa="fastfetch --load-config $HOME/.config/fastfetch/ffa.conf | lolcat -t"
 #alias zathura='zathura -e $(tabbed -c) & disown'
 
-# replace "ls" with "exa"
-alias ls="exa --group --group-directories-first"
+# replace "ls" with "eza"
+alias ls="eza --group --group-directories-first"
 alias la="ls -a"
 alias ll="ls -l"
 alias llh="ll --header"

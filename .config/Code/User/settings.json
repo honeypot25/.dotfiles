@@ -17,7 +17,7 @@
   // LANGUAGES
   // "Prettier - Code formatter": C, [S]CSS, HTML, JS, JSON[C], Markdown, YAML // instead of default "vscode.<lang>-language-features"
   "[c]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools",
+    // "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.tabSize": 4
   },
   // CSS
@@ -92,7 +92,7 @@
       {
         // re-generate the PDF anyway
         "match": ".md$",
-        "cmd": "mdpdf ${file}"
+        "cmd": "md2pdf ${file}"
         // "isAsync": true
       },
       // {
@@ -188,7 +188,9 @@
     "plaintext": false,
     "markdown": false,
     "scminput": false
-  }
+  },
+  "markdown-preview-enhanced.enableExtendedTableSyntax": true,
+  "markdown-preview-enhanced.enableTypographer": true
   // "workbench.colorCustomizations": {
   //   "[One Dark Pro Darker]": {
   //     "terminal.background": "#1b1b25",

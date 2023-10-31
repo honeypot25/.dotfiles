@@ -31,11 +31,11 @@ exec --no-startup-id picom >/dev/null &
 # NetworkManager applet
 exec --no-startup-id nm-applet >/dev/null &
 
-# Start with both monitors
-exec --no-startup-id ~/.bin/monitor both
-
 # Adjust external monitor resolution
 exec --no-startup-id ~/.bin/setmon -m DP1 -r 1680x1050 &
+
+# Start with both monitors
+# exec --no-startup-id sleep 1 && ~/.bin/monitor both
 
 ##########################################################
 ### ORDERED RE-EXEC AT EVERY i3 RESTART ($mod+Shift+r) ###
@@ -172,7 +172,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 # 1. Home icon
 for_window [class="(?i)bitwarden|firefox|obs-studio"] move container to workspace $ws1; workspace $ws1
 # 2. Code icon
-for_window [class="(?i)code|electron|packettracer|supernotes|vim"] move container to workspace $ws2; workspace $ws2
+for_window [class="(?i)code|electron|jetbrains-studio|packettracer|supernotes|vim"] move container to workspace $ws2; workspace $ws2
 # 3. Chat icon
 for_window [class="(?i)discord|ncmpcpp|spotify|telegram|thunderbird|zoom"] move container to workspace $ws3; workspace $ws3
 
@@ -217,6 +217,9 @@ bindsym ctrl+$alt+l exec --no-startup-id betterlockscreen -l
 
 # Manual sleep (auto betterlockscreen)
 bindsym XF86Sleep exec --no-startup-id ~/.bin/screenlock sleep
+
+# Connect to a local Android with wireless debugging
+bindsym $mod+w exec ~/.bin/adbwd &
 
 #############
 ### MODES ###

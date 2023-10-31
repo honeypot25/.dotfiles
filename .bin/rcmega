@@ -7,11 +7,9 @@ dir=$1
 path=~/uni/cybersec/"$dir"
 
 if [[ "$dir" =~ ^[12]a[12]s$ ]]; then
-  [ ! -d "$path" ] && { "Path \"$path\" not found, aborting."; exit 1; }
+  [ ! -d "$path" ] && { echo "Path \"$path\" not found, aborting."; exit 1; }
 
-  rclone copy "$path" mega_am:cybersec/"$dir" --include "/**/video/**" --update --progress && \
-  echo -e "\nCleaning remote empty dirs..." && \
-  rclone rmdirs mega_am: --leave-root
+  rclone copy "$path" mega_am:cybersec/"$dir" --include "/**/video/**" --update --progress
 else
   usage
 fi

@@ -147,6 +147,7 @@ kde_pkgs=(
 # XFCE
 kfce_pkgs=(
   "xfce4"
+  "wmctrl"
 )
 
 # i3

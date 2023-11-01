@@ -18,13 +18,14 @@
         <value type="int" value="2"/>
         <value type="int" value="3"/>
         <value type="int" value="4"/>
-        <value type="int" value="25"/>
-        <value type="int" value="7"/>
         <value type="int" value="13"/>
         <value type="int" value="6"/>
         <value type="int" value="10"/>
+        <value type="int" value="25"/>
+        <value type="int" value="7"/>
         <value type="int" value="24"/>
         <value type="int" value="12"/>
+        <value type="int" value="5"/>
       </property>
       <property name="span-monitors" type="bool" value="false"/>
       <property name="output-name" type="string" value="Primary"/>
@@ -46,6 +47,7 @@
       </property>
       <property name="mode" type="uint" value="0"/>
       <property name="span-monitors" type="bool" value="false"/>
+      <property name="output-name" type="string" value="Primary"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -67,18 +69,22 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="task manager"/>
         <value type="string" value="xfce4-power-manager"/>
         <value type="string" value="ethernet network connection “enp4s0f1” active"/>
         <value type="string" value="ethernet network connection “wired connection 1” active"/>
       </property>
     </property>
     <property name="plugin-12" type="string" value="clock">
-      <property name="mode" type="uint" value="4"/>
+      <property name="mode" type="uint" value="2"/>
       <property name="show-meridiem" type="bool" value="false"/>
       <property name="show-military" type="bool" value="true"/>
       <property name="show-seconds" type="bool" value="false"/>
       <property name="tooltip-format" type="string" value="%A %d %B %Y"/>
       <property name="flash-separators" type="bool" value="false"/>
+      <property name="digital-layout" type="uint" value="3"/>
+      <property name="digital-time-font" type="string" value="Sans 10"/>
+      <property name="digital-time-format" type="string" value="%T"/>
     </property>
     <property name="plugin-13" type="string" value="separator">
       <property name="style" type="uint" value="1"/>
@@ -92,12 +98,16 @@
     <property name="plugin-21" type="string" value="separator"/>
     <property name="plugin-7" type="string" value="power-manager-plugin"/>
     <property name="plugin-10" type="string" value="notification-plugin"/>
-    <property name="plugin-23" type="string" value="separator"/>
+    <property name="plugin-23" type="string" value="separator">
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
     <property name="plugin-24" type="string" value="separator"/>
     <property name="plugin-25" type="string" value="separator">
       <property name="expand" type="bool" value="false"/>
       <property name="style" type="uint" value="1"/>
     </property>
     <property name="plugin-26" type="string" value="thunar-tpa"/>
+    <property name="plugin-5" type="string" value="separator"/>
   </property>
 </channel>

@@ -45,9 +45,20 @@
       </property>
       <property name="&lt;Primary&gt;&lt;Alt&gt;KP_Delete" type="string" value="xfce4-taskmanager"/>
       <property name="&lt;Primary&gt;space" type="string" value="xfdesktop --menu"/>
-      <property name="&lt;Super&gt;e" type="string" value="nemo"/>
       <property name="&lt;Super&gt;space" type="string" value="xfce4-popup-applicationsmenu"/>
       <property name="&lt;Super&gt;Return" type="string" value="exo-open --launch TerminalEmulator"/>
+      <property name="&lt;Super&gt;1" type="string" value="/home/andrea/.bin/ws1"/>
+      <property name="&lt;Super&gt;2" type="string" value="/home/andrea/.bin/ws2"/>
+      <property name="&lt;Super&gt;3" type="string" value="/home/andrea/.bin/ws3"/>
+      <property name="&lt;Shift&gt;&lt;Super&gt;exclam" type="string" value="/home/andrea/.bin/tows1"/>
+      <property name="&lt;Shift&gt;&lt;Super&gt;quotedbl" type="string" value="/home/andrea/.bin/tows2"/>
+      <property name="&lt;Shift&gt;&lt;Super&gt;sterling" type="string" value="/home/andrea/.bin/tows3"/>
+      <property name="&lt;Super&gt;e" type="string" value="exo-open --launch FileManager"/>
+      <property name="&lt;Super&gt;c" type="string" value="code"/>
+      <property name="&lt;Super&gt;a" type="string" value="android-studio"/>
+      <property name="&lt;Super&gt;b" type="string" value="bitwarden-desktop"/>
+      <property name="&lt;Super&gt;t" type="string" value="telegram-desktopù"/>
+      <property name="&lt;Super&gt;v" type="string" value="virtualbox"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

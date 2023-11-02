@@ -8,8 +8,11 @@ export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_CONFIG_DIRS=/etc/xdg
 export XDG_STATE_HOME="$HOME"/.local/state
 
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export HISTFILE="$XDG_STATE_HOME"/bash/history
 export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
@@ -18,6 +21,7 @@ export LESSHISTFILE="-"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
+export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
 export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
 export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
@@ -47,8 +51,8 @@ LGRAY='\[\e[0;37m\]'
 WHITE='\[\e[1;37m\]'
 
 ### PATH
-ANDROID_HOME="$HOME"/coding/Android/SDK
-export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist:$ANDROID_HOME"
+export ANDROID_HOME="$HOME"/coding/Android/SDK
+export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
 
 ### If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -90,6 +94,6 @@ fi
 ### SCRIPTS
 # SSH keychain
 mkdir -p "$XDG_RUNTIME_DIR/keychain"
-eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/id_{github,ssh}")"
+eval "$(keychain --confhost --eval --noask --nogui --quiet "$HOME/.ssh/id_github" "$HOME/.ssh/id_ssh")"
 
 xrdb -load "$XDG_CONFIG_HOME/X11/Xresources"

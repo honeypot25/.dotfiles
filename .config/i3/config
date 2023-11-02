@@ -20,7 +20,7 @@ exec --no-startup-id ~/.bin/screenlock autosleep &
 exec --no-startup-id dunst >/dev/null &
 
 # Picom
-exec --no-startup-id picom >/dev/null &
+exec --no-startup-id picom -b >/dev/null
 
 # mpd (and mpDris2 for playerctl)
 #exec --no-startup-id mpd && mpDris2 >/dev/null &

@@ -147,6 +147,8 @@ kde_pkgs=(
 # XFCE
 kfce_pkgs=(
   "xfce4"
+  "xfce4-taskmanager"
+  "xfce4-pulseaudio-plugin"
   "wmctrl"
 )
 

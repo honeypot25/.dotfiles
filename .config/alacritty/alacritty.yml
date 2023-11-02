@@ -5,27 +5,27 @@ env:
   TERM: xterm-256color
 
 window:
-  # dimensions:
-  #   columns: 100
-  #   lines: 75
+  dimensions:
+    columns: 75
+    lines: 25
 
   # position:
   #   x: 0
   #   y: 0
 
   padding:
-    x: 15
-    y: 15
+    x: 10
+    y: 10
 
   # title: Alaritty
 
-  decorations: none # full
+  decorations: full # none
 
   startup_mode: Windowed # Maximized | Fullscreen
 
   class:
     instance: alacritty
-    general: alacritty
+    general: Alacritty
 
 scrolling:
   history: 10000
@@ -45,11 +45,11 @@ font:
     x: 0
     y: 1
 
-window.opacity: 0.8
+window.opacity: 0.5
 
 save_to_clipboard: true
 
-# dynamic_title: true
+dynamic_title: true
 
 cursor:
   style: Beam # Block | Underline

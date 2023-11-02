@@ -10,7 +10,7 @@
     <property name="show-application-icons" type="bool" value="false"/>
     <property name="show-all-processes" type="bool" value="false"/>
   </property>
-  <property name="show-status-icon" type="bool" value="true"/>
+  <property name="show-status-icon" type="bool" value="false"/>
   <property name="columns" type="empty">
     <property name="column-ppid" type="bool" value="true"/>
     <property name="column-uid" type="bool" value="true"/>

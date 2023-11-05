@@ -44,7 +44,6 @@
         <property name="startup-notify" type="bool" value="true"/>
       </property>
       <property name="&lt;Primary&gt;&lt;Alt&gt;KP_Delete" type="string" value="xfce4-taskmanager"/>
-      <property name="&lt;Primary&gt;space" type="string" value="xfdesktop --menu"/>
       <property name="&lt;Super&gt;space" type="string" value="xfce4-popup-applicationsmenu"/>
       <property name="&lt;Super&gt;Return" type="string" value="exo-open --launch TerminalEmulator"/>
       <property name="&lt;Super&gt;1" type="string" value="/home/andrea/.bin/ws1"/>
@@ -57,8 +56,8 @@
       <property name="&lt;Super&gt;c" type="string" value="code"/>
       <property name="&lt;Super&gt;a" type="string" value="android-studio"/>
       <property name="&lt;Super&gt;b" type="string" value="bitwarden-desktop"/>
-      <property name="&lt;Super&gt;t" type="string" value="telegram-desktopù"/>
       <property name="&lt;Super&gt;v" type="string" value="virtualbox"/>
+      <property name="&lt;Super&gt;t" type="string" value="telegram-desktop"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

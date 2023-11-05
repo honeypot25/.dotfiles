@@ -1,5 +1,4 @@
 aaron-bond.better-comments
-ecmel.vscode-html-css
 emeraldwalk.RunOnSave
 esbenp.prettier-vscode
 formulahendry.auto-close-tag
@@ -7,14 +6,19 @@ formulahendry.auto-rename-tag
 formulahendry.code-runner
 foxundermoon.shell-format
 GitHub.copilot
+GitHub.copilot-chat
 James-Yu.latex-workshop
+jeff-hykin.better-shellscript-syntax
 KevinRose.vsc-python-indent
 ms-azuretools.vscode-docker
 ms-python.python
 ms-python.vscode-pylance
 ms-vscode.cpptools
+ms-vscode.cpptools-extension-pack
+ms-vscode.cpptools-themes
 PKief.material-icon-theme
-redhat.vscode-xml
+ritwickdey.LiveServer
+shd101wyy.markdown-preview-enhanced
 timonwong.shellcheck
 yzhang.markdown-all-in-one
 zhuangtongfa.material-theme

@@ -1,36 +1,12 @@
-// Place your key bindings in this file to override the defaultsauto[]
 [
-  {
-    "key": "ctrl+d",
-    "command": "-editor.action.addSelectionToNextFindMatch",
-    "when": "editorFocus"
-  },
   {
     "key": "ctrl+d",
     "command": "editor.action.deleteLines",
     "when": "textInputFocus && !editorReadonly"
   },
   {
-    "key": "ctrl+shift+k",
-    "command": "-editor.action.deleteLines",
-    "when": "textInputFocus && !editorReadonly"
-  },
-  {
-    "key": "ctrl+shift+b",
-    "command": "-workbench.action.tasks.build",
-    "when": "taskCommandsRegistered"
-  },
-  {
     "key": "ctrl+shift+b",
     "command": "workbench.action.toggleSidebarVisibility"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "-workbench.action.toggleSidebarVisibility"
-  },
-  {
-    "key": "ctrl+alt+meta+n",
-    "command": "-welcome.showNewFileEntries"
   },
   {
     "key": "home",
@@ -38,70 +14,12 @@
     "when": "textInputFocus"
   },
   {
-    "key": "ctrl+alt+n",
-    "command": "-code-runner.run"
-  },
-  {
-    "key": "home",
-    "command": "-cursorHome",
-    "when": "textInputFocus"
-  },
-  {
-    "key": "home",
-    "command": "-firstCompressedFolder",
-    "when": "explorerViewletCompressedFocus && explorerViewletVisible && filesExplorerFocus && !explorerViewletCompressedFirstFocus && !inputFocus"
-  },
-  {
-    "key": "home",
-    "command": "-list.focusFirst",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "home",
-    "command": "-notifications.focusFirstToast",
-    "when": "notificationFocus && notificationToastsVisible"
-  },
-  {
-    "key": "home",
-    "command": "-workbench.statusBar.focusFirst",
-    "when": "statusBarFocused"
-  },
-  {
-    "key": "shift+home",
-    "command": "-workbench.action.terminal.scrollToTop",
-    "when": "terminalFocus && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocus && terminalProcessSupported && !terminalAltBufferActive"
-  },
-  {
-    "key": "shift+home",
-    "command": "-cursorHomeSelect",
-    "when": "textInputFocus"
-  },
-  {
     "key": "shift+home",
     "command": "code-runner.stop"
   },
   {
-    "key": "ctrl+alt+m",
-    "command": "-code-runner.stop"
-  },
-  {
-    "key": "ctrl+k v",
-    "command": "-markdown.extension.closePreview",
-    "when": "markdownPreviewFocus"
-  },
-  {
-    "key": "ctrl+shift+v",
-    "command": "-markdown.extension.closePreview",
-    "when": "markdownPreviewFocus"
-  },
-  {
-    "key": "ctrl+shift+v",
-    "command": "-markdown.showPreview",
-    "when": "!notebookEditorFocused && editorLangId == 'markdown'"
-  },
-  {
-    "key": "ctrl+k v",
-    "command": "-markdown.showPreviewToSide",
-    "when": "!notebookEditorFocused && editorLangId == 'markdown'"
+    "key": "ctrl+k ctrl+v",
+    "command": "markdown.showPreviewToSide",
+    "when": "editorTextFocus && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   }
 ]

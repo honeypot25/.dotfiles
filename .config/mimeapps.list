@@ -17,15 +17,14 @@ image/x-portable-greymap=gpicview.desktop
 application/pcx=gpicview.desktop
 image/svg+xml=gpicview.desktop
 image/svg-xml=gpicview.desktop
-inode/directory=xfce4-file-manager.desktop
 x-scheme-handler/trash=xfce4-file-manager.desktop
 x-scheme-handler/http=xfce4-web-browser.desktop
 x-scheme-handler/https=xfce4-web-browser.desktop
+inode/directory=xfce4-file-manager.desktop
 
 [Added Associations]
 text/plain=org.xfce.mousepad.desktop
-inode/directory=xfce4-file-manager.desktop;
 x-scheme-handler/trash=xfce4-file-manager.desktop;
 x-scheme-handler/http=xfce4-web-browser.desktop;
 x-scheme-handler/https=xfce4-web-browser.desktop;
-
+inode/directory=xfce4-file-manager.desktop;

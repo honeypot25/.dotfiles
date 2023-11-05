@@ -117,7 +117,7 @@ install_displaymanager() (
   install_sddm() {
     paru -S --needed "${sddm_pkgs[@]}"
     sudo git clone https://github.com/keyitdev/sddm-flower-theme.git /usr/share/sddm/themes/sddm-flower-theme
-    sudo cp /usr/share/sddm/themes/sddm-flower-theme/Fonts/* /usr/share/fonts/
+    sudo cp /usr/share/sddm/themes/sddm-flower-theme/Fonts/* "$XDG_DATA_HOME"/fonts/
     echo -e "[Theme]\nCurrent=sddm-flower-theme" | sudo tee /etc/sddm.conf
     sudo systemctl enable sddm
   }
@@ -282,17 +282,16 @@ miscellanea() {
 
   ## Copies
   sudo cp -r "$XDG_DATA_HOME"/icons/* /usr/share/icons/
-  sudo cp -r "$XDG_DATA_HOME"/fonts/* /usr/share/fonts/
   sudo cp -r "$XDG_DATA_HOME"/themes/* /usr/share/themes/
 
   ## packages hard link
   ln -Pf ~/.packages ~/projects/auto-arch/packages
 
-  ## Updates
-  fc-cache -fv
-
   ## Nemo preferences
   dconf load /org/nemo/ <"$XDG_CONFIG_HOME"/nemo/preferences
+
+  ## Updates
+  fc-cache -f "$XDG_DATA_HOME"/fonts
 
   ## Removals
   rmdir ~/{Public,Templates}

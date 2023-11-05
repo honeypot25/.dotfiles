@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <channel name="displays" version="1.0">
-  <property name="ActiveProfile" type="string" value="Default"/>
+  <property name="ActiveProfile" type="string" value="281dd83602a2719ee60a63350e4c59f5a5ec31ba"/>
   <property name="Default" type="empty">
     <property name="eDP1" type="string" value="Laptop">
       <property name="Active" type="bool" value="true"/>
@@ -74,7 +74,43 @@
       </property>
     </property>
   </property>
-  <property name="Notify" type="int" value="1"/>
+  <property name="Notify" type="int" value="3"/>
   <property name="AutoEnableProfiles" type="bool" value="true"/>
   <property name="IdentityPopups" type="bool" value="true"/>
+  <property name="281dd83602a2719ee60a63350e4c59f5a5ec31ba" type="string" value="Extend">
+    <property name="eDP1" type="string" value="Laptop">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="207e4a6e5ba02abefb8693bea56e8e5e297f1430"/>
+      <property name="Resolution" type="string" value="1366x768"/>
+      <property name="RefreshRate" type="double" value="60.003140703517587"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1"/>
+        <property name="Y" type="double" value="1"/>
+      </property>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="282"/>
+      </property>
+    </property>
+    <property name="DP1" type="string" value="Acer Technologies 22&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="0f526273d2081999a8e808055df474de4d671b10"/>
+      <property name="Resolution" type="string" value="1680x1050"/>
+      <property name="RefreshRate" type="double" value="59.954250295159383"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="true"/>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1"/>
+        <property name="Y" type="double" value="1"/>
+      </property>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="1366"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+    </property>
+  </property>
 </channel>

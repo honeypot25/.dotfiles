@@ -182,7 +182,6 @@
   "markdown.extension.tableFormatter.normalizeIndentation": true,
   "markdown.extension.theming.decoration.renderHardLineBreak": true,
   "markdown.extension.theming.decoration.renderTrailingSpace": true,
-  "markdown.extension.toc.levels": "1..3",
   "markdown.extension.toc.unorderedList.marker": "+",
   "markdown-preview-enhanced.enableExtendedTableSyntax": true,
   "markdown-preview-enhanced.enableTypographer": true,
@@ -223,5 +222,6 @@
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.sendKeybindingsToShell": true,
   "terminal.integrated.tabs.enabled": true,
-  "update.mode": "start"
+  "update.mode": "start",
+  "markdown.extension.toc.levels": "1..3"
 }

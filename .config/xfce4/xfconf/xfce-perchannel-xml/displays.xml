@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <channel name="displays" version="1.0">
-  <property name="ActiveProfile" type="string" value="281dd83602a2719ee60a63350e4c59f5a5ec31ba"/>
+  <property name="ActiveProfile" type="string" value="Default"/>
   <property name="Default" type="empty">
     <property name="eDP1" type="string" value="Laptop">
       <property name="Active" type="bool" value="true"/>

@@ -10,19 +10,19 @@ rm ~/.{wget-hsts,python_history} 2>/dev/null
 
 # ~/.cache
 shopt -s extglob
-pushd "$XDG_CACHE_HOME" >/dev/null || exit 1
+pushd ~/.cache >/dev/null || exit 1
 echo -e "\nCleaning user cache"
-rm -r !(betterlockscreen|ImageMagick|fontconfig|Google) 2>/dev/null
+rm -rf !(betterlockscreen|ImageMagick|fontconfig|Google) 2>/dev/null
 popd >/dev/null || exit 1
 shopt -u extglob
 
 # VSCode cache
-pushd "$XDG_CONFIG_HOME"/Code/ >/dev/null || exit 1
+pushd "$XDG_CONFIG_HOME"/Code >/dev/null || exit 1
 echo -e "\nCleaning VSCode cache"
-rm -r Cache CachedData 2>/dev/null
+rm -rf Cache CachedData 2>/dev/null
 popd >/dev/null || exit 1
 
 # trash
-pushd "$XDG_DATA_HOME" >/dev/null || exit 1
-rm -r Trash/* 2>/dev/null
+pushd "$XDG_DATA_HOME"/Trash >/dev/null || exit 1
+rm -rf files 2>/dev/null
 popd >/dev/null || exit 1

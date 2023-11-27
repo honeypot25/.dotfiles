@@ -51,7 +51,7 @@ wayland_pkgs=(
 pkgs=(
   "alacritty"
   "auto-cpufreq"
-  "bfg"
+  # "bfg"
   "bitwarden"
   "bleachbit"
   "catfish"

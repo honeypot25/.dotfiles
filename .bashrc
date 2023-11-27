@@ -52,7 +52,8 @@ LGRAY='\[\e[0;37m\]'
 WHITE='\[\e[1;37m\]'
 
 ### PATH
-#export ANDROID_HOME="$HOME"/coding/Android/SDK
+export ANDROID_HOME="$HOME"/coding/Android/SDK
+export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"
 export PATH="$PATH:$HOME/.local/bin:$HOME/.bin:$HOME/apps:/usr/share/texmf-dist"
 
 ### If not running interactively, don't do anything

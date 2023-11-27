@@ -7,6 +7,7 @@
       <value type="string" value="Battery"/>
       <value type="string" value="Firefox"/>
       <value type="string" value="org.freedesktop.network-manager-applet"/>
+      <value type="string" value="org.telegram.desktop"/>
       <value type="string" value="Xfce volume control"/>
       <value type="string" value="Xfce4-notifyd settings"/>
       <value type="string" value="xfce4-power-manager"/>
@@ -16,8 +17,12 @@
   <property name="date-time-custom-format" type="string" value="%a %H:%M:%S"/>
   <property name="show-notifications-on" type="string" value="all-monitors"/>
   <property name="notify-location" type="string" value="bottom-right"/>
-  <property name="log-max-size" type="uint" value="100"/>
+  <property name="log-max-size" type="uint" value="5"/>
   <property name="plugin" type="empty">
     <property name="hide-on-read" type="bool" value="true"/>
   </property>
+  <property name="do-slideout" type="bool" value="true"/>
+  <property name="theme" type="string" value="Default"/>
+  <property name="expire-timeout" type="int" value="7"/>
+  <property name="initial-opacity" type="double" value="0.90000000000000002"/>
 </channel>

@@ -1,3 +1,3 @@
 # ~/.dotfiles
 
-Personal dotfiles and scripts
+Personal dotfiles (Desktop)

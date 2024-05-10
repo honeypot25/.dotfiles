@@ -17,7 +17,7 @@
       </property>
       <property name="Position" type="empty">
         <property name="X" type="int" value="0"/>
-        <property name="Y" type="int" value="282"/>
+        <property name="Y" type="int" value="0"/>
       </property>
     </property>
     <property name="DP1" type="string" value="Acer Technologies 22&quot;">
@@ -53,7 +53,7 @@
       </property>
       <property name="Position" type="empty">
         <property name="X" type="int" value="0"/>
-        <property name="Y" type="int" value="282"/>
+        <property name="Y" type="int" value="0"/>
       </property>
     </property>
     <property name="DP1" type="string" value="Acer Technologies 22&quot;">

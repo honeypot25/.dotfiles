@@ -102,6 +102,7 @@ pkgs=(
   # "snap-pac"
   "speedtest-cli"
   # "spotify"
+  # "spotify-adblock"
   "sqlite"
   "telegram-desktop"
   # "tenacity-git"

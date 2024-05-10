@@ -54,7 +54,7 @@ exec_always --no-startup-id light -I &
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
 
 # Battery monitoring
-exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 60 &
+# exec_always --no-startup-id ~/.bin/battery -l 20 -h 80 -i 60 &
 
 ###################
 ### KEYBINDINGS ###

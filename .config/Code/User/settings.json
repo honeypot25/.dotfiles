@@ -21,7 +21,6 @@
     // "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.tabSize": 4
   },
-  // CSS
   "[css]": {
     "editor.suggest.insertMode": "replace",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -32,7 +31,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
   },
-  // Dart
   // "[dart]": {
   //   "editor.selectionHighlight": false,
   //   "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -41,12 +39,10 @@
   //   "editor.wordBasedSuggestions": false,
   //   "editor.tabSize": 2
   // },
-  // JavaScript
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
   },
-  // JSON
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
@@ -55,12 +51,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
   },
-  // markdown
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.tabSize": 2
   },
-  // Python
   "python.formatting.provider": "autopep8",
   "pythonIndent.keepHangingBracketOnLine": true,
   "pythonIndent.trimLinesWithOnlyWhitespace": true,
@@ -69,16 +63,18 @@
     "editor.defaultFormatter": "ms-python.python",
     "editor.tabSize": 4
   },
-  // SCSS
   "[scss]": {
     "editor.suggest.insertMode": "replace",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
   },
-  // shell
   "[shellscript]": {
     "files.eol": "\n",
     "editor.tabSize": 2
+  },
+  "[tex]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
   },
   "[yaml]": {
     "editor.insertSpaces": true,

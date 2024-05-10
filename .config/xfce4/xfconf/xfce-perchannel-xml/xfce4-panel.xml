@@ -64,6 +64,10 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “home&amp;life superwifi-7529” active: home&amp;life superwifi-7529 (56%)"/>
+        <value type="string" value="warpinator-launch.py"/>
+        <value type="string" value="wi-fi network connection “home&amp;life superwifi-7529” active: home&amp;life superwifi-7529 (51%)"/>
+        <value type="string" value="wi-fi network connection “home&amp;life superwifi-7529” active: home&amp;life superwifi-7529 (55%)"/>
         <value type="string" value="wi-fi network connection “sapienza” active: sapienza (68%)"/>
         <value type="string" value="wi-fi network connection “home&amp;life superwifi-7529” active: home&amp;life superwifi-7529 (52%)"/>
         <value type="string" value="wi-fi network connection “home&amp;life superwifi-7529” active: home&amp;life superwifi-7529 (60%)"/>
@@ -106,7 +110,7 @@
       <property name="flash-separators" type="bool" value="false"/>
       <property name="digital-layout" type="uint" value="3"/>
       <property name="digital-time-font" type="string" value="Sans 10"/>
-      <property name="digital-time-format" type="string" value="%R"/>
+      <property name="digital-time-format" type="string" value="%T"/>
     </property>
     <property name="plugin-13" type="string" value="separator">
       <property name="style" type="uint" value="1"/>
@@ -125,7 +129,7 @@
     <property name="plugin-9" type="string" value="separator"/>
     <property name="plugin-11" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      <property name="known-players" type="string" value="firefox;Opera;vlc"/>
+      <property name="known-players" type="string" value="firefox;Opera;spotify;vlc"/>
       <property name="volume-max" type="uint" value="100"/>
       <property name="show-notifications" type="uint" value="1"/>
       <property name="multimedia-keys-to-all" type="bool" value="false"/>
